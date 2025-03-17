@@ -5,22 +5,40 @@ namespace TrelloApiTests.Cards
     public class ObjectCardProperties
     {
         public string ?Name { get; set; }
-        public string ?Desc { get; set; }
-        public int idList { get; set; }
+        public string ?Desc { get; set; }        
     }
 
     public class CardMethods
     {
+        public static int idList { get; set; }
+        public static int idBoardValue { get; set; }
+
         RestClient client = new RestClient();
         SettingEndpoints endpoints = new SettingEndpoints();
         Tokens tokens = new Tokens();
+
+        public void CreateNewList()
+        {
+            var cardBody = new
+            {
+                name = "RestApi test list",
+                idBoard = idBoardValue
+            };
+            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.cardsEndpoint}{tokens.trelloKeyToken1}", Method.Post).AddBody(cardBody);
+            var response = client.ExecuteAsync(request).Result;
+
+            if (HttpStatusCode.OK != response.StatusCode)
+            {
+                throw new Exception(response.StatusCode.ToString());
+            }
+        }
 
         public void CreateNewCard()
         {
             var cardBody = new
             {
                 name = "RestApi tests",
-                desc = "RestApi tests",
+                desc = "RestApi tests description",
                 start = DateTime.Now,
                 idlist = 15
             };
