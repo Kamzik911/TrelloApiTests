@@ -3,30 +3,31 @@
     public class SettingEndpoints
     {
         //Main endpoint
-        public string mainEndpoint = "https://api.trello.com/1/";
+        public static string mainEndpoint = "https://api.trello.com/1";
+        public string trelloEndpoint = $"{mainEndpoint}";
 
         //Cards endpoints
-        public string cardsEndpoint = "cards";
+        public string cardsEndpoint = $"{mainEndpoint}/cards";
 
         //Boards endpoints        
-        public string boardsEndpoint = "boards";
+        public string boardsEndpoint = $"{mainEndpoint}/boards";
 
         //Lists endpoints
-        public string listsEndpoint = "lists";
+        public string listsEndpoint = $"{mainEndpoint}/lists";
 
         //Calendar endpoints
-        public string calendarEndpoint = "calendarKey/generate";
+        public string calendarEndpoint = $"{mainEndpoint}/generate";
 
         //Email endpoints
         public string emailEndpoint = "emailKey/generate";
 
         //Tag endpoints
-        public string tagEndopint = "idTags";
+        public string tagEndopint = $"{mainEndpoint}/idTags";
 
-        //MarkedAsViewed endpoints
+        //MarkedAsViewed endpoints        
         public string markedAsViewedEndpoint = "markedAsViewed";
 
         //Member endopoints
-        public string memeberEndpoint = "members";
+        public string memeberEndpoint = $"{mainEndpoint}/members";
     }
 }

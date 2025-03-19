@@ -8,7 +8,7 @@
 
         public void GetMemberId()
         {
-            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.memeberEndpoint}/{tokens.memberId}{tokens.trelloKeyToken2}", Method.Get);
+            var request = new RestRequest($"{endpoints.trelloEndpoint}{endpoints.memeberEndpoint}/{tokens.memberId}{tokens.trelloKeyToken2}", Method.Get);
             var response = client.Execute(request);
 
             if (HttpStatusCode.OK == response.StatusCode)

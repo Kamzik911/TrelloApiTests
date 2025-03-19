@@ -19,7 +19,7 @@ namespace TrelloApiTests.Boards
 
         RestClient client = new RestClient();
         SettingEndpoints endpoints = new SettingEndpoints();        
-        Tokens tokens = new Tokens();
+        Tokens tokensForBoards = new Tokens();
         
         public void CreateBoard()
         {
@@ -31,7 +31,7 @@ namespace TrelloApiTests.Boards
                 
             };
 
-            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.boardsEndpoint}/?name={boardBody.name}{tokens.trelloKeyToken1}", Method.Post).AddBody(boardBody);
+            var request = new RestRequest($"{endpoints.boardsEndpoint}/?name={boardBody.name}{tokensForBoards.trelloKeyToken1}", Method.Post).AddBody(boardBody);
             var response = client.ExecuteAsync(request).Result;
             
             if (HttpStatusCode.OK == response.StatusCode)
@@ -59,7 +59,7 @@ namespace TrelloApiTests.Boards
                 throw new Exception("Created board ID is null or empty.");
             }
 
-            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}/{endpoints.calendarEndpoint}{tokens.trelloKeyToken2}", Method.Post);
+            var request = new RestRequest($"{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}/{endpoints.calendarEndpoint}{tokensForBoards.trelloKeyToken2}", Method.Post);
             var response = client.Execute(request);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -72,7 +72,7 @@ namespace TrelloApiTests.Boards
                 throw new Exception("Created board ID is null or empty.");
             }           
 
-            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}/{endpoints.emailEndpoint}{tokens.trelloKeyToken2}", Method.Post);
+            var request = new RestRequest($"{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}/{endpoints.emailEndpoint}{tokensForBoards.trelloKeyToken2}", Method.Post);
             var response = client.Execute(request);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
@@ -80,7 +80,7 @@ namespace TrelloApiTests.Boards
 
         public void GetBoard()
         {
-            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}{tokens.trelloKeyToken2}", Method.Get);
+            var request = new RestRequest($"{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}{tokensForBoards.trelloKeyToken2}", Method.Get);
             var response = client.Execute(request);
 
             if (HttpStatusCode.OK == response.StatusCode)
@@ -97,7 +97,7 @@ namespace TrelloApiTests.Boards
 
         public void MarkBoardViewed()
         {
-            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}{tokens.trelloKeyToken2}", Method.Post);
+            var request = new RestRequest($"{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}{tokensForBoards.trelloKeyToken2}", Method.Post);
             var response = client.Execute(request);
 
             if (HttpStatusCode.OK == response.StatusCode)
@@ -119,15 +119,12 @@ namespace TrelloApiTests.Boards
                 name = "New rest api board updated",
                 prefs_permissionLevel = "org"
             };
-            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}{tokens.trelloKeyToken2}", Method.Put).AddBody(boardBody);
+            var request = new RestRequest($"{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}{tokensForBoards.trelloKeyToken2}", Method.Put).AddBody(boardBody);
             var response = client.Execute(request);            
+            var jsonResponse = JObject.Parse(response.Content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(boardBody.name, jsonResponse["name"]);                
             
-            if (HttpStatusCode.OK == response.StatusCode)
-            {
-                var jsonResponse = JObject.Parse(response.Content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual(boardBody.name, jsonResponse["name"]);                
-            }
         }
 
         public void MarkBoardAsViewed()
@@ -137,7 +134,7 @@ namespace TrelloApiTests.Boards
                 throw new Exception("Created board ID is null or empty.");
             }
 
-            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}/{endpoints.markedAsViewedEndpoint}{tokens.trelloKeyToken2}", Method.Post);
+            var request = new RestRequest($"{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}/{endpoints.markedAsViewedEndpoint}{tokensForBoards.trelloKeyToken2}", Method.Post);
             var response = client.Execute(request);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -150,7 +147,7 @@ namespace TrelloApiTests.Boards
                 throw new InvalidOperationException("Created board ID is null.");
             }
             
-            var request = new RestRequest($"{endpoints.mainEndpoint}{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}{tokens.trelloKeyToken2}", Method.Delete);
+            var request = new RestRequest($"{endpoints.boardsEndpoint}/{SettingProperties.CreatedIdBoard}{tokensForBoards.trelloKeyToken2}", Method.Delete);
             var response = client.Execute(request);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
