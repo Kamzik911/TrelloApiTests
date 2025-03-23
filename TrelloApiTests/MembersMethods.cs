@@ -1,4 +1,4 @@
-﻿namespace TrelloApiTests.Members
+﻿namespace TrelloApiTests
 {
     class MembersMethods
     {
@@ -8,7 +8,7 @@
 
         public void GetMemberId()
         {
-            var request = new RestRequest($"{endpoints.trelloEndpoint}{endpoints.memeberEndpoint}/{tokens.memberId}{tokens.trelloKeyToken2}", Method.Get);
+            var request = new RestRequest($"{endpoints.cardsEndpoint}{endpoints.memeberEndpoint}/{tokens.memberId}", Method.Get);
             var response = client.Execute(request);
 
             if (HttpStatusCode.OK == response.StatusCode)

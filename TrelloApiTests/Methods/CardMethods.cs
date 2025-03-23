@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace TrelloApiTests.Cards
+namespace TrelloApiTests.Methods
 {
     public class ObjectCardProperties
     {
@@ -24,7 +24,7 @@ namespace TrelloApiTests.Cards
                 name = "RestApi test list",
                 idBoard = idBoardValue
             };
-            var request = new RestRequest($"{endpoints.cardsEndpoint}{tokens.trelloKeyToken1}", Method.Post).AddBody(cardBody);
+            var request = new RestRequest($"{endpoints.cardsEndpoint}", Method.Post).AddBody(cardBody);
             var response = client.ExecuteAsync(request).Result;
 
             if (HttpStatusCode.OK != response.StatusCode)
@@ -42,7 +42,7 @@ namespace TrelloApiTests.Cards
                 start = DateTime.Now,
                 idlist = 15
             };
-            var request = new RestRequest($"{endpoints.cardsEndpoint}{tokens.trelloKeyToken1}", Method.Post).AddBody(cardBody);
+            var request = new RestRequest($"{endpoints.cardsEndpoint}", Method.Post).AddBody(cardBody);
             var response = client.ExecuteAsync(request).Result;
 
             if (HttpStatusCode.OK != response.StatusCode)
@@ -53,7 +53,7 @@ namespace TrelloApiTests.Cards
 
         public void GetCardId()
         {
-            var request = new RestRequest($"{endpoints.trelloEndpoint}{tokens.trelloKeyToken1}", Method.Get);
+            var request = new RestRequest($"{endpoints.boardsEndpoint}{endpoints.cardsEndpoint}", Method.Get);
             var response = client.ExecuteAsync(request).Result;
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

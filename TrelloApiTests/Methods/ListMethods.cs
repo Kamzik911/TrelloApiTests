@@ -1,6 +1,4 @@
-﻿using TrelloApiTests.Boards;
-
-namespace TrelloApiTests.Lists
+﻿namespace TrelloApiTests.Methods
 {
     internal class ListMethods
     {
@@ -21,7 +19,7 @@ namespace TrelloApiTests.Lists
                 name = "",
                 idBoard = "",
             };
-            var request = new RestRequest($"{endpoints.trelloEndpoint}{endpoints.listsEndpoint}?name={listBody.name}&idboard=5abbe4b7ddc1b351ef961414{tokens.trelloKeyToken1}");
+            var request = new RestRequest($"{endpoints.listsEndpoint}?name={listBody.name}&idboard=5abbe4b7ddc1b351ef961414");
             var response = client.ExecuteAsync(request).Result;
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
