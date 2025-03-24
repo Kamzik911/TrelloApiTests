@@ -5,6 +5,11 @@
         public static string? CreatedIdBoard { get; set; }
     }
 
+    class LabelProperties
+    {
+        public static string? CreatedLabelId { get; set; }
+    }
+
     class BoardProperties
     {
         public string? Name { get; set; }

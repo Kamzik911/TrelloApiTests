@@ -14,6 +14,7 @@
 
         //Labels endpoints
         public string boardLabels = $"{mainEndpoint}/labels";
+        public string boardLabelId = $"{mainEndpoint}/labels/{LabelProperties.CreatedLabelId}";
 
         //Lists endpoints
         public string listsEndpoint = $"{mainEndpoint}/lists?name=name";
@@ -27,8 +28,7 @@
         //Tag endpoints
         public string tagEndopint = "/idTags";
 
-        //MarkedAsViewed endpoints        
-        //--url 'https://api.trello.com/1/boards/{id}/markedAsViewed?key=APIKey&token=APIToken'
+        //MarkedAsViewed endpoints                
         public string markedAsViewedEndpoint = $"{mainEndpoint}/boards/{SettingProperties.CreatedIdBoard}/markedAsViewed";
 
         //Member endopoints

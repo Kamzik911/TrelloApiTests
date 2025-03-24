@@ -8,19 +8,19 @@
 
 
         [TestMethod]            
-        public void ACreateBoard_ShouldPass()
+        public void A1CreateBoard_ShouldPass()
         {
             boardMethods.CreateBoard();
         }
 
         [TestMethod]
-        public void BGetBoard_ShouldPass()
+        public void A2GetBoard_ShouldPass()
         {
             boardMethods.GetBoard();
         }
 
         [TestMethod]
-        public void CCreateACalendarKeyForABoard_ShouldPass()
+        public void BCreateACalendarKeyForABoard_ShouldPass()
         {
             boardMethods.CreateACalendarKeyForABoard();
         }
@@ -42,19 +42,47 @@
         [DataRow("sky")]
         [DataRow("pink")]
         [DataRow("lime")]
-        public void ECreateLabelOnBoard_ShouldPass(string colour)
+        public void ECreateLabelOnBoard_ShouldPass(string color)
         {
-            labelMethods.CreateLabelOnBoard(colour);
+            labelMethods.CreateLabelOnBoard(color);
         }
 
         [TestMethod]
-        public void FUpdateBoard_ShouldPass()
+        public void F1GetCreatedLabel_ShouldPass()
+        {
+            labelMethods.GetCreatedLabel();
+        }
+
+        [DataTestMethod]
+        [DataRow("yellow")]
+        [DataRow("purple")]
+        [DataRow("blue")]
+        [DataRow("red")]
+        [DataRow("green")]
+        [DataRow("orange")]
+        [DataRow("black")]
+        [DataRow("sky")]
+        [DataRow("pink")]
+        [DataRow("lime")]
+        public void F2UpdateCreatedLabel_ShouldPass(string color)
+        {
+            labelMethods.UpdateCreatedLabel(color);
+        }
+
+        [TestMethod]
+        public void F3DeleteLabel_ShouldPass()
+        {
+            labelMethods.DeleteLabel();
+        }
+
+        [TestMethod]
+        public void GUpdateBoard_ShouldPass()
         {
            boardMethods.UpdateBoard();
         }
 
         [TestMethod]
-        public void GMarkBoardAsViewed_ShouldPass()
+        public void HMarkBoardAsViewed_ShouldPass()
         {
             boardMethods.MarkBoardAsViewed();
         }
