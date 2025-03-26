@@ -22,24 +22,17 @@ namespace TrelloApiTests.Methods
             request.AddQueryParameter("name", boardBody.name);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
-                        
-            if (HttpStatusCode.OK == response.StatusCode)
-            {
-                var jsonResponse = JObject.Parse(response.Content);
-                var checkPatternIdProperty = jsonResponse["id"].ToString();
-                var checkPattern = Regex.IsMatch(checkPatternIdProperty, pattern);
-                SettingProperties.CreatedIdBoard = jsonResponse["id"].ToString();                
-                Assert.AreEqual(boardBody.name, jsonResponse["name"]);
-                Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);
-                Assert.AreEqual(boardBody.desc, jsonResponse["desc"]);
-                Assert.AreEqual(JTokenType.String, jsonResponse["desc"]?.Type);
-                Assert.IsTrue(checkPattern);
-            }
-            else
-            {
-                throw new Exception($"Error: Status code is \"{response.StatusCode}\"");
-            }
+            var response = client.ExecuteAsync(request).Result;            
+            var jsonResponse = JObject.Parse(response.Content);
+            var checkPatternIdProperty = jsonResponse["id"].ToString();
+            var checkPattern = Regex.IsMatch(checkPatternIdProperty, pattern);            
+            SettingProperties.CreatedIdBoard = jsonResponse["id"].ToString(); 
+            
+            Assert.AreEqual(boardBody.name, jsonResponse["name"]);
+            Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);
+            Assert.AreEqual(boardBody.desc, jsonResponse["desc"]);
+            Assert.AreEqual(JTokenType.String, jsonResponse["desc"]?.Type);
+            Assert.IsTrue(checkPattern);            
         }
 
         public void CreateACalendarKeyForABoard()

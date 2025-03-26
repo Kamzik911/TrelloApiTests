@@ -5,6 +5,8 @@
     {
         BoardMethods boardMethods = new BoardMethods();
         LabelMethods labelMethods = new LabelMethods();
+        ListMethods listMethods = new ListMethods();
+        CardMethods cardMethods = new CardMethods();
 
 
         [TestMethod]            
@@ -70,7 +72,31 @@
         }
 
         [TestMethod]
-        public void F3DeleteLabel_ShouldPass()
+        public void F3CreateList_ShouldPass()
+        {
+            listMethods.CreateList();
+        }
+
+        [TestMethod]
+        public void F3GetListId_ShouldPass()
+        {
+            listMethods.GetListId();
+        }
+
+        //[TestMethod]
+        public void F4CreateNewCard_ShouldPass()
+        {
+            cardMethods.CreateNewCard();
+        }
+
+        //[TestMethod]
+        public void F41GetCardId_ShouldPass()
+        {
+            cardMethods.GetCardId();
+        }
+
+        [TestMethod]
+        public void F9DeleteLabel_ShouldPass()
         {
             labelMethods.DeleteLabel();
         }
@@ -81,13 +107,13 @@
            boardMethods.UpdateBoard();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void HMarkBoardAsViewed_ShouldPass()
         {
             boardMethods.MarkBoardAsViewed();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void ZDeleteBoard_ShouldPass()
         {
             boardMethods.DeleteBoard();

@@ -10,6 +10,11 @@
         public static string? CreatedLabelId { get; set; }
     }
 
+    class ListProperties
+    {
+        public static string? ListId { get; set; }
+    }
+
     class BoardProperties
     {
         public string? Name { get; set; }

@@ -2,32 +2,49 @@
 {
     internal class ListMethods
     {
-        SettingEndpoints endpoints = new SettingEndpoints();
-        Tokens tokens = new Tokens();
-        BoardMethods boardMethods = new BoardMethods();
+        SettingEndpoints endpoints = new SettingEndpoints();        
         RestClient client = new RestClient();
-
-        public void ACreateBoard()
+        
+        public void CreateList()
         {
-            boardMethods.CreateBoard();
-        }
+            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            {
+                throw new Exception("Id board doesn't exist");
+            }
 
-        public void BCreateList()
-        {
             var listBody = new
             {
-                name = "",
-                idBoard = "",
+                name = "Rest Api list",
+                idBoard = SettingProperties.CreatedIdBoard,
             };
-            var request = new RestRequest($"{endpoints.listsEndpoint}?name={listBody.name}&idboard=5abbe4b7ddc1b351ef961414");
-            var response = client.ExecuteAsync(request).Result;
+            var request = new RestRequest($"{endpoints.listsEndpoint}", Method.Post);
+            request.AddQueryParameter("name", listBody.name);
+            request.AddQueryParameter("idBoard", listBody.idBoard);
+            request.AddQueryParameter("key", Tokens.trelloApiKey);
+            request.AddQueryParameter("token", Tokens.trelloApiToken);
+            var response = client.ExecuteAsync(request).Result;            
+            var jsonResponse = JObject.Parse(response.Content);
+            ListProperties.ListId = jsonResponse["id"].ToString();
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(listBody.name, jsonResponse["name"]);                
+            Assert.AreEqual(ListProperties.ListId, jsonResponse["id"]);
+            Console.WriteLine(jsonResponse["id"].ToString());
         }
 
-        public void ZDeleteBoard()
-        {
-            boardMethods.DeleteBoard();
+        public void GetListId()
+        {         
+            if (string.IsNullOrEmpty(ListProperties.ListId))
+            {
+                throw new Exception("Id list doesn't exist");
+            }
+
+            var request = new RestRequest($"{endpoints.listIdEndpoint}", Method.Get);            
+            request.AddQueryParameter("key", Tokens.trelloApiKey);
+            request.AddQueryParameter("token", Tokens.trelloApiToken);
+            var response = client.ExecuteAsync(request).Result;            
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

@@ -16,23 +16,7 @@ namespace TrelloApiTests.Methods
         RestClient client = new RestClient();
         SettingEndpoints endpoints = new SettingEndpoints();
         Tokens tokens = new Tokens();
-
-        public void CreateNewList()
-        {
-            var cardBody = new
-            {
-                name = "RestApi test list",
-                idBoard = idBoardValue
-            };
-            var request = new RestRequest($"{endpoints.cardsEndpoint}", Method.Post).AddBody(cardBody);
-            var response = client.ExecuteAsync(request).Result;
-
-            if (HttpStatusCode.OK != response.StatusCode)
-            {
-                throw new Exception(response.StatusCode.ToString());
-            }
-        }
-
+        
         public void CreateNewCard()
         {
             var cardBody = new

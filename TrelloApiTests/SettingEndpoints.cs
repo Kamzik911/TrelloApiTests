@@ -17,7 +17,8 @@
         public string boardLabelId = $"{mainEndpoint}/labels/{LabelProperties.CreatedLabelId}";
 
         //Lists endpoints
-        public string listsEndpoint = $"{mainEndpoint}/lists?name=name";
+        public string listsEndpoint = $"{mainEndpoint}/lists";
+        public string listIdEndpoint = $"{mainEndpoint}/lists/{ListProperties.ListId}";
 
         //Calendar endpoints
         public string calendarEndpoint = $"{mainEndpoint}/boards/{SettingProperties.CreatedIdBoard}/calendarKey/generate";
