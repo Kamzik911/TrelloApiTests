@@ -81,6 +81,17 @@
         public void F3GetListId_ShouldPass()
         {
             listMethods.GetListId();
+        }       
+
+        [TestMethod]
+        public void F3GetBoardListIsOn_ShouldPass()
+        {
+            listMethods.GetBoardListIsOn();
+        }
+
+        public void F3UpdateCreatedList_ShouldPass()
+        {
+            listMethods.UpdateCreatedList();
         }
 
         //[TestMethod]

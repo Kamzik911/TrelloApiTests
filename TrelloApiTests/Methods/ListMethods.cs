@@ -46,5 +46,44 @@
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
+
+        public void GetBoardListIsOn()
+        {
+            if (string.IsNullOrEmpty(ListProperties.ListId))
+            {
+                throw new Exception("Id list doesn't exist");
+            }
+
+            var request = new RestRequest($"{endpoints.listIdEndpoint}/board", Method.Get);
+            request.AddQueryParameter("key", Tokens.trelloApiKey);
+            request.AddQueryParameter("token", Tokens.trelloApiToken);
+            var response = client.ExecuteAsync(request).Result;
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        public void UpdateCreatedList()
+        {
+            if (string.IsNullOrEmpty(ListProperties.ListId))
+            {
+                throw new Exception("Id list doesn't exist");
+            }
+
+            var listBody = new
+            {
+                name = "Rest api list updated",
+                closed = true
+            };
+
+            var request = new RestRequest($"{endpoints.listIdEndpoint}", Method.Put).AddBody(listBody);
+            request.AddQueryParameter("key", Tokens.trelloApiKey);
+            request.AddQueryParameter("token", Tokens.trelloApiToken);
+            var response = client.ExecuteAsync(request).Result;            
+            var jsonResponse = JObject.Parse(response.Content);
+            
+            Assert.AreEqual(listBody.name, jsonResponse["name"]);
+            Assert.AreEqual(listBody.closed, jsonResponse["closed"]);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 }
