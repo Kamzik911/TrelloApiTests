@@ -9,7 +9,7 @@ namespace TrelloApiTests.Methods
 
         public void CreateLabelOnBoard(string color)
         {
-            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Created board ID is null or empty.");
             }
@@ -23,7 +23,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.boardLabels}", Method.Post);
             request.AddQueryParameter("name", labelBody.name);
             request.AddQueryParameter("color", labelBody.color);
-            request.AddQueryParameter("idBoard", SettingProperties.CreatedIdBoard);
+            request.AddQueryParameter("idBoard", BoardProperties.CreatedIdBoard);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
             var response = client.ExecuteAsync(request).Result;
@@ -37,7 +37,7 @@ namespace TrelloApiTests.Methods
 
         public void GetCreatedLabel()
         {
-            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Created board ID is null or empty");
             }
@@ -52,7 +52,7 @@ namespace TrelloApiTests.Methods
 
         public void UpdateCreatedLabel(string color)
         {
-            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Created board ID is null or empty");
             }
@@ -75,7 +75,7 @@ namespace TrelloApiTests.Methods
 
         public void DeleteLabel()
         {
-            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Created board ID is null or empty");
             }

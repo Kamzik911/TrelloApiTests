@@ -7,7 +7,7 @@
         
         public void CreateList()
         {
-            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Id board doesn't exist");
             }
@@ -15,7 +15,7 @@
             var listBody = new
             {
                 name = "Rest Api list",
-                idBoard = SettingProperties.CreatedIdBoard,
+                idBoard = BoardProperties.CreatedIdBoard,
             };
             var request = new RestRequest($"{endpoints.listsEndpoint}", Method.Post);
             request.AddQueryParameter("name", listBody.name);

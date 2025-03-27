@@ -83,16 +83,22 @@
             listMethods.GetListId();
         }
 
-        //[TestMethod]
-        public void F4CreateNewCard_ShouldPass()
+        [TestMethod]
+        public void F41CreateNewCard_ShouldPass()
         {
             cardMethods.CreateNewCard();
         }
 
-        //[TestMethod]
-        public void F41GetCardId_ShouldPass()
+        [TestMethod]
+        public void F42GetCardId_ShouldPass()
         {
             cardMethods.GetCardId();
+        }
+
+        [TestMethod]
+        public void F4DeleteCardId_ShouldPass()
+        {
+            cardMethods.DeleteCardId();
         }
 
         [TestMethod]

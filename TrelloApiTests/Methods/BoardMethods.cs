@@ -26,7 +26,7 @@ namespace TrelloApiTests.Methods
             var jsonResponse = JObject.Parse(response.Content);
             var checkPatternIdProperty = jsonResponse["id"].ToString();
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, pattern);            
-            SettingProperties.CreatedIdBoard = jsonResponse["id"].ToString(); 
+            BoardProperties.CreatedIdBoard = jsonResponse["id"].ToString(); 
             
             Assert.AreEqual(boardBody.name, jsonResponse["name"]);
             Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);
@@ -47,13 +47,13 @@ namespace TrelloApiTests.Methods
             var response = client.Execute(request);            
 
 
-            Assert.IsNotNull(SettingProperties.CreatedIdBoard);
+            Assert.IsNotNull(BoardProperties.CreatedIdBoard);
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
         }
 
         public void CreateEmailKeyForABoard()
         {
-            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Created board ID is null or empty.");
             }           
@@ -76,7 +76,7 @@ namespace TrelloApiTests.Methods
             if (HttpStatusCode.OK == response.StatusCode)
             {
                 var jsonResponse = JObject.Parse(response.Content);
-                Assert.AreEqual(SettingProperties.CreatedIdBoard, jsonResponse["id"]);
+                Assert.AreEqual(BoardProperties.CreatedIdBoard, jsonResponse["id"]);
             }
 
             else if (HttpStatusCode.OK != response.StatusCode)
@@ -95,7 +95,7 @@ namespace TrelloApiTests.Methods
             if (HttpStatusCode.OK == response.StatusCode)
             {
                 var jsonResponse = JObject.Parse(response.Content);
-                Assert.AreEqual(SettingProperties.CreatedIdBoard, jsonResponse["id"]);
+                Assert.AreEqual(BoardProperties.CreatedIdBoard, jsonResponse["id"]);
             }   
 
             else if (HttpStatusCode.OK != response.StatusCode)
@@ -106,7 +106,7 @@ namespace TrelloApiTests.Methods
 
         public void UpdateBoard()
         {
-            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Created board ID is null or empty.");
             }
@@ -128,7 +128,7 @@ namespace TrelloApiTests.Methods
 
         public void MarkBoardAsViewed()
         {
-            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Created board ID is null or empty.");
             }
@@ -143,7 +143,7 @@ namespace TrelloApiTests.Methods
 
         public void DeleteBoard()
         {
-            if (string.IsNullOrEmpty(SettingProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
             {
                 throw new InvalidOperationException("Created board ID is null.");
             }
