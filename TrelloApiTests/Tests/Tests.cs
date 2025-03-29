@@ -113,7 +113,7 @@
            boardMethods.UpdateBoard();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void HMarkBoardAsViewed_ShouldPass()
         {
             boardMethods.MarkBoardAsViewed();

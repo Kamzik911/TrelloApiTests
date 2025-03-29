@@ -27,22 +27,28 @@ namespace TrelloApiTests.Methods
 
         public void GetCardId()
         {
-            var request = new RestRequest($"{endpoints.cardsIdEndpoint}", Method.Get);
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
+            if (string.IsNullOrEmpty(CardProperties.CreatedCardId))
+            {
+                var request = new RestRequest($"{endpoints.cardsIdEndpoint}", Method.Get);
+                request.AddQueryParameter("key", Tokens.trelloApiKey);
+                request.AddQueryParameter("token", Tokens.trelloApiToken);
+                var response = client.ExecuteAsync(request).Result;
 
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }            
         }
 
         public void DeleteCardId()
         {
-            var request = new RestRequest($"{endpoints.cardsIdEndpoint}", Method.Delete);
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
+            if (string.IsNullOrEmpty(CardProperties.CreatedCardId))
+            {
+                var request = new RestRequest($"{endpoints.cardsIdEndpoint}", Method.Delete);
+                request.AddQueryParameter("key", Tokens.trelloApiKey);
+                request.AddQueryParameter("token", Tokens.trelloApiToken);
+                var response = client.ExecuteAsync(request).Result;
 
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }            
         }
     }
 }

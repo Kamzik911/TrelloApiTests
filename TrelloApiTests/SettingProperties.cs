@@ -3,6 +3,7 @@
     class BoardProperties
     {
         public static string? CreatedIdBoard { get; set; }
+        public static string? IdOrganization { get; set; }
     }
 
     class LabelProperties
