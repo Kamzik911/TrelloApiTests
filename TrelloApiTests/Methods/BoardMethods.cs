@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net;
+using System.Text.RegularExpressions;
 
 namespace TrelloApiTests.Methods
 {    
@@ -22,28 +23,25 @@ namespace TrelloApiTests.Methods
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
             var response = client.ExecuteAsync(request).Result;
+            
+            var jsonResponse = JObject.Parse(response.Content);
+            var checkPatternIdProperty = jsonResponse["id"].ToString();
+            var checkPattern = Regex.IsMatch(checkPatternIdProperty, pattern);
+            var checkPermissionLever = jsonResponse["prefs"]?["permissionLevel"]?.ToString();
 
-            if (HttpStatusCode.OK == response.StatusCode)
-            {
-                var jsonResponse = JObject.Parse(response.Content);
-                var checkPatternIdProperty = jsonResponse["id"].ToString();
-                var checkPattern = Regex.IsMatch(checkPatternIdProperty, pattern);
-                BoardProperties.CreatedIdBoard = jsonResponse["id"].ToString();
-                BoardProperties.IdOrganization = jsonResponse["idOrganization"].ToString();
+            BoardProperties.CreatedIdBoard = jsonResponse["id"].ToString();
+            BoardProperties.IdOrganization = jsonResponse["idOrganization"].ToString();
 
-                Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);
-                Assert.AreEqual(boardBody.name, jsonResponse["name"]);
-                Assert.AreEqual(JTokenType.String, jsonResponse["desc"]?.Type);
-                Assert.AreEqual(boardBody.desc, jsonResponse["desc"]);
-                Assert.AreEqual(BoardProperties.CreatedIdBoard, jsonResponse["id"]);
-                Assert.AreEqual(BoardProperties.IdOrganization, jsonResponse["idOrganization"]);
-                Assert.IsTrue(checkPattern);
-            }
-
-            else 
-            {
-                throw new Exception($"Status code is {response.StatusCode}");
-            }            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);
+            Assert.AreEqual(boardBody.name, jsonResponse["name"]);
+            Assert.AreEqual(JTokenType.String, jsonResponse["desc"]?.Type);
+            Assert.AreEqual(boardBody.desc, jsonResponse["desc"]);
+            Assert.AreEqual(BoardProperties.CreatedIdBoard, jsonResponse["id"]);
+            Assert.AreEqual(BoardProperties.IdOrganization, jsonResponse["idOrganization"]);
+            Assert.IsTrue(checkPattern);
+            Assert.AreEqual("private", checkPermissionLever);
+            Console.WriteLine(jsonResponse);            
         }
 
         public void CreateACalendarKeyForABoard()
@@ -58,14 +56,16 @@ namespace TrelloApiTests.Methods
                 throw new Exception("Board id is empty");
             }
 
-            var request = new RestRequest($"{endpoints.calendarEndpoint}", Method.Post).AddBody(calendarKey);
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.Execute(request);
+            else
+            {
+                var request = new RestRequest($"{endpoints.calendarEndpoint}", Method.Post).AddBody(calendarKey);
+                request.AddQueryParameter("key", Tokens.trelloApiKey);
+                request.AddQueryParameter("token", Tokens.trelloApiToken);
+                var response = client.Execute(request);
 
-
-            Assert.IsNotNull(BoardProperties.CreatedIdBoard);
-            Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
+                Assert.IsNotNull(BoardProperties.CreatedIdBoard);
+                Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
+            }                
         }
 
         public void CreateEmailKeyForABoard()
@@ -166,6 +166,15 @@ namespace TrelloApiTests.Methods
             var response = client.Execute(request);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);           
-        }        
+        }
+
+        public void CleanBoardId()
+        {
+            if (BoardProperties.CreatedIdBoard != null) 
+            {
+                BoardProperties.CreatedIdBoard = null;
+            }
+            
+        }
     }
 }

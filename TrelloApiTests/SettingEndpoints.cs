@@ -20,6 +20,11 @@
         //Lists endpoints
         public string listsEndpoint = $"{mainEndpoint}/lists";
         public string listIdEndpoint = $"{mainEndpoint}/lists/{ListProperties.ListId}";
+        public string archiveAllcardsEndpoint = $"{mainEndpoint}/lists/{ListProperties.ListId}/archiveAllCards";
+
+        //Custom field endpoints
+        public string customFieldEndpoint = $"{mainEndpoint}/customFields";
+        public string customFieldIdEndpoint = $"{mainEndpoint}/customFields/{CustomFieldProperties.CustomFieldId}";
 
         //Calendar endpoints
         public string calendarEndpoint = $"{mainEndpoint}/boards/{BoardProperties.CreatedIdBoard}/calendarKey/generate";

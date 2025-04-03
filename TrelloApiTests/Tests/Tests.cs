@@ -7,7 +7,7 @@
         LabelMethods labelMethods = new LabelMethods();
         ListMethods listMethods = new ListMethods();
         CardMethods cardMethods = new CardMethods();
-
+        CustomFieldsMethods customFields = new CustomFieldsMethods();
 
         [TestMethod]            
         public void A1CreateBoard_ShouldPass()
@@ -33,6 +33,12 @@
             boardMethods.CreateEmailKeyForABoard();
         }
 
+        //[TestMethod] //Test for Power-Up
+        public void ECreateCustomFieldOnBoard_ShouldPass()
+        {
+            customFields.CreateCustomFieldOnBoard();
+        }
+
         [DataTestMethod]
         [DataRow("yellow")]
         [DataRow("purple")]
@@ -44,13 +50,13 @@
         [DataRow("sky")]
         [DataRow("pink")]
         [DataRow("lime")]
-        public void ECreateLabelOnBoard_ShouldPass(string color)
+        public void FCreateLabelOnBoard_ShouldPass(string color)
         {
             labelMethods.CreateLabelOnBoard(color);
         }
 
         [TestMethod]
-        public void F1GetCreatedLabel_ShouldPass()
+        public void G1GetCreatedLabel_ShouldPass()
         {
             labelMethods.GetCreatedLabel();
         }
@@ -66,63 +72,81 @@
         [DataRow("sky")]
         [DataRow("pink")]
         [DataRow("lime")]
-        public void F2UpdateCreatedLabel_ShouldPass(string color)
+        public void G2UpdateCreatedLabel_ShouldPass(string color)
         {
             labelMethods.UpdateCreatedLabel(color);
         }
 
         [TestMethod]
-        public void F3CreateList_ShouldPass()
+        public void G31CreateList_ShouldPass()
         {
             listMethods.CreateList();
         }
 
         [TestMethod]
-        public void F3GetListId_ShouldPass()
+        public void G31GetListId_ShouldPass()
         {
             listMethods.GetListId();
         }
 
         [TestMethod]
-        public void F41CreateNewCard_ShouldPass()
+        public void G31UpdateListId_ShouldPass()
+        {
+            listMethods.UpdateListId();
+        }
+
+        [TestMethod]
+        public void G3ArchiveAllCardsInList()
+        {
+            listMethods.ArchiveAllCardsInList();
+        }
+
+        [TestMethod]
+        public void G41CreateNewCard_ShouldPass()
         {
             cardMethods.CreateNewCard();
         }
 
         [TestMethod]
-        public void F42GetCardId_ShouldPass()
+        public void G42GetCardId_ShouldPass()
         {
             cardMethods.GetCardId();
         }
 
         [TestMethod]
-        public void F4DeleteCardId_ShouldPass()
+        public void G4DeleteCardId_ShouldPass()
         {
             cardMethods.DeleteCardId();
         }
 
         [TestMethod]
-        public void F9DeleteLabel_ShouldPass()
+        public void XDeleteLabel_ShouldPass()
         {
             labelMethods.DeleteLabel();
         }
 
         [TestMethod]
-        public void GUpdateBoard_ShouldPass()
+        public void AUpdateBoard_ShouldPass()
         {
            boardMethods.UpdateBoard();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void HMarkBoardAsViewed_ShouldPass()
         {
             boardMethods.MarkBoardAsViewed();
         }
 
         [TestMethod]
-        public void ZDeleteBoard_ShouldPass()
+        public void YDeleteBoard_ShouldPass()
         {
             boardMethods.DeleteBoard();
+        }       
+
+        [TestMethod]
+        public void ZCleanBoardId1()
+        {
+            boardMethods.CleanBoardId();
         }
     }
 }

@@ -20,4 +20,9 @@
     {
         public static string? CreatedCardId { get; set; }    
     }
+
+    class CustomFieldProperties
+    {
+        public static string? CustomFieldId { get; set; }
+    }
 }
