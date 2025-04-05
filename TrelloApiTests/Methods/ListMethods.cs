@@ -2,8 +2,7 @@
 {
     internal class ListMethods
     {
-        SettingEndpoints endpoints = new SettingEndpoints();        
-        RestClient client = new RestClient();
+        SettingEndpoints endpoints = new SettingEndpoints();                
         
         public void CreateList()
         {
@@ -22,7 +21,7 @@
             request.AddQueryParameter("idBoard", listBody.idBoard);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;            
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;            
             var jsonResponse = JObject.Parse(response.Content);
             ListProperties.ListId = jsonResponse["id"].ToString();
 
@@ -48,7 +47,7 @@
             var request = new RestRequest($"{endpoints.listIdEndpoint}", Method.Put).AddBody(listBody);            
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
             
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
@@ -67,7 +66,7 @@
             var request = new RestRequest($"{endpoints.listIdEndpoint}", Method.Get);            
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;            
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;            
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
@@ -82,7 +81,7 @@
             var request = new RestRequest($"{endpoints.archiveAllcardsEndpoint}", Method.Post);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }        

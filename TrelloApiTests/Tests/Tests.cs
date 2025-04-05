@@ -7,8 +7,8 @@
         LabelMethods labelMethods = new LabelMethods();
         ListMethods listMethods = new ListMethods();
         CardMethods cardMethods = new CardMethods();
-        CustomFieldsMethods customFields = new CustomFieldsMethods();
-
+        CustomFieldsMethods customFields = new CustomFieldsMethods();                
+        
         [TestMethod]            
         public void A1CreateBoard_ShouldPass()
         {

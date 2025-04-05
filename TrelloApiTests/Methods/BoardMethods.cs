@@ -1,15 +1,11 @@
-﻿using System.Net;
-using System.Text.RegularExpressions;
-
-namespace TrelloApiTests.Methods
+﻿namespace TrelloApiTests.Methods
 {    
     public class BoardMethods
     {
-        string pattern = "[A-Za-z0-9]";       
-
-        RestClient client = new RestClient();
+        string pattern = "[A-Za-z0-9]";
+        
         SettingEndpoints endpoints = new SettingEndpoints();        
-        Tokens tokensForBoards = new Tokens();
+        Tokens tokensForBoards = new Tokens();                
         
         public void CreateBoard()
         {
@@ -17,12 +13,11 @@ namespace TrelloApiTests.Methods
             {
                 name = "New rest api board",                
                 desc = "Random",
-            };
-
-            var request = new RestRequest($"{endpoints.boardsEndpoint}", Method.Post).AddBody(boardBody);            
+            };            
+            var request = new RestRequest($"{endpoints.boardsEndpoint}", Method.Post).AddBody(boardBody);                        
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
             
             var jsonResponse = JObject.Parse(response.Content);
             var checkPatternIdProperty = jsonResponse["id"].ToString();
@@ -61,7 +56,7 @@ namespace TrelloApiTests.Methods
                 var request = new RestRequest($"{endpoints.calendarEndpoint}", Method.Post).AddBody(calendarKey);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
-                var response = client.Execute(request);
+                var response = MainEndpoint.Client.Execute(request);
 
                 Assert.IsNotNull(BoardProperties.CreatedIdBoard);
                 Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
@@ -78,7 +73,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.emailEndpoint}", Method.Post);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.Execute(request);
+            var response = MainEndpoint.Client.Execute(request);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
         }
@@ -93,7 +88,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.boardIdEndpoint}", Method.Get);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.Execute(request);
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
             
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(BoardProperties.CreatedIdBoard, jsonResponse["id"]);
@@ -105,7 +100,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.markedAsViewedEndpoint}", Method.Post);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;                       
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;                       
             var jsonResponse = JObject.Parse(response.Content);
 
             Assert.AreEqual(BoardProperties.CreatedIdBoard, jsonResponse["id"]);
@@ -131,7 +126,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.boardIdEndpoint}", Method.Put).AddBody(boardBody);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.Execute(request);            
+            var response = MainEndpoint.Client.Execute(request);            
             var jsonResponse = JObject.Parse(response.Content);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -148,7 +143,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.markedAsViewedEndpoint}", Method.Post);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;            
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;            
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
         }
@@ -163,7 +158,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.boardIdEndpoint}", Method.Delete);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.Execute(request);
+            var response = MainEndpoint.Client.Execute(request);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);           
         }

@@ -3,10 +3,9 @@
 namespace TrelloApiTests.Methods
 {
     public class LabelMethods
-    {
-        RestClient client = new RestClient();
+    {        
         SettingEndpoints endpoints = new SettingEndpoints();
-
+        
         public void CreateLabelOnBoard(string color)
         {
             if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
@@ -26,7 +25,7 @@ namespace TrelloApiTests.Methods
             request.AddQueryParameter("idBoard", BoardProperties.CreatedIdBoard);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
             var jsonResponse = JObject.Parse(response.Content);            
             LabelProperties.CreatedLabelId = jsonResponse["id"].ToString();
 
@@ -45,7 +44,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.boardLabelId}", Method.Get);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
             
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
         }
@@ -66,7 +65,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.boardLabelId}", Method.Put).AddBody(labelBody);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
             var jsonResponse = JObject.Parse(response.Content);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -83,7 +82,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoints.boardLabelId}", Method.Delete);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = client.ExecuteAsync(request).Result;
+            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
