@@ -12,7 +12,7 @@ namespace TrelloApiTests.Methods
         {
             var customFieldBody = new
             {
-                idModel = BoardProperties.CreatedIdBoard,
+                idModel = ObjectProperties.BoardProperties.CreatedIdBoard,
                 modelType = "board",
                 name = "New custom field",
                 type = "checkbox", //Valid values: checkbox, list, number, text, date 
@@ -25,7 +25,7 @@ namespace TrelloApiTests.Methods
             var response = client.ExecuteAsync(request).Result;            
             var jsonResponse = JObject.Parse(response.Content);
 
-            CustomFieldProperties.CustomFieldId = jsonResponse["id"].ToString();
+            ObjectProperties.CustomFieldProperties.CustomFieldId = jsonResponse["id"].ToString();
             Console.WriteLine($"Response Content: {response.Content.ToString()}");
                         
         }

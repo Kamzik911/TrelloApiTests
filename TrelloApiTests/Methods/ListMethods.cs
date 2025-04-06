@@ -6,7 +6,7 @@
         
         public void CreateList()
         {
-            if (string.IsNullOrEmpty(BoardProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(ObjectProperties.BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Id board doesn't exist");
             }
@@ -14,26 +14,26 @@
             var listBody = new
             {
                 name = "Rest Api list",
-                idBoard = BoardProperties.CreatedIdBoard,
+                idBoard = ObjectProperties.BoardProperties.CreatedIdBoard,
             };
             var request = new RestRequest($"{endpoints.listsEndpoint}", Method.Post);
             request.AddQueryParameter("name", listBody.name);
             request.AddQueryParameter("idBoard", listBody.idBoard);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainEndpoint.Client.ExecuteAsync(request).Result;            
+            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;            
             var jsonResponse = JObject.Parse(response.Content);
-            ListProperties.ListId = jsonResponse["id"].ToString();
+            ObjectProperties.ListProperties.ListId = jsonResponse["id"].ToString();
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.name, jsonResponse["name"]);                
-            Assert.AreEqual(ListProperties.ListId, jsonResponse["id"]);
+            Assert.AreEqual(ObjectProperties.ListProperties.ListId, jsonResponse["id"]);
             Console.WriteLine(jsonResponse["id"].ToString());
         }
 
         public void UpdateListId()
         {
-            if (string.IsNullOrEmpty(ListProperties.ListId))
+            if (string.IsNullOrEmpty(ObjectProperties.ListProperties.ListId))
             {
                 throw new Exception("Id board doesn't exist");
             }
@@ -47,7 +47,7 @@
             var request = new RestRequest($"{endpoints.listIdEndpoint}", Method.Put).AddBody(listBody);            
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
+            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
             
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
@@ -58,22 +58,17 @@
 
         public void GetListId()
         {         
-            if (string.IsNullOrEmpty(ListProperties.ListId))
+            if (string.IsNullOrEmpty(ObjectProperties.ListProperties.ListId))
             {
                 throw new Exception("Id list doesn't exist");
             }
-
-            var request = new RestRequest($"{endpoints.listIdEndpoint}", Method.Get);            
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainEndpoint.Client.ExecuteAsync(request).Result;            
-
+            var response = ApiMethods.GetRequestApiAsync(endpoints.listIdEndpoint);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public void ArchiveAllCardsInList()
         {
-            if (string.IsNullOrEmpty(ListProperties.ListId))
+            if (string.IsNullOrEmpty(ObjectProperties.ListProperties.ListId))
             {
                 throw new Exception("Id board doesn't exist");
             }
@@ -81,7 +76,7 @@
             var request = new RestRequest($"{endpoints.archiveAllcardsEndpoint}", Method.Post);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainEndpoint.Client.ExecuteAsync(request).Result;
+            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }        

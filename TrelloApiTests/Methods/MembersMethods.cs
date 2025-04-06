@@ -1,4 +1,4 @@
-﻿namespace TrelloApiTests
+﻿namespace TrelloApiTests.Methods
 {
     class MembersMethods
     {
