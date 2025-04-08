@@ -16,19 +16,14 @@
                 name = "Rest Api list",
                 idBoard = ObjectProperties.BoardProperties.CreatedIdBoard,
             };
-            var request = new RestRequest($"{endpoints.listsEndpoint}", Method.Post);
-            request.AddQueryParameter("name", listBody.name);
-            request.AddQueryParameter("idBoard", listBody.idBoard);
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;            
+            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.listsEndpoint, listBody);
             var jsonResponse = JObject.Parse(response.Content);
             ObjectProperties.ListProperties.ListId = jsonResponse["id"].ToString();
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.name, jsonResponse["name"]);                
             Assert.AreEqual(ObjectProperties.ListProperties.ListId, jsonResponse["id"]);
-            Console.WriteLine(jsonResponse["id"].ToString());
+            Console.WriteLine(jsonResponse.ToString());
         }
 
         public void UpdateListId()

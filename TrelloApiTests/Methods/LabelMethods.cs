@@ -12,26 +12,27 @@ namespace TrelloApiTests.Methods
             {
                 throw new Exception("Created board ID is null or empty.");
             }
-
-            var labelBody = new
+            else
             {
-                name = "New rest api label",
-                color = $"{color}"
-            };
+                var labelBody = new
+                {
+                    name = "New rest api label",
+                    color = $"{color}"
+                };
 
-            var request = new RestRequest($"{endpoints.boardLabels}", Method.Post);
-            request.AddQueryParameter("name", labelBody.name);
-            request.AddQueryParameter("color", labelBody.color);
-            request.AddQueryParameter("idBoard", ObjectProperties.BoardProperties.CreatedIdBoard);
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
-            var jsonResponse = JObject.Parse(response.Content);            
-            ObjectProperties.LabelProperties.CreatedLabelId = jsonResponse["id"].ToString();
-
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(labelBody.name, jsonResponse["name"]);
-            Assert.AreEqual(labelBody.color, jsonResponse["color"]);
+                var request = new RestRequest($"{endpoints.boardLabels}", Method.Post);
+                request.AddQueryParameter("name", labelBody.name);
+                request.AddQueryParameter("color", labelBody.color);
+                request.AddQueryParameter("idBoard", ObjectProperties.BoardProperties.CreatedIdBoard);
+                request.AddQueryParameter("key", Tokens.trelloApiKey);
+                request.AddQueryParameter("token", Tokens.trelloApiToken);
+                var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+                var jsonResponse = JObject.Parse(response.Content);
+                ObjectProperties.LabelProperties.CreatedLabelId = jsonResponse["id"].ToString();
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual(labelBody.name, jsonResponse["name"]);
+                Assert.AreEqual(labelBody.color, jsonResponse["color"]);                
+            }
         }
 
         public void GetCreatedLabel()
@@ -41,31 +42,36 @@ namespace TrelloApiTests.Methods
                 throw new Exception("Created board ID is null or empty");
             }
 
-            var response = ApiMethods.GetRequestApiAsync(endpoints.boardLabelId);            
+            var response = ApiMethods.GetRequestApiAsync(endpoints.boardLabelId(ObjectProperties.LabelProperties.CreatedLabelId));            
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
         }
 
         public void UpdateCreatedLabel(string color)
         {
-            if (string.IsNullOrEmpty(ObjectProperties.  BoardProperties.CreatedIdBoard))
+            if (string.IsNullOrEmpty(ObjectProperties.BoardProperties.CreatedIdBoard))
             {
                 throw new Exception("Created board ID is null or empty");
             }
-
-            var labelBody = new
+            else if(string.IsNullOrEmpty(ObjectProperties.LabelProperties.CreatedLabelId))
             {
-                name = "Label updated",
-                color = $"{color}"
-            };
+                throw new Exception("Created label ID is null or empty");
+            }
+            else
+            {
+                var labelBody = new
+                {
+                    name = "Label updated",
+                    color = $"{color}"
+                };
 
-            var request = new RestRequest($"{endpoints.boardLabelId}", Method.Put).AddBody(labelBody);
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
-            var jsonResponse = JObject.Parse(response.Content);
-
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(labelBody.color, jsonResponse["color"]);
+                var request = new RestRequest($"{endpoints.boardLabelId(ObjectProperties.LabelProperties.CreatedLabelId)}", Method.Put).AddBody(labelBody);
+                request.AddQueryParameter("key", Tokens.trelloApiKey);
+                request.AddQueryParameter("token", Tokens.trelloApiToken);
+                var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+                var jsonResponse = JObject.Parse(response.Content);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual(labelBody.color, jsonResponse["color"]);
+            }               
         }        
 
         public void DeleteLabel()
@@ -74,13 +80,20 @@ namespace TrelloApiTests.Methods
             {
                 throw new Exception("Created board ID is null or empty");
             }
+            else if (string.IsNullOrEmpty(ObjectProperties.LabelProperties.CreatedLabelId))
+            {
+                throw new Exception("Created label ID is null or empty");
+            }
+            else
+            {
+                var request = new RestRequest($"{endpoints.boardLabelId(ObjectProperties.LabelProperties.CreatedLabelId)}", Method.Delete);
+                request.AddQueryParameter("key", Tokens.trelloApiKey);
+                request.AddQueryParameter("token", Tokens.trelloApiToken);
+                var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }
 
-            var request = new RestRequest($"{endpoints.boardLabelId}", Method.Delete);
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
-
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                
         }
     }
 }

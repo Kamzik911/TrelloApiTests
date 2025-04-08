@@ -8,11 +8,12 @@
         //Boards endpoints        
         //public string boardsEndpoint = $"{mainEndpoint}/boards";
         public string boardsEndpoint = "/boards/";
-        public string boardIdEndpoint = $"/boards/{ObjectProperties.BoardProperties.CreatedIdBoard}";
+        public string boardIdEndpoint(string boardId) => $"/boards/{boardId}";
 
         //Labels endpoints
         public string boardLabels = $"/labels/";
-        public string boardLabelId = $"/labels/{ObjectProperties.LabelProperties.CreatedLabelId}";
+        //public string boardLabelId = $"/labels/{ObjectProperties.LabelProperties.CreatedLabelId}";
+        public string boardLabelId(string labelId) => $"/labels/{labelId}";
 
         //Cards endpoints
         public string cardsEndpoint = "/cards";

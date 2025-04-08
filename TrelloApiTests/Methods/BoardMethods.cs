@@ -22,10 +22,8 @@
             var checkPatternIdProperty = jsonResponse["id"]?.ToString();
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, pattern);
             var checkPermissionLevel = jsonResponse["prefs"]?["permissionLevel"]?.ToString();
-
             ObjectProperties.BoardProperties.CreatedIdBoard = jsonResponse["id"]?.ToString();
             ObjectProperties.BoardProperties.IdOrganization = jsonResponse["idOrganization"]?.ToString();
-
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);
             Assert.AreEqual(boardBody.name, jsonResponse["name"]);
@@ -76,7 +74,7 @@
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(endpoints.boardIdEndpoint);
+                var response = ApiMethods.GetRequestApiAsync(endpoints.boardIdEndpoint(ObjectProperties.BoardProperties.CreatedIdBoard));
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(ObjectProperties.BoardProperties.CreatedIdBoard, jsonResponse["id"]);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -101,7 +99,7 @@
             {
                 name = randomString,                
             };            
-            var response = ApiMethods.PutBodyRequestApiAsync(endpoints.boardIdEndpoint, boardBody);
+            var response = ApiMethods.PutBodyRequestApiAsync(endpoints.boardIdEndpoint(ObjectProperties.BoardProperties.CreatedIdBoard), boardBody);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(boardBody.name, jsonResponse["name"]);
@@ -130,12 +128,7 @@
             {
                 throw new InvalidOperationException("Created board ID is null.");
             }
-            
-            var request = new RestRequest($"{endpoints.boardIdEndpoint}", Method.Delete);
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.Execute(request);
-
+            var response = ApiMethods.DeleteRequestApiAsync(endpoints.boardIdEndpoint(ObjectProperties.BoardProperties.CreatedIdBoard));
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);           
         }
 
@@ -145,7 +138,10 @@
             {
                 ObjectProperties.BoardProperties.CreatedIdBoard = null;
             }
-            
+            else if(ObjectProperties.BoardProperties.IdOrganization != null)
+            {
+                ObjectProperties.BoardProperties.IdOrganization = null;
+            }            
         }
     }
 }
