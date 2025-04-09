@@ -18,13 +18,9 @@ namespace TrelloApiTests.Methods
                 type = "checkbox", //Valid values: checkbox, list, number, text, date 
                 pos = "top"
             };
-
-            var request = new RestRequest($"{endpoints.customFieldEndpoint}", Method.Post).AddBody(customFieldBody);            
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);            
-            var response = client.ExecuteAsync(request).Result;            
+            var response = ApiMethods.PostRequestApiAsync(endpoints.customFieldEndpoint);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var jsonResponse = JObject.Parse(response.Content);
-
             ObjectProperties.CustomFieldProperties.CustomFieldId = jsonResponse["id"].ToString();
             Console.WriteLine($"Response Content: {response.Content.ToString()}");
                         

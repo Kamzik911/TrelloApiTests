@@ -3,7 +3,7 @@ using System.Text;
 
 namespace TrelloApiTests
 {
-    public class StringIntGenerator
+    public class StringGenerator
     {
         private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -22,5 +22,5 @@ namespace TrelloApiTests
             }
             return result.ToString();
         }
-    }
+    }    
 }

@@ -11,39 +11,47 @@ namespace TrelloApiTests.Methods
         {
             var cardBody = new
             {
-                name = "RestApi tests",                
+                name = "RestApi tests",
+                idList = ObjectProperties.ListProperties.ListId
             };
-            var request = new RestRequest($"{endpoints.cardsEndpoint}", Method.Post);
+            /*var request = new RestRequest($"{endpoints.cardsEndpoint}", Method.Post);
             request.AddQueryParameter("idList", ObjectProperties.ListProperties.ListId);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;*/
+            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.cardsEndpoint, cardBody);
             var jsonResponse = JObject.Parse(response.Content);
             ObjectProperties.CardProperties.CreatedCardId = jsonResponse["id"].ToString();
-
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public void GetCardId()
         {
             if (string.IsNullOrEmpty(ObjectProperties.CardProperties.CreatedCardId))
-            {                
-                var response = ApiMethods.GetRequestApiAsync(endpoints.cardsIdEndpoint);
+            {
+                throw new Exception("Card id doesn't exist");
+            }
+            else
+            {
+                var response = ApiMethods.GetRequestApiAsync(endpoints.cardsIdEndpoint(ObjectProperties.CardProperties.CreatedCardId));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }            
+            }
         }
 
         public void DeleteCardId()
         {
             if (string.IsNullOrEmpty(ObjectProperties.CardProperties.CreatedCardId))
             {
-                var request = new RestRequest($"{endpoints.cardsIdEndpoint}", Method.Delete);
+                throw new Exception("Card id doesn't exist");
+            }
+            else
+            {
+                var request = new RestRequest($"{endpoints.cardsIdEndpoint(ObjectProperties.CardProperties.CreatedCardId)}", Method.Delete);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
                 var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
-
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }            
+            }
         }
     }
 }

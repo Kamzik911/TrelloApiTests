@@ -5,13 +5,12 @@
         string pattern = "[A-Za-z0-9]";
         
         SettingEndpoints endpoints = new SettingEndpoints();        
-        Tokens tokensForBoards = new Tokens();
+        Tokens tokensForBoards = new Tokens();        
 
-        string randomString = StringIntGenerator.GenerateString(15);
+        string randomString = StringGenerator.GenerateString(15);
 
         public void CreateBoard()
-        {            
-                     
+        {                                 
             var boardBody = new ObjectProperties.BoardProperties
             {
                 name = randomString,
@@ -23,9 +22,9 @@
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, pattern);
             var checkPermissionLevel = jsonResponse["prefs"]?["permissionLevel"]?.ToString();
             ObjectProperties.BoardProperties.CreatedIdBoard = jsonResponse["id"]?.ToString();
-            ObjectProperties.BoardProperties.IdOrganization = jsonResponse["idOrganization"]?.ToString();
+            ObjectProperties.BoardProperties.IdOrganization = jsonResponse["idOrganization"]?.ToString();            
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);
+            Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);            
             Assert.AreEqual(boardBody.name, jsonResponse["name"]);
             Assert.AreEqual(JTokenType.String, jsonResponse["desc"]?.Type);
             Assert.AreEqual(boardBody.desc, jsonResponse["desc"]);
@@ -38,7 +37,7 @@
 
         public void CreateACalendarKeyForABoard()
         {
-            var calendarKey = new
+            var calendarKeyBody = new
             {
                 id = tokensForBoards.calendarKey
             };        
@@ -50,7 +49,7 @@
 
             else
             {
-                var response = ApiMethods.PostBodyRequestApiAsync(endpoints.calendarEndpoint, calendarKey);
+                var response = ApiMethods.PostBodyRequestApiAsync(endpoints.CalendarEndpoint(ObjectProperties.BoardProperties.CreatedIdBoard), calendarKeyBody);
                 Assert.IsNotNull(ObjectProperties.BoardProperties.CreatedIdBoard);
                 Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
             }                
@@ -62,7 +61,7 @@
             {
                 throw new Exception("Created board ID is null or empty.");
             }            
-            var response = ApiMethods.PostRequestApiAsync(endpoints.emailEndpoint);
+            var response = ApiMethods.PostRequestApiAsync(endpoints.EmailEndpoint(ObjectProperties.BoardProperties.CreatedIdBoard));
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
         }
 

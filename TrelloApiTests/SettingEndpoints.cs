@@ -5,34 +5,32 @@
         //Main endpoint
         public static string mainEndpoint = "https://api.trello.com/1";        
         
-        //Boards endpoints        
-        //public string boardsEndpoint = $"{mainEndpoint}/boards";
+        //Boards endpoints                
         public string boardsEndpoint = "/boards/";
         public string boardIdEndpoint(string boardId) => $"/boards/{boardId}";
 
         //Labels endpoints
-        public string boardLabels = $"/labels/";
-        //public string boardLabelId = $"/labels/{ObjectProperties.LabelProperties.CreatedLabelId}";
-        public string boardLabelId(string labelId) => $"/labels/{labelId}";
+        public string labelsEndpoint = "/labels";        
+        public string LabelIdEndpoint(string labelId) => $"/labels/{labelId}";
 
         //Cards endpoints
-        public string cardsEndpoint = "/cards";
-        public string cardsIdEndpoint = $"/cards/{ObjectProperties.CardProperties.CreatedCardId}";
+        public string cardsEndpoint = "/cards";        
+        public string cardsIdEndpoint(string cardId) => $"/cards/{cardId}";
 
         //Lists endpoints
-        public string listsEndpoint = $"/lists/";
-        public string listIdEndpoint = $"/lists/{ObjectProperties.ListProperties.ListId}";
-        public string archiveAllcardsEndpoint = $"/lists/{ObjectProperties.ListProperties.ListId}/archiveAllCards";
+        public string listsEndpoint = $"/lists";
+        public string listIdEndpoint(string id) => $"/lists/{id}";
+        public string archiveAllcardsEndpoint(string id) => $"/lists/{id}/archiveAllCards";
 
         //Custom field endpoints
         public string customFieldEndpoint = $"/customFields/";
-        public string customFieldIdEndpoint = $"/customFields/{ObjectProperties.CustomFieldProperties.CustomFieldId}";
+        public string CustomFieldIdEndpoint(string id) => $"/customFields/{id}";
 
-        //Calendar endpoints
-        public string calendarEndpoint = $"/boards/{ObjectProperties.BoardProperties.CreatedIdBoard}/calendarKey/generate";
+        //Calendar endpoints        
+        public string CalendarEndpoint(string id) => $"/boards/{id}/calendarKey/generate";
 
         //Email endpoints
-        public string emailEndpoint = $"/boards/{ObjectProperties.BoardProperties.CreatedIdBoard}/emailKey/generate";
+        public string EmailEndpoint(string id) => $"/boards/{id}/emailKey/generate";
 
         //Tag endpoints
         public string tagEndopint = "/idTags";

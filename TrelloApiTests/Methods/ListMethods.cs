@@ -16,7 +16,7 @@
                 name = "Rest Api list",
                 idBoard = ObjectProperties.BoardProperties.CreatedIdBoard,
             };
-            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.listsEndpoint, listBody);
+            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.listIdEndpoint(ObjectProperties.ListProperties.ListId), listBody);
             var jsonResponse = JObject.Parse(response.Content);
             ObjectProperties.ListProperties.ListId = jsonResponse["id"].ToString();
 
@@ -57,7 +57,7 @@
             {
                 throw new Exception("Id list doesn't exist");
             }
-            var response = ApiMethods.GetRequestApiAsync(endpoints.listIdEndpoint);
+            var response = ApiMethods.GetRequestApiAsync(endpoints.listIdEndpoint(ObjectProperties.ListProperties.ListId));
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -68,7 +68,7 @@
                 throw new Exception("Id board doesn't exist");
             }
 
-            var request = new RestRequest($"{endpoints.archiveAllcardsEndpoint}", Method.Post);
+            var request = new RestRequest($"{endpoints.archiveAllcardsEndpoint(ObjectProperties.ListProperties.ListId)}", Method.Post);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
             var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
