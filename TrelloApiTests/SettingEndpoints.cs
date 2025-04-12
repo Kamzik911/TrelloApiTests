@@ -3,18 +3,18 @@
     public class SettingEndpoints
     {
         //Main endpoint
-        public static string mainEndpoint = "https://api.trello.com/1";        
-        
+        public static string mainEndpoint = "https://api.trello.com/1";
+
         //Boards endpoints                
         public string boardsEndpoint = "/boards/";
         public string boardIdEndpoint(string boardId) => $"/boards/{boardId}";
 
         //Labels endpoints
-        public string labelsEndpoint = "/labels";        
+        public string labelsEndpoint = "/labels";
         public string LabelIdEndpoint(string labelId) => $"/labels/{labelId}";
 
         //Cards endpoints
-        public string cardsEndpoint = "/cards";        
+        public string cardsEndpoint = "/cards";
         public string cardsIdEndpoint(string cardId) => $"/cards/{cardId}";
 
         //Lists endpoints
@@ -38,8 +38,12 @@
         //MarkedAsViewed endpoints                
         public string markedAsViewedEndpoint = $"/boards/{ObjectProperties.BoardProperties.CreatedIdBoard}/markedAsViewed";
 
-        //Member endopoints
-        public string memeberEndpoint = "/members";        
+        //Member endpoints
+        public string memeberEndpoint = "/members";
+
+        //Checklists endpoints
+        public string checklistEndpoint = "/checklists/";
+        public string ChecklistIdEndpoint(string id) => $"/checklists/{id}";
     }
 
     public class MainRestApiUrl

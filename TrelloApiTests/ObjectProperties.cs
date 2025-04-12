@@ -25,5 +25,9 @@
         {
             public static string? CustomFieldId { get; set; }
         }
+        public class ChecklistProperties
+        {
+            public static string? ChecklistId { get; set; }
+        }
     }        
 }

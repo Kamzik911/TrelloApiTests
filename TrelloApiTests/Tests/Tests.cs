@@ -8,6 +8,7 @@
         ListMethods listMethods = new ListMethods();
         CardMethods cardMethods = new CardMethods();
         CustomFieldsMethods customFields = new CustomFieldsMethods();
+        CheckListMethods checkListMethods = new CheckListMethods();
                 
         [TestMethod]            
         public void A1CreateBoard_ShouldPass()
@@ -87,7 +88,7 @@
         public void G31GetListId_ShouldPass()
         {
             listMethods.GetListId();
-        }
+        }        
 
         [TestMethod]
         public void G31UpdateListId_ShouldPass()
@@ -117,6 +118,18 @@
         public void G4DeleteCardId_ShouldPass()
         {
             cardMethods.DeleteCardId();
+        }
+
+        [TestMethod]
+        public void G42CreateChecklist_ShouldPass()
+        {
+            checkListMethods.CreateCheckList();
+        }
+
+        [TestMethod]
+        public void G43DeleteCheckList_ShouldPass()
+        {
+            checkListMethods.DeleteCheckList();
         }
 
         [TestMethod]

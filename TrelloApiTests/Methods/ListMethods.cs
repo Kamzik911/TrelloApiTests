@@ -19,7 +19,6 @@
             var response = ApiMethods.PostBodyRequestApiAsync(endpoints.listIdEndpoint(ObjectProperties.ListProperties.ListId), listBody);
             var jsonResponse = JObject.Parse(response.Content);
             ObjectProperties.ListProperties.ListId = jsonResponse["id"].ToString();
-
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.name, jsonResponse["name"]);                
             Assert.AreEqual(ObjectProperties.ListProperties.ListId, jsonResponse["id"]);
@@ -39,13 +38,11 @@
                 closed = false,                            
             };
 
-            var request = new RestRequest($"{endpoints.listIdEndpoint}", Method.Put).AddBody(listBody);            
+            var request = new RestRequest($"{endpoints.listIdEndpoint(ObjectProperties.ListProperties.ListId)}", Method.Put).AddBody(listBody);            
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
-            
+            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;            
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-
             var jsonResponse = JObject.Parse(response.Content);            
             Assert.AreEqual(false, jsonResponse["closed"]);
             Assert.AreEqual(JTokenType.Integer, jsonResponse["pos"]?.Type);
