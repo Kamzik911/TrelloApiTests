@@ -1,9 +1,14 @@
-﻿namespace TrelloApiTests
+﻿using Microsoft.Testing.Platform.Extensions.Messages;
+using System.Text.Json;
+
+namespace TrelloApiTests
 {
     public class Tokens
     {
-        //Authentication        
-        public string trelloKeyToken1 = "";
-        public string trelloKeyToken2 = "";
-    }
+        static string[] lines = File.ReadAllLines("Credentials.txt");
+        public static string trelloApiKey = lines[0];
+        public static string trelloApiToken = lines[1];
+        public static string memberId = lines[2];
+        public static string calendarKey = lines[3];        
+    }    
 }

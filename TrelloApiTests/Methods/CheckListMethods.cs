@@ -6,16 +6,23 @@
         string randomString = StringGenerator.GenerateString(15);
         public void CreateCheckList()
         {
-            var checklistBody = new
+            if (string.IsNullOrEmpty(ObjectProperties.BoardProperties.CreatedIdBoard))
             {
-                idCard = ObjectProperties.CardProperties.CreatedCardId,
-                name = randomString                
-            };
-            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.ChecklistIdEndpoint(ObjectProperties.ChecklistProperties.ChecklistId), checklistBody);
-            var jsonRensponse = JObject.Parse(response.Content);
-            ObjectProperties.ChecklistProperties.ChecklistId = jsonRensponse["id"].ToString();
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(checklistBody.name, jsonRensponse["name"]);
+                throw new Exception("Board ID doesn't exist");
+            }
+            else
+            {
+                var checklistBody = new
+                {
+                    idCard = ObjectProperties.CardProperties.CreatedCardId,
+                    name = randomString
+                };
+                var response = ApiMethods.PostBodyRequestApiAsync(endpoints.ChecklistIdEndpoint(ObjectProperties.ChecklistProperties.ChecklistId), checklistBody);
+                var jsonRensponse = JObject.Parse(response.Content);
+                ObjectProperties.ChecklistProperties.ChecklistId = jsonRensponse["id"].ToString();
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual(checklistBody.name, jsonRensponse["name"]);
+            }                
         }
 
         public void GetCheckList()

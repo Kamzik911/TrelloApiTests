@@ -39,7 +39,7 @@
         {
             var calendarKeyBody = new
             {
-                id = tokensForBoards.calendarKey
+                id = Tokens.calendarKey
             };        
             
             if (string.IsNullOrEmpty(ObjectProperties.BoardProperties.CreatedIdBoard))
