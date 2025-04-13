@@ -38,14 +38,12 @@
                 closed = false,                            
             };
 
-            var request = new RestRequest($"{endpoints.listIdEndpoint(ObjectProperties.ListProperties.ListId)}", Method.Put).AddBody(listBody);            
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;            
+            var response = ApiMethods.PutBodyRequestApiAsync(endpoints.listIdEndpoint(ObjectProperties.ListProperties.ListId), listBody);            
+            var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            var jsonResponse = JObject.Parse(response.Content);            
-            Assert.AreEqual(false, jsonResponse["closed"]);
-            Assert.AreEqual(JTokenType.Integer, jsonResponse["pos"]?.Type);
+            Assert.AreEqual(listBody.closed, jsonResponse["closed"]);
+            ApiMethods.NumberPatternCheck(response, "pos");
+            Console.WriteLine(jsonResponse.ToString());
         }        
 
         public void GetListId()

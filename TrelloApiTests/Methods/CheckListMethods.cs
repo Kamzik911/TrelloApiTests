@@ -18,6 +18,12 @@
             Assert.AreEqual(checklistBody.name, jsonRensponse["name"]);
         }
 
+        public void GetCheckList()
+        {
+            var response = ApiMethods.GetRequestApiAsync(ObjectProperties.ChecklistProperties.ChecklistId);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+
         public void DeleteCheckList() 
         {
             if (string.IsNullOrEmpty(ObjectProperties.ChecklistProperties.ChecklistId))
@@ -29,6 +35,6 @@
                 var response = ApiMethods.DeleteRequestApiAsync(endpoints.ChecklistIdEndpoint(ObjectProperties.ChecklistProperties.ChecklistId));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }                
-        }
+        }        
     }
 }
