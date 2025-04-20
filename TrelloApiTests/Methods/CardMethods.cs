@@ -13,15 +13,11 @@ namespace TrelloApiTests.Methods
             {
                 name = "RestApi tests",
                 idList = ObjectProperties.ListProperties.ListId
-            };
-            /*var request = new RestRequest($"{endpoints.cardsEndpoint}", Method.Post);
-            request.AddQueryParameter("idList", ObjectProperties.ListProperties.ListId);
-            request.AddQueryParameter("key", Tokens.trelloApiKey);
-            request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;*/
+            };            
             var response = ApiMethods.PostBodyRequestApiAsync(endpoints.cardsEndpoint, cardBody);
             var jsonResponse = JObject.Parse(response.Content);
             ObjectProperties.CardProperties.CreatedCardId = jsonResponse["id"].ToString();
+            ObjectsProperties.CardMainProperties.id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 

@@ -1,5 +1,5 @@
 ﻿namespace TrelloApiTests
-{   
+{
     public class ObjectProperties
     {
         public class BoardProperties
@@ -20,7 +20,7 @@
         public class CardProperties
         {
             public static string? CreatedCardId { get; set; }
-        }
+        }         
         public class CustomFieldProperties
         {
             public static string? CustomFieldId { get; set; }
@@ -28,6 +28,6 @@
         public class ChecklistProperties
         {
             public static string? ChecklistId { get; set; }
-        }
+        }  
     }        
 }

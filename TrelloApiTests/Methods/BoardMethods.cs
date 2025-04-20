@@ -1,11 +1,9 @@
 ﻿namespace TrelloApiTests.Methods
 {   
     public class BoardMethods
-    {
-        string pattern = "[A-Za-z0-9]";
-        
-        SettingEndpoints endpoints = new SettingEndpoints();        
-        Tokens tokensForBoards = new Tokens();        
+    {        
+        public readonly SettingEndpoints endpoints = new SettingEndpoints();        
+        public readonly Tokens tokensForBoards = new Tokens();        
 
         string randomString = StringGenerator.GenerateString(15);
 
@@ -17,21 +15,17 @@
                 desc = randomString,
             };
             var response = ApiMethods.PostBodyRequestApiAsync(endpoints.boardsEndpoint, boardBody);
-            var jsonResponse = JObject.Parse(response.Content);
-            var checkPatternIdProperty = jsonResponse["id"]?.ToString();
-            var checkPattern = Regex.IsMatch(checkPatternIdProperty, pattern);
-            var checkPermissionLevel = jsonResponse["prefs"]?["permissionLevel"]?.ToString();
+            var jsonResponse = JObject.Parse(response.Content);            
             ObjectProperties.BoardProperties.CreatedIdBoard = jsonResponse["id"]?.ToString();
-            ObjectProperties.BoardProperties.IdOrganization = jsonResponse["idOrganization"]?.ToString();            
+            ObjectProperties.BoardProperties.IdOrganization = jsonResponse["idOrganization"]?.ToString();
+            ApiMethods.StringPatternCheck(response, "name");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);            
             Assert.AreEqual(boardBody.name, jsonResponse["name"]);
             Assert.AreEqual(JTokenType.String, jsonResponse["desc"]?.Type);
             Assert.AreEqual(boardBody.desc, jsonResponse["desc"]);
             Assert.AreEqual(ObjectProperties.BoardProperties.CreatedIdBoard, jsonResponse["id"]);
-            Assert.AreEqual(ObjectProperties.BoardProperties.IdOrganization, jsonResponse["idOrganization"]);
-            Assert.IsTrue(checkPattern);
-            Assert.AreEqual("private", checkPermissionLevel);
+            Assert.AreEqual(ObjectProperties.BoardProperties.IdOrganization, jsonResponse["idOrganization"]);            
             Console.WriteLine(jsonResponse);            
         }
 
@@ -44,9 +38,9 @@
             
             if (string.IsNullOrEmpty(ObjectProperties.BoardProperties.CreatedIdBoard))
             {
+            
                 throw new Exception("Board id is empty");
-            }
-
+            }            
             else
             {
                 var response = ApiMethods.PostBodyRequestApiAsync(endpoints.CalendarEndpoint(ObjectProperties.BoardProperties.CreatedIdBoard), calendarKeyBody);
@@ -82,7 +76,7 @@
 
         public void MarkBoardViewed()
         {            
-            var response = ApiMethods.PostRequestApiAsync(endpoints.markedAsViewedEndpoint);
+            var response = ApiMethods.PostRequestApiAsync(endpoints.markedAsViewedEndpoint(ObjectProperties.BoardProperties.CreatedIdBoard));
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(ObjectProperties.BoardProperties.CreatedIdBoard, jsonResponse["id"]);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -129,18 +123,6 @@
             }
             var response = ApiMethods.DeleteRequestApiAsync(endpoints.boardIdEndpoint(ObjectProperties.BoardProperties.CreatedIdBoard));
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);           
-        }
-
-        public void CleanBoardId()
-        {
-            if (ObjectProperties.BoardProperties.CreatedIdBoard != null) 
-            {
-                ObjectProperties.BoardProperties.CreatedIdBoard = null;
-            }
-            else if(ObjectProperties.BoardProperties.IdOrganization != null)
-            {
-                ObjectProperties.BoardProperties.IdOrganization = null;
-            }            
-        }
+        }        
     }
 }

@@ -8,28 +8,28 @@
         ListMethods listMethods = new ListMethods();
         CardMethods cardMethods = new CardMethods();
         CustomFieldsMethods customFields = new CustomFieldsMethods();
-        CheckListMethods checkListMethods = new CheckListMethods();
-                
+        CheckListMethods checkListMethods = new CheckListMethods();        
+
         [TestMethod]            
-        public void A1CreateBoard_ShouldPass()
+        public void A100_CreateBoard_ShouldPass()
         {
             boardMethods.CreateBoard();
         }
 
         [TestMethod]
-        public void A2GetBoard_ShouldPass()
+        public void A101_GetBoard_ShouldPass()
         {
             boardMethods.GetBoard();
         }
 
         [TestMethod]
-        public void BCreateACalendarKeyForABoard_ShouldPass()
+        public void A102_CreateACalendarKeyForABoard_ShouldPass()
         {
             boardMethods.CreateACalendarKeyForABoard();
         }
 
         [TestMethod]
-        public void DCreateEmailKeyForABoard_ShouldPass()
+        public void A103_DCreateEmailKeyForABoard_ShouldPass()
         {
             boardMethods.CreateEmailKeyForABoard();
         }
@@ -51,13 +51,13 @@
         [DataRow("sky")]
         [DataRow("pink")]
         [DataRow("lime")]
-        public void FCreateLabelOnBoard_ShouldPass(string color)
+        public void A200_CreateLabelOnBoard_ShouldPass(string color)
         {
             labelMethods.CreateLabelOnBoard(color);
         }
 
         [TestMethod]
-        public void G1GetCreatedLabel_ShouldPass()
+        public void A201_GetLabelOnBoard_ShouldPass()
         {
             labelMethods.GetCreatedLabel();
         }
@@ -73,73 +73,93 @@
         [DataRow("sky")]
         [DataRow("pink")]
         [DataRow("lime")]
-        public void G2UpdateCreatedLabel_ShouldPass(string color)
+        public void A202_UpdateCreatedLabel_ShouldPass(string color)
         {
             labelMethods.UpdateCreatedLabel(color);
         }
 
         [TestMethod]
-        public void G31CreateList_ShouldPass()
+        public void A300_CreateList_ShouldPass()
         {
             listMethods.CreateList();
         }
 
         [TestMethod]
-        public void G31GetListId_ShouldPass()
+        public void A301_GetListId_ShouldPass()
         {
             listMethods.GetListId();
-        }        
+        }
 
         [TestMethod]
-        public void G31UpdateListId_ShouldPass()
+        public void A302_GetActionsForList_ShouldPass()
+        {
+            listMethods.GetActionsForList();
+        }
+
+        [TestMethod]
+        public void A402_GetCardInList_ShouldPass()
+        {
+            listMethods.GetCardInList();
+        }
+
+        [TestMethod]
+        public void A304_UpdateListId_ShouldPass()
         {
             listMethods.UpdateListId();
         }
 
-        [TestMethod]
-        public void G3ArchiveAllCardsInList()
+        [DataTestMethod]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void A305_ArchiveUnarchiveList_ShouldPass(bool value)
         {
-            listMethods.ArchiveAllCardsInList();
+            listMethods.ArchiveUnarchiveList(value);
         }
 
         [TestMethod]
-        public void G41CreateNewCard_ShouldPass()
+        public void A400_CreateNewCard_ShouldPass()
         {
             cardMethods.CreateNewCard();
         }
 
         [TestMethod]
-        public void G42GetCardId_ShouldPass()
+        public void A401_GetCardId_ShouldPass()
         {
             cardMethods.GetCardId();
         }
 
         [TestMethod]
-        public void G4DeleteCardId_ShouldPass()
+        public void A403_ArchiveAllCardsInList()
+        {
+            listMethods.ArchiveAllCardsInList();
+        }
+
+        [TestMethod]
+        public void A902_DeleteCardId_ShouldPass()
         {
             cardMethods.DeleteCardId();
         }
 
         [TestMethod]
-        public void G42CreateChecklist_ShouldPass()
+        public void A500_CreateChecklist_ShouldPass()
         {
             checkListMethods.CreateCheckList();
         }
 
         [TestMethod]
-        public void G43DeleteCheckList_ShouldPass()
+        public void A901_DeleteCheckList_ShouldPass()
         {
             checkListMethods.DeleteCheckList();
         }
 
         [TestMethod]
-        public void XDeleteLabel_ShouldPass()
+        public void A903_DeleteLabel_ShouldPass()
         {
             labelMethods.DeleteLabel();
         }
 
         [TestMethod]
-        public void AUpdateBoard_ShouldPass()
+        public void A104_UpdateBoard_ShouldPass()
         {
            boardMethods.UpdateBoard();
         }
@@ -151,15 +171,15 @@
         }
 
         [TestMethod]
-        public void YDeleteBoard_ShouldPass()
+        public void A904_DeleteBoard_ShouldPass()
         {
             boardMethods.DeleteBoard();
-        }       
+        }
 
         [TestMethod]
-        public void ZCleanBoardId1()
+        public void A999_CleanAllIdsAfterTests()
         {
-            boardMethods.CleanBoardId();
+            ApiMethods.CleanUpIds.CleanAllIds();
         }
     }
 }

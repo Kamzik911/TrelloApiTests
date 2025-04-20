@@ -1,7 +1,4 @@
-﻿using Microsoft.Testing.Platform.Extensions.Messages;
-using System.Text.Json;
-
-namespace TrelloApiTests
+﻿namespace TrelloApiTests
 {
     public class Tokens
     {
@@ -9,6 +6,6 @@ namespace TrelloApiTests
         public static string trelloApiKey = lines[0];
         public static string trelloApiToken = lines[1];
         public static string memberId = lines[2];
-        public static string calendarKey = lines[3];        
+        public static string calendarKey = lines[3];
     }    
 }

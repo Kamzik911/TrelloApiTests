@@ -1,5 +1,5 @@
 ﻿namespace TrelloApiTests.Methods
-{
+{    
     public class ApiMethods()
     {    
         static string stringPattern = "[A-Za-z0-9]";
@@ -64,5 +64,23 @@
             var checkPatternIdProperty = jsonResponse[property].ToString();
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, alphabetPattern);
         }
+        public class CleanUpIds
+        {
+            public static void CleanAllIds()
+            {
+                if (ObjectProperties.BoardProperties.CreatedIdBoard != null)
+                {
+                    ObjectProperties.BoardProperties.CreatedIdBoard = null;
+                }
+                else if (ObjectProperties.BoardProperties.IdOrganization != null)
+                {
+                    ObjectProperties.BoardProperties.IdOrganization = null;
+                }
+                else if (ObjectProperties.BoardProperties.IdOrganization != null)
+                {
+                    ObjectProperties.BoardProperties.IdOrganization = null;
+                }
+            }
+        }        
     }
 }
