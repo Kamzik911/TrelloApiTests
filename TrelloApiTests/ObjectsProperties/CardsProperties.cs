@@ -1,8 +1,6 @@
-﻿using Microsoft.VisualStudio.TestPlatform.Utilities;
-
-namespace TrelloApiTests.ObjectsProperties
+﻿namespace TrelloApiTests.ObjectsProperties
 {
-    public class CardMainProperties
+    public class CardProperties
     {
         public static string id { get; set; }
         public string address { get; set; }
