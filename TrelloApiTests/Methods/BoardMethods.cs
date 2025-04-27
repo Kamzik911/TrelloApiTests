@@ -1,4 +1,5 @@
 ﻿using TrelloApiTests.ObjectsProperties;
+
 namespace TrelloApiTests.Methods
 {   
     public class BoardMethods
@@ -10,7 +11,7 @@ namespace TrelloApiTests.Methods
 
         public void CreateBoard()
         {                                 
-            var boardBody = new ObjectProperties.BoardProperties
+            var boardBody = new
             {
                 name = randomString,
                 desc = randomString,

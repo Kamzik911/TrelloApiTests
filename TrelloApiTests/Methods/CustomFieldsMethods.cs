@@ -1,18 +1,16 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using TrelloApiTests.ObjectsProperties;
 
 namespace TrelloApiTests.Methods
 {
     class CustomFieldsMethods
-    {
-        RestClient client = new RestClient();
+    {        
         SettingEndpoints endpoints = new SettingEndpoints();        
      
         public void CreateCustomFieldOnBoard()
         {
             var customFieldBody = new
             {
-                idModel = ObjectProperties.BoardProperties.CreatedIdBoard,
+                idModel = BoardProperties.id,
                 modelType = "board",
                 name = "New custom field",
                 type = "checkbox", //Valid values: checkbox, list, number, text, date 
@@ -21,7 +19,7 @@ namespace TrelloApiTests.Methods
             var response = ApiMethods.PostRequestApiAsync(endpoints.customFieldEndpoint);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var jsonResponse = JObject.Parse(response.Content);
-            ObjectProperties.CustomFieldProperties.CustomFieldId = jsonResponse["id"].ToString();
+            CustomFieldProperties.id = jsonResponse["id"].ToString();
             Console.WriteLine($"Response Content: {response.Content.ToString()}");
                         
         }

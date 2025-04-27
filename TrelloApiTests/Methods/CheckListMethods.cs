@@ -20,11 +20,12 @@ namespace TrelloApiTests.Methods
                     idCard = CardProperties.id,
                     name = randomString
                 };
-                var response = ApiMethods.PostBodyRequestApiAsync(endpoints.ChecklistIdEndpoint(ChecklistProperties.id), checklistBody);
+                var response = ApiMethods.PostBodyRequestApiAsync(SettingEndpoints.checklistEndpoint, checklistBody);
                 var jsonRensponse = JObject.Parse(response.Content);
                 ChecklistProperties.id = jsonRensponse["id"].ToString();
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(checklistBody.name, jsonRensponse["name"]);
+                Assert.IsNotNull(ChecklistProperties.id);                
             }                
         }
 
@@ -33,7 +34,7 @@ namespace TrelloApiTests.Methods
             if (string.IsNullOrEmpty(BoardProperties.id)) 
             {
                 var response = ApiMethods.GetRequestApiAsync(ChecklistProperties.id);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
             }            
         }
 

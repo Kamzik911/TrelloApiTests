@@ -1,4 +1,6 @@
-﻿namespace TrelloApiTests.Methods
+﻿using TrelloApiTests.ObjectsProperties;
+
+namespace TrelloApiTests.Methods
 {    
     public class ApiMethods()
     {    
@@ -64,21 +66,29 @@
             var checkPatternIdProperty = jsonResponse[property].ToString();
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, alphabetPattern);
         }
-        public class CleanUpIds
+        public class CleanupIds
         {
-            public static void CleanAllIds()
+            public static void CleanIds()
             {
-                if (ObjectProperties.BoardProperties.CreatedIdBoard != null)
+                if (BoardProperties.id != null)
                 {
-                    ObjectProperties.BoardProperties.CreatedIdBoard = null;
+                    BoardProperties.id = null;
                 }
-                else if (ObjectProperties.BoardProperties.IdOrganization != null)
+                else if (BoardProperties.idOrganization != null)
                 {
-                    ObjectProperties.BoardProperties.IdOrganization = null;
+                    BoardProperties.idOrganization = null;
                 }
-                else if (ObjectProperties.BoardProperties.IdOrganization != null)
+                else if (CardProperties.id != null)
                 {
-                    ObjectProperties.BoardProperties.IdOrganization = null;
+                    CardProperties.id = null;
+                }
+                else if (LabelProperties.id != null)
+                {
+                    LabelProperties.id = null;
+                }
+                else if (ListProperties.id != null)
+                {
+                    ListProperties.id = null;
                 }
             }
         }        

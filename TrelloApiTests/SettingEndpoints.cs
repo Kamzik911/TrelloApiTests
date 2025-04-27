@@ -42,11 +42,12 @@
         public string markedAsViewedEndpoint(string id) => $"{boardsEndpoint}/{id}/markedAsViewed";
 
         //Member endpoints
-        public string memeberEndpoint = "/members";
+        public static string memberEndpoint = "/members";
+        public string memberIdEndpoint(string id) => $"{memberEndpoint}/{id}";
 
         //Checklists endpoints
-        public string checklistEndpoint = "/checklists/";
-        public string ChecklistIdEndpoint(string id) => $"/checklists/{id}";
+        public static string checklistEndpoint = "/checklists";
+        public string ChecklistIdEndpoint(string id) => $"{checklistEndpoint}/{id}";
     }
 
     public class MainRestApiUrl

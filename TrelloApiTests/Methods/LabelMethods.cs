@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using TrelloApiTests.ObjectsProperties;
 
 namespace TrelloApiTests.Methods
 {
@@ -8,7 +8,7 @@ namespace TrelloApiTests.Methods
         
         public void CreateLabelOnBoard(string color)
         {
-            if (string.IsNullOrEmpty(ObjectsProperties.BoardProperties.id))
+            if (string.IsNullOrEmpty(BoardProperties.id))
             {
                 throw new Exception("Board ID doens't exist.");
             }
@@ -18,13 +18,13 @@ namespace TrelloApiTests.Methods
                 {
                     name = "New rest api label",
                     color = color,
-                    idBoard = ObjectsProperties.BoardProperties.id,                    
+                    idBoard = BoardProperties.id,                    
                 };
 
                 var response = ApiMethods.PostBodyRequestApiAsync(endpoints.labelsEndpoint, labelBody); ;
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 var jsonResponse = JObject.Parse(response.Content);
-                ObjectsProperties.LabelProperties.id = jsonResponse["id"].ToString();                
+                LabelProperties.id = jsonResponse["id"].ToString();                
                 Assert.AreEqual(labelBody.name, jsonResponse["name"]);
                 Assert.AreEqual(labelBody.color, jsonResponse["color"]);  
                 Console.WriteLine(jsonResponse.ToString());
@@ -33,22 +33,22 @@ namespace TrelloApiTests.Methods
 
         public void GetCreatedLabel()
         {
-            if (string.IsNullOrEmpty(ObjectsProperties.BoardProperties.id))
+            if (string.IsNullOrEmpty(BoardProperties.id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
 
-            var response = ApiMethods.GetRequestApiAsync(endpoints.LabelIdEndpoint(ObjectsProperties.LabelProperties.id));            
+            var response = ApiMethods.GetRequestApiAsync(endpoints.LabelIdEndpoint(LabelProperties.id));            
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
         }
 
         public void UpdateCreatedLabel(string color)
         {
-            if (string.IsNullOrEmpty(ObjectsProperties.BoardProperties.id))
+            if (string.IsNullOrEmpty(BoardProperties.id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
-            else if(string.IsNullOrEmpty(ObjectsProperties.LabelProperties.id))
+            else if(string.IsNullOrEmpty(LabelProperties.id))
             {
                 throw new Exception("Created label ID is null or empty");
             }
@@ -60,7 +60,7 @@ namespace TrelloApiTests.Methods
                     color = $"{color}"
                 };
 
-                var request = new RestRequest($"{endpoints.LabelIdEndpoint(ObjectsProperties.LabelProperties.id)}", Method.Put).AddBody(labelBody);
+                var request = new RestRequest($"{endpoints.LabelIdEndpoint(LabelProperties.id)}", Method.Put).AddBody(labelBody);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
                 var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
@@ -72,17 +72,17 @@ namespace TrelloApiTests.Methods
 
         public void DeleteLabel()
         {
-            if (string.IsNullOrEmpty(ObjectsProperties.BoardProperties.id))
+            if (string.IsNullOrEmpty(BoardProperties.id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
-            else if (string.IsNullOrEmpty(ObjectsProperties.LabelProperties.id))
+            else if (string.IsNullOrEmpty(LabelProperties.id))
             {
                 throw new Exception("Created label ID is null or empty");
             }
             else
             {
-                var request = new RestRequest($"{endpoints.LabelIdEndpoint(ObjectsProperties.LabelProperties.id)}", Method.Delete);
+                var request = new RestRequest($"{endpoints.LabelIdEndpoint(LabelProperties.id)}", Method.Delete);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
                 var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;

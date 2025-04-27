@@ -1,37 +1,62 @@
 ﻿namespace TrelloApiTests.Boards
 {
     [TestClass]
-    public class Tests
+    public class MemberTests
     {
-        BoardMethods boardMethods = new BoardMethods();
-        LabelMethods labelMethods = new LabelMethods();
-        ListMethods listMethods = new ListMethods();
-        CardMethods cardMethods = new CardMethods();
-        CustomFieldsMethods customFields = new CustomFieldsMethods();
-        CheckListMethods checkListMethods = new CheckListMethods();        
+        MembersMethods members = new MembersMethods();
 
-        [TestMethod]            
+        [TestMethod]
+        public void M101_UpdateMember_ShouldPass()
+        {
+            members.UpdateMember();
+        }
+
+        [TestMethod]
+        public void M100_GetMemberId_ShouldPass()
+        {
+            members.GetMemberId();
+        }
+    }
+
+    [TestClass]
+    public class BoardTests
+    {
+        BoardMethods boards = new BoardMethods();
+        LabelMethods labels = new LabelMethods();
+        ListMethods lists = new ListMethods();
+        CardMethods cards = new CardMethods();
+        CustomFieldsMethods customFields = new CustomFieldsMethods();
+        CheckListMethods checkLists= new CheckListMethods();
+        MembersMethods members = new MembersMethods();
+                
+        [TestMethod]
         public void A100_CreateBoard_ShouldPass()
         {
-            boardMethods.CreateBoard();
+            boards.CreateBoard();
         }
 
         [TestMethod]
         public void A101_GetBoard_ShouldPass()
         {
-            boardMethods.GetBoard();
-        }
+            boards.GetBoard();
+        }                
 
         [TestMethod]
         public void A102_CreateACalendarKeyForABoard_ShouldPass()
         {
-            boardMethods.CreateACalendarKeyForABoard();
+            boards.CreateACalendarKeyForABoard();
         }
 
         [TestMethod]
         public void A103_DCreateEmailKeyForABoard_ShouldPass()
         {
-            boardMethods.CreateEmailKeyForABoard();
+            boards.CreateEmailKeyForABoard();
+        }
+
+        [TestMethod]
+        public void A104_UpdateBoard_ShouldPass()
+        {
+            boards.UpdateBoard();
         }
 
         //[TestMethod] //Test for Power-Up
@@ -53,13 +78,13 @@
         [DataRow("lime")]
         public void A200_CreateLabelOnBoard_ShouldPass(string color)
         {
-            labelMethods.CreateLabelOnBoard(color);
+            labels.CreateLabelOnBoard(color);
         }
 
         [TestMethod]
         public void A201_GetLabelOnBoard_ShouldPass()
         {
-            labelMethods.GetCreatedLabel();
+            labels.GetCreatedLabel();
         }
 
         [DataTestMethod]
@@ -75,37 +100,31 @@
         [DataRow("lime")]
         public void A202_UpdateCreatedLabel_ShouldPass(string color)
         {
-            labelMethods.UpdateCreatedLabel(color);
+            labels.UpdateCreatedLabel(color);
         }
 
         [TestMethod]
         public void A300_CreateList_ShouldPass()
         {
-            listMethods.CreateList();
+            lists.CreateList();
         }
 
         [TestMethod]
         public void A301_GetListId_ShouldPass()
         {
-            listMethods.GetListId();
+            lists.GetListId();
         }
 
         [TestMethod]
         public void A302_GetActionsForList_ShouldPass()
         {
-            listMethods.GetActionsForList();
-        }
-
-        [TestMethod]
-        public void A402_GetCardInList_ShouldPass()
-        {
-            listMethods.GetCardInList();
-        }
+            lists.GetActionsForList();
+        }        
 
         [TestMethod]
         public void A304_UpdateListId_ShouldPass()
         {
-            listMethods.UpdateListId();
+            lists.UpdateListId();
         }
 
         [DataTestMethod]
@@ -113,73 +132,79 @@
         [DataRow(false)]
         public void A305_ArchiveUnarchiveList_ShouldPass(bool value)
         {
-            listMethods.ArchiveUnarchiveList(value);
+            lists.ArchiveUnarchiveList(value);
         }
 
         [TestMethod]
         public void A400_CreateNewCard_ShouldPass()
         {
-            cardMethods.CreateNewCard();
+            cards.CreateNewCard();
         }
 
         [TestMethod]
         public void A401_GetCardId_ShouldPass()
         {
-            cardMethods.GetCardId();
+            cards.GetCardId();
+        }
+
+        [TestMethod]
+        public void A402_GetCardInList_ShouldPass()
+        {
+            lists.GetCardInList();
         }
 
         [TestMethod]
         public void A403_ArchiveAllCardsInList()
         {
-            listMethods.ArchiveAllCardsInList();
+            lists.ArchiveAllCardsInList();
+        }
+        
+        [TestMethod]
+        public void A500_CreateChecklist_ShouldPass()
+        {
+            checkLists.CreateCheckList();
+        }
+
+        [TestMethod]
+        public void A501_GetCheckList_ShouldPass()
+        {
+            checkLists.GetCheckList();
+        }       
+
+        [TestMethod]
+        public void A901_DeleteCheckList_ShouldPass()
+        {
+            checkLists.DeleteCheckList();
         }
 
         [TestMethod]
         public void A902_DeleteCardId_ShouldPass()
         {
-            cardMethods.DeleteCardId();
-        }
-
-        [TestMethod]
-        public void A500_CreateChecklist_ShouldPass()
-        {
-            checkListMethods.CreateCheckList();
-        }
-
-        [TestMethod]
-        public void A901_DeleteCheckList_ShouldPass()
-        {
-            checkListMethods.DeleteCheckList();
+            cards.DeleteCardId();
         }
 
         [TestMethod]
         public void A903_DeleteLabel_ShouldPass()
         {
-            labelMethods.DeleteLabel();
-        }
-
-        [TestMethod]
-        public void A104_UpdateBoard_ShouldPass()
-        {
-           boardMethods.UpdateBoard();
-        }
+            labels.DeleteLabel();
+        }       
 
         //[TestMethod]
         public void HMarkBoardAsViewed_ShouldPass()
         {
-            boardMethods.MarkBoardAsViewed();
+            boards.MarkBoardAsViewed();
         }
 
         [TestMethod]
         public void A904_DeleteBoard_ShouldPass()
         {
-            boardMethods.DeleteBoard();
+            boards.DeleteBoard();
         }
 
         [TestMethod]
         public void A999_CleanAllIdsAfterTests()
         {
-            ApiMethods.CleanUpIds.CleanAllIds();
+            ApiMethods.CleanupIds.CleanIds();
         }
     }
 }

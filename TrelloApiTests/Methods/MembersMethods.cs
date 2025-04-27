@@ -1,25 +1,35 @@
-﻿namespace TrelloApiTests.Methods
+﻿using TrelloApiTests.ObjectsProperties;
+
+namespace TrelloApiTests.Methods
 {
-    class MembersMethods
+    public class MembersMethods
     {
         SettingEndpoints endpoints = new SettingEndpoints();
-        RestClient client = new RestClient();
-        Tokens tokens = new Tokens();        
-
+        
         public void GetMemberId()
         {
-            var request = new RestRequest($"{endpoints.cardsEndpoint}{endpoints.memeberEndpoint}/{Tokens.memberId}", Method.Get);
-            var response = client.Execute(request);
+            var response = ApiMethods.GetRequestApiAsync(endpoints.memberIdEndpoint(Tokens.memberId));
+            var jsonResponse = JObject.Parse(response.Content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            MembersProperties.id = jsonResponse["id"].ToString();
+            Assert.IsNotNull(MembersProperties.id);
+        }
 
-            if (HttpStatusCode.OK == response.StatusCode)
+        public void UpdateMember() 
+        {
+            if (string.IsNullOrEmpty(MembersProperties.id))
             {
-                Console.WriteLine(response.Content);
+                throw new Exception("Member id doesn't exist");
             }
 
-            else if (HttpStatusCode.OK != response.StatusCode)
+            var memberBody = new
             {
-                throw new Exception(response.StatusCode.ToString());
-            }
+                id = Tokens.memberId
+            };
+            var response = ApiMethods.PutBodyRequestApiAsync(endpoints.memberIdEndpoint(MembersProperties.id), memberBody);
+            var jsonResponse = JObject.Parse(response.Content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Console.WriteLine(jsonResponse.ToString());
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using Microsoft.Testing.Platform.Extensions.Messages;
-using System.Data.Common;
-
-namespace TrelloApiTests.ObjectsProperties
+﻿namespace TrelloApiTests.ObjectsProperties
 {
     public class BoardProperties
     {
