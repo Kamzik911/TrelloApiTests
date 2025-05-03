@@ -1,7 +1,7 @@
 ﻿using TrelloApiTests.ObjectsProperties;
 namespace TrelloApiTests.Methods
 {
-    internal class ListMethods
+    internal class ListMethods : ListProperties
     {
         SettingEndpoints endpoints = new SettingEndpoints();                
         
@@ -17,18 +17,18 @@ namespace TrelloApiTests.Methods
                 name = "Rest Api list",
                 idBoard = BoardProperties.id,
             };
-            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.listIdEndpoint(ListProperties.id), listBody);
+            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.listIdEndpoint(id), listBody);
             var jsonResponse = JObject.Parse(response.Content);
-            ListProperties.id = jsonResponse["id"].ToString();
+            id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.name, jsonResponse["name"]);                
-            Assert.AreEqual(ListProperties.id, jsonResponse["id"]);
+            Assert.AreEqual(id, jsonResponse["id"]);
             Console.WriteLine(jsonResponse.ToString());
         }
 
         public void UpdateListId()
         {
-            if (string.IsNullOrEmpty(ListProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Id board doesn't exist");
             }
@@ -39,7 +39,7 @@ namespace TrelloApiTests.Methods
                 closed = false,                            
             };
 
-            var response = ApiMethods.PutBodyRequestApiAsync(endpoints.listIdEndpoint(ListProperties.id), listBody);            
+            var response = ApiMethods.PutBodyRequestApiAsync(endpoints.listIdEndpoint(id), listBody);            
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.closed, jsonResponse["closed"]);
@@ -49,17 +49,17 @@ namespace TrelloApiTests.Methods
 
         public void GetListId()
         {         
-            if (string.IsNullOrEmpty(ListProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Id list doesn't exist");
             }
-            var response = ApiMethods.GetRequestApiAsync(endpoints.listIdEndpoint(  ListProperties.id));
+            var response = ApiMethods.GetRequestApiAsync(endpoints.listIdEndpoint(id));
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public void ArchiveUnarchiveList(bool value)
         {            
-            if (string.IsNullOrEmpty(ListProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Id list doesn't exist");
             }
@@ -67,10 +67,10 @@ namespace TrelloApiTests.Methods
             {
                 var listBody = new
                 {
-                    id = ListProperties.id,
+                    id = id,
                     closed = value
                 };
-                var response = ApiMethods.PutBodyRequestApiAsync(endpoints.listIdEndpoint(ListProperties.id), listBody);
+                var response = ApiMethods.PutBodyRequestApiAsync(endpoints.listIdEndpoint(id), listBody);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(listBody.closed, (bool)jsonResponse["closed"]);
@@ -79,13 +79,13 @@ namespace TrelloApiTests.Methods
 
         public void GetActionsForList()
         {
-            if (string.IsNullOrEmpty(ListProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Id list doesn't exist");
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(endpoints.getBoardListIsOn(ListProperties.id));
+                var response = ApiMethods.GetRequestApiAsync(endpoints.getBoardListIsOn(id));
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
             }                
@@ -93,7 +93,7 @@ namespace TrelloApiTests.Methods
 
         public void GetCardInList()
         {
-            if (string.IsNullOrEmpty(ListProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Id list doesn't exist");
             }
@@ -103,7 +103,7 @@ namespace TrelloApiTests.Methods
             }
             else
             {
-                var request = new RestRequest($"{endpoints.getCardsListIsOn(ListProperties.id)}", Method.Get);
+                var request = new RestRequest($"{endpoints.getCardsListIsOn(id)}", Method.Get);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
                 var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
@@ -119,13 +119,13 @@ namespace TrelloApiTests.Methods
 
         public void ArchiveAllCardsInList()
         {
-            if (string.IsNullOrEmpty(ListProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Id board doesn't exist");
             }
             else
             {
-                var response = ApiMethods.PostRequestApiAsync(endpoints.archiveAllcardsEndpoint(ListProperties.id));
+                var response = ApiMethods.PostRequestApiAsync(endpoints.archiveAllcardsEndpoint(id));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }                
         }        

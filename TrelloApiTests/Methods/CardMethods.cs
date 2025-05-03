@@ -2,10 +2,9 @@
 
 namespace TrelloApiTests.Methods
 {
-    public class CardMethods
+    public class CardMethods : CardProperties
     {        
-        SettingEndpoints endpoints = new SettingEndpoints();
-        Tokens tokens = new Tokens();
+        SettingEndpoints endpoints = new SettingEndpoints();        
         
         public void CreateNewCard()
         {
@@ -16,32 +15,32 @@ namespace TrelloApiTests.Methods
             };            
             var response = ApiMethods.PostBodyRequestApiAsync(endpoints.cardsEndpoint, cardBody);
             var jsonResponse = JObject.Parse(response.Content);            
-            CardProperties.id = jsonResponse["id"].ToString();
+            id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public void GetCardId()
         {
-            if (string.IsNullOrEmpty(CardProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Card id doesn't exist");
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(endpoints.cardsIdEndpoint(CardProperties.id));
+                var response = ApiMethods.GetRequestApiAsync(endpoints.cardsIdEndpoint(id));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
 
         public void DeleteCardId()
         {
-            if (string.IsNullOrEmpty(CardProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Card id doesn't exist");
             }
             else
             {
-                var request = new RestRequest($"{endpoints.cardsIdEndpoint(CardProperties.id)}", Method.Delete);
+                var request = new RestRequest($"{endpoints.cardsIdEndpoint(id)}", Method.Delete);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
                 var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;

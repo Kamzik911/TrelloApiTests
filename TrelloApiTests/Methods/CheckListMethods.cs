@@ -2,7 +2,7 @@
 
 namespace TrelloApiTests.Methods
 {
-    class CheckListMethods
+    class CheckListMethods : ChecklistProperties
     {
         SettingEndpoints endpoints = new SettingEndpoints();
         string randomString = StringGenerator.GenerateString(15);
@@ -22,31 +22,31 @@ namespace TrelloApiTests.Methods
                 };
                 var response = ApiMethods.PostBodyRequestApiAsync(SettingEndpoints.checklistEndpoint, checklistBody);
                 var jsonRensponse = JObject.Parse(response.Content);
-                ChecklistProperties.id = jsonRensponse["id"].ToString();
+                id = jsonRensponse["id"].ToString();
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(checklistBody.name, jsonRensponse["name"]);
-                Assert.IsNotNull(ChecklistProperties.id);                
+                Assert.IsNotNull(id);                
             }                
         }
 
         public void GetCheckList()
         {
-            if (string.IsNullOrEmpty(BoardProperties.id)) 
+            if (string.IsNullOrEmpty(id)) 
             {
-                var response = ApiMethods.GetRequestApiAsync(ChecklistProperties.id);
+                var response = ApiMethods.GetRequestApiAsync(id);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
             }            
         }
 
         public void DeleteCheckList() 
         {
-            if (string.IsNullOrEmpty(ChecklistProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Checklist id donesn't exist");
             }
             else
             {
-                var response = ApiMethods.DeleteRequestApiAsync(endpoints.ChecklistIdEndpoint(ChecklistProperties.id));
+                var response = ApiMethods.DeleteRequestApiAsync(endpoints.ChecklistIdEndpoint(id));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }                
         }        

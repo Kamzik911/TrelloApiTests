@@ -2,7 +2,7 @@
 
 namespace TrelloApiTests.Methods
 {
-    public class LabelMethods
+    public class LabelMethods : LabelProperties
     {        
         SettingEndpoints endpoints = new SettingEndpoints();
         
@@ -24,7 +24,7 @@ namespace TrelloApiTests.Methods
                 var response = ApiMethods.PostBodyRequestApiAsync(endpoints.labelsEndpoint, labelBody); ;
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 var jsonResponse = JObject.Parse(response.Content);
-                LabelProperties.id = jsonResponse["id"].ToString();                
+                id = jsonResponse["id"].ToString();                
                 Assert.AreEqual(labelBody.name, jsonResponse["name"]);
                 Assert.AreEqual(labelBody.color, jsonResponse["color"]);  
                 Console.WriteLine(jsonResponse.ToString());
@@ -38,17 +38,17 @@ namespace TrelloApiTests.Methods
                 throw new Exception("Created board ID is null or empty");
             }
 
-            var response = ApiMethods.GetRequestApiAsync(endpoints.LabelIdEndpoint(LabelProperties.id));            
+            var response = ApiMethods.GetRequestApiAsync(endpoints.LabelIdEndpoint(id));            
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
         }
 
         public void UpdateCreatedLabel(string color)
         {
-            if (string.IsNullOrEmpty(BoardProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
-            else if(string.IsNullOrEmpty(LabelProperties.id))
+            else if(string.IsNullOrEmpty(id))
             {
                 throw new Exception("Created label ID is null or empty");
             }
@@ -60,7 +60,7 @@ namespace TrelloApiTests.Methods
                     color = $"{color}"
                 };
 
-                var request = new RestRequest($"{endpoints.LabelIdEndpoint(LabelProperties.id)}", Method.Put).AddBody(labelBody);
+                var request = new RestRequest($"{endpoints.LabelIdEndpoint(id)}", Method.Put).AddBody(labelBody);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
                 var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
@@ -72,20 +72,17 @@ namespace TrelloApiTests.Methods
 
         public void DeleteLabel()
         {
-            if (string.IsNullOrEmpty(BoardProperties.id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
-            else if (string.IsNullOrEmpty(LabelProperties.id))
+            else if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Created label ID is null or empty");
             }
             else
-            {
-                var request = new RestRequest($"{endpoints.LabelIdEndpoint(LabelProperties.id)}", Method.Delete);
-                request.AddQueryParameter("key", Tokens.trelloApiKey);
-                request.AddQueryParameter("token", Tokens.trelloApiToken);
-                var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+            {                
+                var response = ApiMethods.DeleteRequestApiAsync(endpoints.LabelIdEndpoint(id));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
 

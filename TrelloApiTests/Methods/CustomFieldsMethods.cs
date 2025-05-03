@@ -2,7 +2,7 @@
 
 namespace TrelloApiTests.Methods
 {
-    class CustomFieldsMethods
+    class CustomFieldsMethods : CustomFieldProperties
     {        
         SettingEndpoints endpoints = new SettingEndpoints();        
      
@@ -19,7 +19,7 @@ namespace TrelloApiTests.Methods
             var response = ApiMethods.PostRequestApiAsync(endpoints.customFieldEndpoint);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var jsonResponse = JObject.Parse(response.Content);
-            CustomFieldProperties.id = jsonResponse["id"].ToString();
+            id = jsonResponse["id"].ToString();
             Console.WriteLine($"Response Content: {response.Content.ToString()}");
                         
         }
