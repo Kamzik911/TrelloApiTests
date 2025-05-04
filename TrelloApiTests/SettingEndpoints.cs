@@ -18,7 +18,7 @@
         public string cardsIdEndpoint(string cardId) => $"{cardsEndpoint}/{cardId}";
 
         //Lists endpoints
-        public string listsEndpoint = $"/lists";
+        public string listsEndpoint = "/lists";
         public string listIdEndpoint(string id) => $"{listsEndpoint}/{id}";
         public string archiveAllcardsEndpoint(string id) => $"{listsEndpoint}/{id}/archiveAllCards";
         public string actionsForListEndpoint(string id) => $"{listsEndpoint}/{id}/actions";
@@ -26,8 +26,12 @@
         public string getCardsListIsOn(string id) => $"{listsEndpoint}/{id}/cards";
 
         //Custom field endpoints
-        public string customFieldEndpoint = $"/customFields/";
+        public string customFieldEndpoint = "/customFields/";
         public string CustomFieldIdEndpoint(string id) => $"{customFieldEndpoint}/{id}";
+
+        //Organization endpoints
+        public static string organizationEndpoint = "/organizations";
+        public string organizationId(string id) => $"{organizationEndpoint}/{id}"; 
 
         //Calendar endpoints        
         public string CalendarEndpoint(string id) => $"{boardsEndpoint}/{id}/calendarKey/generate";
@@ -47,7 +51,7 @@
 
         //Checklists endpoints
         public static string checklistEndpoint = "/checklists";
-        public string ChecklistIdEndpoint(string id) => $"{checklistEndpoint}/{id}";
+        public string ChecklistIdEndpoint(string id) => $"{checklistEndpoint}/{id}";        
     }
 
     public class MainRestApiUrl

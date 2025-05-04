@@ -18,7 +18,7 @@ namespace TrelloApiTests.Methods
             };
             var response = ApiMethods.PostBodyRequestApiAsync(endpoints.boardsEndpoint, boardBody);
             var jsonResponse = JObject.Parse(response.Content);            
-            id = jsonResponse["id"]?.ToString();
+            id = jsonResponse["id"].ToString();
             idOrganization = jsonResponse["idOrganization"]?.ToString();
             ApiMethods.StringPatternCheck(response, "name");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

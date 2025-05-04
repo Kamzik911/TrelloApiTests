@@ -207,4 +207,28 @@
             ApiMethods.CleanupIds.CleanIds();
         }
     }
+
+    [TestClass]
+    public class OrganizationTests
+    {
+        OrganizationMethods methods = new OrganizationMethods();
+
+        [TestMethod]
+        public void O100_CreateOrganization_ShouldPass()
+        {
+            methods.CreateOrganization();
+        }
+
+        [TestMethod]
+        public void O101_GetOrganization_ShouldPass()
+        {
+            methods.GetOrganization();
+        }
+
+        [TestMethod]
+        public void O900_DeleteOrganization_ShouldPass()
+        {
+            methods.DeleteOrganization();
+        }
+    }
 }
