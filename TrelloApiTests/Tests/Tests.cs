@@ -226,6 +226,12 @@
         }
 
         [TestMethod]
+        public void O201_UpdateOrganization_ShouldPass()
+        {
+            methods.UpdateOrganization();
+        }
+
+        [TestMethod]
         public void O900_DeleteOrganization_ShouldPass()
         {
             methods.DeleteOrganization();

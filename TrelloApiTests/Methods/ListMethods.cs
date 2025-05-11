@@ -1,5 +1,4 @@
-﻿using TrelloApiTests.ObjectsProperties;
-namespace TrelloApiTests.Methods
+﻿namespace TrelloApiTests.Methods
 {
     internal class ListMethods : ListProperties
     {

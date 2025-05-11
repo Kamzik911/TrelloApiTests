@@ -23,4 +23,17 @@ namespace TrelloApiTests
             return result.ToString();
         }
     }    
+
+    public class UrlGenerator : StringGenerator
+    {
+        public static string GenerateRandomUrl()
+        {
+            string[] domains = { "com", "net", "org", "dev" };
+            string protocol = "https://";
+            string domainName = GenerateString(8).ToLower();
+            string tld = domains[new Random().Next(domains.Length)];
+            string path = "/" + GenerateString(6).ToLower();
+            return $"{protocol}{domainName}.{tld}{path}";
+        }
+    }
 }

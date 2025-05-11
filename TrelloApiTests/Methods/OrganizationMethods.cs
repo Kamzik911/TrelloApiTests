@@ -1,6 +1,4 @@
-﻿using TrelloApiTests.ObjectsProperties;
-
-namespace TrelloApiTests.Methods
+﻿namespace TrelloApiTests.Methods
 {
     public class OrganizationMethods : OrganizationProperties
     {
@@ -10,8 +8,10 @@ namespace TrelloApiTests.Methods
         {
             var orgBody = new
             {
+                name = StringGenerator.GenerateString(10),
                 displayName = StringGenerator.GenerateString(15),
-                desc = StringGenerator.GenerateString(150),                
+                desc = StringGenerator.GenerateString(150),
+                website = UrlGenerator.GenerateRandomUrl()
             };
             var response = ApiMethods.PostBodyRequestApiAsync(SettingEndpoints.organizationEndpoint, orgBody);
             var jsonResponse = JObject.Parse(response.Content);            
@@ -22,8 +22,30 @@ namespace TrelloApiTests.Methods
             ApiMethods.StringPatternCheck(response, "displayName");
             Assert.AreEqual(orgBody.displayName, jsonResponse["displayName"]);
             Assert.AreEqual(orgBody.desc, jsonResponse["desc"]);
+            Assert.AreEqual(orgBody.website, jsonResponse["website"]);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Console.WriteLine(jsonResponse.ToString());
+        }
+
+        public void UpdateOrganization()
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new Exception("Organization id doesn't exist");
+            }
+            else
+            {
+                var orgBody = new
+                {                    
+                    displayName = StringGenerator.GenerateString(35),
+                    desc = StringGenerator.GenerateString(150),
+                };
+
+                var response = ApiMethods.PutBodyRequestApiAsync(endpoints.organizationId(id), orgBody);
+                var jsonResponse = JObject.Parse(response.Content);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
+                Assert.AreEqual(orgBody.displayName, jsonResponse["displayName"].ToString());
+                Assert.AreEqual(orgBody.desc, jsonResponse["desc"].ToString());
+            }                
         }
 
         public void GetOrganization()
@@ -37,7 +59,7 @@ namespace TrelloApiTests.Methods
                 var response = ApiMethods.GetRequestApiAsync(endpoints.organizationId(id));
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Console.WriteLine(jsonResponse);
+                Console.WriteLine(jsonResponse.ToString());
             }                
         }
 

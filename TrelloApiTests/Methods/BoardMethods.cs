@@ -1,6 +1,4 @@
-﻿using TrelloApiTests.ObjectsProperties;
-
-namespace TrelloApiTests.Methods
+﻿namespace TrelloApiTests.Methods
 {   
     public class BoardMethods : BoardProperties
     {        
