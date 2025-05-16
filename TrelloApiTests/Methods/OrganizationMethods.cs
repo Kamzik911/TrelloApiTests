@@ -38,6 +38,7 @@
                 {                    
                     displayName = StringGenerator.GenerateString(35),
                     desc = StringGenerator.GenerateString(150),
+                    website = UrlGenerator.GenerateRandomUrl()
                 };
 
                 var response = ApiMethods.PutBodyRequestApiAsync(endpoints.organizationId(id), orgBody);
@@ -45,6 +46,7 @@
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
                 Assert.AreEqual(orgBody.displayName, jsonResponse["displayName"].ToString());
                 Assert.AreEqual(orgBody.desc, jsonResponse["desc"].ToString());
+                Assert.AreEqual(orgBody.website, jsonResponse["website"].ToString());
             }                
         }
 
