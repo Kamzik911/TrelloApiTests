@@ -2,6 +2,6 @@
 {
     public class CustomFieldProperties
     {
-        public static string? id { get; set; }
+        public static string id { get; set; }
     }
 }

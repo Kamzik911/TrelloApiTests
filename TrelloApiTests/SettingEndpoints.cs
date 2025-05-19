@@ -31,7 +31,8 @@
 
         //Organization endpoints
         public static string organizationEndpoint = "/organizations";
-        public string organizationId(string id) => $"{organizationEndpoint}/{id}"; 
+        public string organizationId(string id) => $"{organizationEndpoint}/{id}";
+        public string organizationBoardId(string id) => $"{organizationEndpoint}/{id}/boards";
 
         //Calendar endpoints        
         public string CalendarEndpoint(string id) => $"{boardsEndpoint}/{id}/calendarKey/generate";

@@ -1,4 +1,6 @@
-﻿namespace TrelloApiTests.Boards
+﻿using RestSharp;
+
+namespace TrelloApiTests.Boards
 {
     [TestClass]
     public class MemberTests
@@ -26,8 +28,7 @@
         ListMethods lists = new ListMethods();
         CardMethods cards = new CardMethods();
         CustomFieldsMethods customFields = new CustomFieldsMethods();
-        CheckListMethods checkLists= new CheckListMethods();
-        MembersMethods members = new MembersMethods();
+        CheckListMethods checkLists= new CheckListMethods();        
                 
         [TestMethod]
         public void A100_CreateBoard_ShouldPass()
@@ -39,31 +40,31 @@
         public void A101_GetBoard_ShouldPass()
         {
             boards.GetBoard();
-        }                
+        }
+
+        //[TestMethod] //Test for Power-Up
+        public void A102CreateCustomFieldOnBoard_ShouldPass()
+        {
+            customFields.CreateCustomFieldOnBoard();
+        }
 
         [TestMethod]
-        public void A102_CreateACalendarKeyForABoard_ShouldPass()
+        public void A103_CreateACalendarKeyForABoard_ShouldPass()
         {
             boards.CreateACalendarKeyForABoard();
         }
 
         [TestMethod]
-        public void A103_DCreateEmailKeyForABoard_ShouldPass()
+        public void A104_DCreateEmailKeyForABoard_ShouldPass()
         {
             boards.CreateEmailKeyForABoard();
         }
 
         [TestMethod]
-        public void A104_UpdateBoard_ShouldPass()
+        public void A105_UpdateBoard_ShouldPass()
         {
             boards.UpdateBoard();
-        }
-
-        //[TestMethod] //Test for Power-Up
-        public void ECreateCustomFieldOnBoard_ShouldPass()
-        {
-            customFields.CreateCustomFieldOnBoard();
-        }
+        }        
 
         [DataTestMethod]
         [DataRow("yellow")]
@@ -225,16 +226,40 @@
             methods.GetOrganization();
         }
 
+        //[TestMethod] // for Power-Up
+        public void O102_GetFieldOnOrganization_ShouldPass()
+        {
+            methods.GetFieldOnOrganization();
+        }
+
+        [TestMethod]
+        public void O103_CreateBoard_ShouldPass()
+        {
+            methods.CreateBoard();
+        }
+
+        [TestMethod]
+        public void O104_GetBoardInOrganization_ShouldPass()
+        {
+            methods.GetBoardInOrganization();
+        }
+
+        [TestMethod]
+        public void O105_DeleteBoard_ShouldPass()
+        {
+            methods.DeleteBoard();
+        }
+
         [TestMethod]
         public void O201_UpdateOrganization_ShouldPass()
         {
             methods.UpdateOrganization();
-        }
+        }        
 
         [TestMethod]
         public void O900_DeleteOrganization_ShouldPass()
         {
             methods.DeleteOrganization();
         }
-    }
+    }    
 }
