@@ -17,6 +17,7 @@
         public string initials { get; set; }
         public string memberType { get; set; }
         public NonPublic nonPublic { get; set; }
+        public static string idBackground { get; set; }
     }
     public class BioData
     {
@@ -32,5 +33,13 @@
         public string initials { get; set; }
         public string avatarUrl { get; set; }
         public string avatarHash { get; set; }
+    }
+    public class BoardBackgroundProperties
+    {
+        public static string id { get; set; }
+        public string type { get; set; }
+        public bool tile {  get; set; }
+        public string brightness { get; set; }
+        public string color { get; set; }
     }
 }

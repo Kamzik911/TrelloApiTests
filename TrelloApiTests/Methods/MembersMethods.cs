@@ -10,7 +10,8 @@
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             MembersProperties.id = jsonResponse["id"].ToString();
-            Assert.IsNotNull(MembersProperties.id);
+            Assert.IsNotNull(MembersProperties.id);     
+            Console.WriteLine(jsonResponse.ToString());
         }
 
         public void UpdateMember() 
@@ -28,6 +29,26 @@
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Console.WriteLine(jsonResponse.ToString());
+        }
+
+        public void GetBoardBackgroundForMember()
+        {
+            if (string.IsNullOrEmpty(MembersProperties.id))
+            {
+                throw new Exception("Member id doesn't exist");
+            }
+
+            var response = ApiMethods.GetRequestApiAsync(endpoints.memberBoardBackgroundEndpoint(MembersProperties.idBackground));
+            var arrayResponse = JArray.Parse(response.Content).First;            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Console.WriteLine(arrayResponse.ToString());
+            Assert.IsFalse((bool)arrayResponse["tile"]);
+            ApiMethods.AlphabetArrayPatternCheck(response, "id");
+            ApiMethods.AlphabetArrayPatternCheck(response, "type");
+            ApiMethods.AlphabetArrayPatternCheck(response, "brightness");
+            ApiMethods.StringArrayPatternCheck(response, "color");
+
+
         }
     }
 }

@@ -49,6 +49,7 @@
         //Member endpoints
         public static string memberEndpoint = "/members";
         public string memberIdEndpoint(string id) => $"{memberEndpoint}/{id}";
+        public string memberBoardBackgroundEndpoint(string id) => $"{memberIdEndpoint(MembersProperties.id)}/boardBackgrounds/{id}";
 
         //Checklists endpoints
         public static string checklistEndpoint = "/checklists";

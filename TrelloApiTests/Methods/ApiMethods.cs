@@ -77,7 +77,14 @@ namespace TrelloApiTests.Methods
             var checkPatternIdProperty = jsonResponse[property].ToString();
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, stringPattern);            
         }
-        
+
+        public static void StringArrayPatternCheck(RestResponse response, object property)
+        {
+            var jsonResponse = JArray.Parse(response.Content).First;
+            var checkPatternIdProperty = jsonResponse[property].ToString();
+            var checkPattern = Regex.IsMatch(checkPatternIdProperty, stringPattern);
+        }
+
         public static void NumberPatternCheck(RestResponse response, object property)        
         {
             var jsonResponse = JObject.Parse(response.Content);
@@ -91,7 +98,14 @@ namespace TrelloApiTests.Methods
             var checkPatternIdProperty = jsonResponse[property].ToString();
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, alphabetPattern);
         }
-        
+
+        public static void AlphabetArrayPatternCheck(RestResponse response, object property)
+        {
+            var jsonResponse = JArray.Parse(response.Content).First;
+            var checkPatternIdProperty = jsonResponse[property].ToString();
+            var checkPattern = Regex.IsMatch(checkPatternIdProperty, alphabetPattern);
+        }
+
         public class CleanupIds        
         {
             public static void CleanIds()

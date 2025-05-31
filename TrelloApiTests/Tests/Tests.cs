@@ -8,15 +8,21 @@ namespace TrelloApiTests.Boards
         MembersMethods members = new MembersMethods();
 
         [TestMethod]
-        public void M101_UpdateMember_ShouldPass()
-        {
-            members.UpdateMember();
-        }
-
-        [TestMethod]
         public void M100_GetMemberId_ShouldPass()
         {
             members.GetMemberId();
+        }
+
+        [TestMethod]
+        public void M101_UpdateMember_ShouldPass()
+        {
+            members.UpdateMember();
+        }        
+        
+        [TestMethod]
+        public void M102_GetBoardBackgroundForMember_ShouldPass()
+        {
+            members.GetBoardBackgroundForMember();
         }
     }
 
