@@ -53,7 +53,12 @@
 
         //Checklists endpoints
         public static string checklistEndpoint = "/checklists";
-        public string ChecklistIdEndpoint(string id) => $"{checklistEndpoint}/{id}";        
+        public string ChecklistIdEndpoint(string id) => $"{checklistEndpoint}/{id}";
+
+        //Notification endpoints
+        public static string notificationBoardEndpoint = "/notifications";
+        public string NotificationIdEndpoint(string id) => $"{notificationBoardEndpoint}/{id}";
+        public string NotificationBoardIdEndpoint(string id) => $"{notificationBoardEndpoint}/{id}/board";
     }
 
     public class MainRestApiUrl
