@@ -1,6 +1,4 @@
-﻿using RestSharp;
-
-namespace TrelloApiTests.Boards
+﻿namespace TrelloApiTests.Boards
 {
     [TestClass]
     public class MemberTests
@@ -16,8 +14,8 @@ namespace TrelloApiTests.Boards
         [TestMethod]
         public void M101_UpdateMember_ShouldPass()
         {
-            members.UpdateMember();
-        }        
+          members.UpdateMember();
+        }       
         
         [TestMethod]
         public void M102_GetBoardBackgroundForMember_ShouldPass()
@@ -34,8 +32,8 @@ namespace TrelloApiTests.Boards
         ListMethods lists = new ListMethods();
         CardMethods cards = new CardMethods();
         CustomFieldsMethods customFields = new CustomFieldsMethods();
-        CheckListMethods checkLists= new CheckListMethods();        
-                
+        CheckListMethods checkLists = new CheckListMethods();
+
         [TestMethod]
         public void A100_CreateBoard_ShouldPass()
         {
@@ -70,7 +68,7 @@ namespace TrelloApiTests.Boards
         public void A105_UpdateBoard_ShouldPass()
         {
             boards.UpdateBoard();
-        }        
+        }
 
         [DataTestMethod]
         [DataRow("yellow")]
@@ -126,7 +124,7 @@ namespace TrelloApiTests.Boards
         public void A302_GetActionsForList_ShouldPass()
         {
             lists.GetActionsForList();
-        }        
+        }
 
         [TestMethod]
         public void A304_UpdateListId_ShouldPass()
@@ -165,7 +163,7 @@ namespace TrelloApiTests.Boards
         {
             lists.ArchiveAllCardsInList();
         }
-        
+
         [TestMethod]
         public void A500_CreateChecklist_ShouldPass()
         {
@@ -176,7 +174,7 @@ namespace TrelloApiTests.Boards
         public void A501_GetCheckList_ShouldPass()
         {
             checkLists.GetCheckList();
-        }       
+        }
 
         [TestMethod]
         public void A901_DeleteCheckList_ShouldPass()
@@ -194,7 +192,7 @@ namespace TrelloApiTests.Boards
         public void A903_DeleteLabel_ShouldPass()
         {
             labels.DeleteLabel();
-        }       
+        }
 
         //[TestMethod]
         public void HMarkBoardAsViewed_ShouldPass()
@@ -260,12 +258,38 @@ namespace TrelloApiTests.Boards
         public void O201_UpdateOrganization_ShouldPass()
         {
             methods.UpdateOrganization();
-        }        
+        }
 
         [TestMethod]
         public void O900_DeleteOrganization_ShouldPass()
         {
             methods.DeleteOrganization();
         }
-    }    
+    }
+    [TestClass]
+    public class TestNofitication
+    {
+        NotificationsMethods methods = new NotificationsMethods();
+        BoardMethods boardMethods = new BoardMethods();
+
+        [TestMethod]
+        public void N100CreateBoard()
+        {
+            boardMethods.CreateBoard();
+        }
+
+        [TestMethod]
+        public void N101_NotificationDoesntExist_ShouldPass()
+        {
+            methods.NotificationDoesntExist();
+        }
+
+        [TestMethod]
+        public void N102DeleteBoard()
+        {
+            boardMethods.DeleteBoard();
+        }
+    }
 }
+
+
