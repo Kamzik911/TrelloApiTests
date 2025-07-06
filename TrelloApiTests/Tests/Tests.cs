@@ -14,9 +14,9 @@
         [TestMethod]
         public void M101_UpdateMember_ShouldPass()
         {
-            members.UpdateMember();
-        }
-
+          members.UpdateMember();
+        }       
+        
         [TestMethod]
         public void M102_GetBoardBackgroundForMember_ShouldPass()
         {
