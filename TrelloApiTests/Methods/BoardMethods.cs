@@ -1,52 +1,48 @@
 ﻿namespace TrelloApiTests.Methods
-{   
+{
     public class BoardMethods : BoardProperties
-    {        
-        public readonly SettingEndpoints endpoints = new SettingEndpoints();        
-        public readonly Tokens tokensForBoards = new Tokens();        
+    {
+        private readonly SettingEndpoints endpoints = new SettingEndpoints();
+        private readonly Tokens tokensForBoards = new Tokens();
 
-        string randomString = StringGenerator.GenerateString(15);
+        private string randomString = StringGenerator.GenerateString(15);
 
         public void CreateBoard()
-        {                                 
+        {
             var boardBody = new
             {
-                name = randomString,
-                desc = randomString,
+                name = this.randomString,
+                desc = this.randomString,
             };
-            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.boardsEndpoint, boardBody);
-            var jsonResponse = JObject.Parse(response.Content);            
-            id = jsonResponse["id"].ToString();
-            idOrganization = jsonResponse["idOrganization"]?.ToString();
-            ApiMethods.StringPatternCheck(response, "name");
+            var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.boardsEndpoint, boardBody);
+            JObject jsonObjects = JObject.Parse(response.Content);
+            id = jsonObjects["id"].ToString();
+            idOrganization = jsonObjects["idOrganization"]?.ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(JTokenType.String, jsonResponse["name"]?.Type);            
-            Assert.AreEqual(boardBody.name, jsonResponse["name"]);
-            Assert.AreEqual(JTokenType.String, jsonResponse["desc"]?.Type);
-            Assert.AreEqual(boardBody.desc, jsonResponse["desc"]);
-            Assert.AreEqual(id, jsonResponse["id"]);
-            Assert.AreEqual(idOrganization, jsonResponse["idOrganization"]);            
-            Console.WriteLine(jsonResponse);            
+            ApiMethods.StringPatternCheck(response, "name");
+            Assert.AreEqual(JTokenType.String, jsonObjects["name"]?.Type);
+            Assert.AreEqual(boardBody.name, jsonObjects["name"]);
+            Assert.AreEqual(JTokenType.String, jsonObjects ["desc"]?.Type);
+            Assert.AreEqual(boardBody.desc, jsonObjects["desc"]);
         }
 
         public void CreateACalendarKeyForABoard()
         {
             var calendarKeyBody = new
             {
-                id = Tokens.calendarKey
-            };        
-            
+                id = Tokens.calendarKey,
+            };
+
             if (string.IsNullOrEmpty(id))
             {
-            
                 throw new Exception("Board id is empty");
-            }            
+            }
             else
             {
-                var response = ApiMethods.PostBodyRequestApiAsync(endpoints.CalendarEndpoint(id), calendarKeyBody);
+                var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.CalendarEndpoint(id), calendarKeyBody);
                 Assert.IsNotNull(id);
                 Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
-            }                
+            }
         }
 
         public void CreateEmailKeyForABoard()
@@ -54,9 +50,9 @@
             if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Created board ID is null or empty.");
-            }            
-            var response = ApiMethods.PostRequestApiAsync(endpoints.EmailEndpoint(id));
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
+            }
+            var response = ApiMethods.PostRequestApiAsync(this.endpoints.EmailEndpoint(id));
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public void GetBoard()
@@ -67,16 +63,16 @@
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(endpoints.boardIdEndpoint(id));
+                var response = ApiMethods.GetRequestApiAsync(this.endpoints.BoardIdEndpoint(id));
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(id, jsonResponse["id"]);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }                
+            }
         }
 
         public void MarkBoardViewed()
-        {            
-            var response = ApiMethods.PostRequestApiAsync(endpoints.markedAsViewedEndpoint(id));
+        {
+            var response = ApiMethods.PostRequestApiAsync(this.endpoints.MarkedAsViewedEndpoint(id));
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(id, jsonResponse["id"]);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -90,9 +86,9 @@
             }
             var boardBody = new
             {
-                name = randomString,                
-            };            
-            var response = ApiMethods.PutBodyRequestApiAsync(endpoints.boardIdEndpoint(id), boardBody);
+                name = this.randomString,
+            };
+            var response = ApiMethods.PutBodyRequestApiAsync(this.endpoints.BoardIdEndpoint(id), boardBody);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(boardBody.name, jsonResponse["name"]);
@@ -107,12 +103,12 @@
                 throw new Exception("Created board ID is null or empty.");
             }
 
-            var request = new RestRequest($"{endpoints.markedAsViewedEndpoint}", Method.Post);
+            var request = new RestRequest($"{this.endpoints.MarkedAsViewedEndpoint}", Method.Post);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;            
+            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
 
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public void DeleteBoard()
@@ -121,8 +117,8 @@
             {
                 throw new InvalidOperationException("Created board ID is null.");
             }
-            var response = ApiMethods.DeleteRequestApiAsync(endpoints.boardIdEndpoint(id));
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);           
-        }        
+            var response = ApiMethods.DeleteRequestApiAsync(this.endpoints.BoardIdEndpoint(id));
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 }

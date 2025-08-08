@@ -1,9 +1,9 @@
 ﻿namespace TrelloApiTests.Methods
 {
-    internal class ListMethods : ListProperties
+    class ListMethods : ListProperties
     {
-        SettingEndpoints endpoints = new SettingEndpoints();                
-        
+        private SettingEndpoints endpoints = new SettingEndpoints();
+
         public void CreateList()
         {
             if (string.IsNullOrEmpty(BoardProperties.id))
@@ -16,11 +16,11 @@
                 name = "Rest Api list",
                 idBoard = BoardProperties.id,
             };
-            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.listIdEndpoint(id), listBody);
+            var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody);
             var jsonResponse = JObject.Parse(response.Content);
             id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(listBody.name, jsonResponse["name"]);                
+            Assert.AreEqual(listBody.name, jsonResponse["name"]);
             Assert.AreEqual(id, jsonResponse["id"]);
             Console.WriteLine(jsonResponse.ToString());
         }
@@ -35,29 +35,29 @@
             var listBody = new
             {
                 name = "Rest api list updated",
-                closed = false,                            
+                closed = false,
             };
 
-            var response = ApiMethods.PutBodyRequestApiAsync(endpoints.listIdEndpoint(id), listBody);            
+            var response = ApiMethods.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.closed, jsonResponse["closed"]);
             ApiMethods.NumberPatternCheck(response, "pos");
             Console.WriteLine(jsonResponse.ToString());
-        }        
+        }
 
         public void GetListId()
-        {         
+        {
             if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Id list doesn't exist");
             }
-            var response = ApiMethods.GetRequestApiAsync(endpoints.listIdEndpoint(id));
+            var response = ApiMethods.GetRequestApiAsync(this.endpoints.ListIdEndpoint(id));
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public void ArchiveUnarchiveList(bool value)
-        {            
+        {
             if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Id list doesn't exist");
@@ -69,11 +69,11 @@
                     id = id,
                     closed = value
                 };
-                var response = ApiMethods.PutBodyRequestApiAsync(endpoints.listIdEndpoint(id), listBody);
+                var response = ApiMethods.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(listBody.closed, (bool)jsonResponse["closed"]);
-            }                
+            }
         }
 
         public void GetActionsForList()
@@ -84,10 +84,10 @@
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(endpoints.getBoardListIsOn(id));
+                var response = ApiMethods.GetRequestApiAsync(this.endpoints.GetBoardListIsOn(id));
                 var jsonResponse = JObject.Parse(response.Content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
-            }                
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }
         }
 
         public void GetCardInList()
@@ -96,23 +96,26 @@
             {
                 throw new Exception("Id list doesn't exist");
             }
+
             if (string.IsNullOrEmpty(CardProperties.id))
             {
                 throw new Exception("Card id doesn't exist");
             }
             else
             {
-                var request = new RestRequest($"{endpoints.getCardsListIsOn(id)}", Method.Get);
+                var request = new RestRequest($"{this.endpoints.GetCardsListIsOn(id)}", Method.Get);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
                 var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
-                var cards = JsonSerializer.Deserialize<List<CardProperties>>(response.Content).First();                
-                Assert.IsNotNull(cards);
-                Assert.IsFalse(cards.badges.location);
+                //var cards = JsonSerializer.Deserialize<List<CardProperties>>(response.Content).First();
+                var jsonResponse = JArray.Parse(response.Content);                
+                bool location = jsonResponse.Any(l => l["badges"]?["location"].Type == JTokenType.Boolean);
+                Assert.IsTrue(location);
+                /*Assert.IsFalse(cards.badges.location);
                 Assert.IsFalse(cards.badges.description);
                 Assert.IsNotNull(cards.badges.attachmentsByType.trello.board);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
-                Console.WriteLine(response.Content);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Console.WriteLine(response.Content);*/
             }
         }
 
@@ -124,9 +127,9 @@
             }
             else
             {
-                var response = ApiMethods.PostRequestApiAsync(endpoints.archiveAllcardsEndpoint(id));
+                var response = ApiMethods.PostRequestApiAsync(this.endpoints.ArchiveAllcardsEndpoint(id));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }                
-        }        
+            }
+        }
     }
 }

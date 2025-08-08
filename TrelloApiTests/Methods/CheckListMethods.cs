@@ -16,15 +16,15 @@
                 var checklistBody = new
                 {
                     idCard = CardProperties.id,
-                    name = randomString
+                    name = this.randomString,
                 };
-                var response = ApiMethods.PostBodyRequestApiAsync(SettingEndpoints.checklistEndpoint, checklistBody);
+                var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.checklistEndpoint, checklistBody);
                 var jsonRensponse = JObject.Parse(response.Content);
                 id = jsonRensponse["id"].ToString();
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(checklistBody.name, jsonRensponse["name"]);
-                Assert.IsNotNull(id);                
-            }                
+                Assert.IsNotNull(id);
+            }
         }
 
         public void GetCheckList()
@@ -32,8 +32,8 @@
             if (string.IsNullOrEmpty(id)) 
             {
                 var response = ApiMethods.GetRequestApiAsync(id);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
-            }            
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }
         }
 
         public void DeleteCheckList() 
@@ -44,9 +44,9 @@
             }
             else
             {
-                var response = ApiMethods.DeleteRequestApiAsync(endpoints.ChecklistIdEndpoint(id));
+                var response = ApiMethods.DeleteRequestApiAsync(this.endpoints.ChecklistIdEndpoint(id));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }                
-        }        
+            }
+        }
     }
 }

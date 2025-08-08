@@ -2,7 +2,7 @@
 {
     public class ListProperties
     {
-        public static string id { get; set; }
+        public static string? id { get; set; }
         public string name { get; set; }
         public bool? closed { get; set; }
         public string idBoard { get; set; }

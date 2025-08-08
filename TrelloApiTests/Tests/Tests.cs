@@ -3,53 +3,53 @@
     [TestClass]
     public class MemberTests
     {
-        MembersMethods members = new MembersMethods();
+        private MembersMethods members = new MembersMethods();
 
         [TestMethod]
         public void M100_GetMemberId_ShouldPass()
         {
-            members.GetMemberId();
+            this.members.GetMemberId();
         }
 
         [TestMethod]
         public void M101_UpdateMember_ShouldPass()
         {
-          members.UpdateMember();
-        }       
-        
+          this.members.UpdateMember();
+        }
+
         [TestMethod]
         public void M102_GetBoardBackgroundForMember_ShouldPass()
         {
-            members.GetBoardBackgroundForMember();
+            this.members.GetBoardBackgroundForMember();
         }
     }
 
     [TestClass]
     public class BoardTests
     {
-        BoardMethods boards = new BoardMethods();
-        LabelMethods labels = new LabelMethods();
-        ListMethods lists = new ListMethods();
-        CardMethods cards = new CardMethods();
-        CustomFieldsMethods customFields = new CustomFieldsMethods();
-        CheckListMethods checkLists = new CheckListMethods();
+        private BoardMethods boards = new BoardMethods();
+        private LabelMethods labels = new LabelMethods();
+        private ListMethods lists = new ListMethods();
+        private CardMethods cards = new CardMethods();
+        private CustomFieldsMethods customFields = new CustomFieldsMethods();
+        private CheckListMethods checkLists = new CheckListMethods();
 
         [TestMethod]
         public void A100_CreateBoard_ShouldPass()
         {
-            boards.CreateBoard();
+            this.boards.CreateBoard();
         }
 
         [TestMethod]
         public void A101_GetBoard_ShouldPass()
         {
-            boards.GetBoard();
+            this.boards.GetBoard();
         }
 
         //[TestMethod] //Test for Power-Up
         public void A102CreateCustomFieldOnBoard_ShouldPass()
         {
-            customFields.CreateCustomFieldOnBoard();
+            this.customFields.CreateCustomFieldOnBoard();
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@
         [TestMethod]
         public void A304_UpdateListId_ShouldPass()
         {
-            lists.UpdateListId();
+            this.lists.UpdateListId();
         }
 
         [DataTestMethod]
@@ -137,25 +137,25 @@
         [DataRow(false)]
         public void A305_ArchiveUnarchiveList_ShouldPass(bool value)
         {
-            lists.ArchiveUnarchiveList(value);
+            this.lists.ArchiveUnarchiveList(value);
         }
 
         [TestMethod]
         public void A400_CreateNewCard_ShouldPass()
         {
-            cards.CreateNewCard();
+            this.cards.CreateNewCard();
         }
 
         [TestMethod]
         public void A401_GetCardId_ShouldPass()
         {
-            cards.GetCardId();
+            this.cards.GetCardId();
         }
 
         [TestMethod]
         public void A402_GetCardInList_ShouldPass()
         {
-            lists.GetCardInList();
+            this.lists.GetCardInList();
         }
 
         [TestMethod]

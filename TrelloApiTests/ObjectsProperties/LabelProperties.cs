@@ -2,6 +2,6 @@
 {
     public class LabelProperties
     {
-        public static string id { get; set; }
+        public static string? id { get; set; }
     }
 }

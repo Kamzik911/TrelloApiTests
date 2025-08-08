@@ -1,14 +1,9 @@
-﻿using Microsoft.Extensions.DependencyModel;
-using Newtonsoft.Json.Linq;
-using Simple.OData.Client;
-using System.Runtime.CompilerServices;
-
-namespace TrelloApiTests.Methods
+﻿namespace TrelloApiTests.Methods
 {
     public class OrganizationMethods : OrganizationProperties
     {
-        SettingEndpoints endpoints = new SettingEndpoints();  
-        BoardMethods boardMethods = new BoardMethods();
+        private SettingEndpoints endpoints = new SettingEndpoints();
+        private BoardMethods boardMethods = new BoardMethods();
 
         public void CreateOrganization()
         {
@@ -17,10 +12,10 @@ namespace TrelloApiTests.Methods
                 name = StringGenerator.GenerateString(10),
                 displayName = StringGenerator.GenerateString(15),
                 desc = StringGenerator.GenerateString(150),
-                website = UrlGenerator.GenerateRandomUrl()
+                website = UrlGenerator.GenerateRandomUrl(),
             };
-            var response = ApiMethods.PostBodyRequestApiAsync(SettingEndpoints.organizationEndpoint, orgBody);
-            var jsonResponse = JObject.Parse(response.Content);            
+            var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.organizationEndpoint, orgBody);
+            var jsonResponse = JObject.Parse(response.Content);
             id = jsonResponse["id"].ToString();
             Assert.IsNotNull(id);
             Assert.AreEqual(id, jsonResponse["id"]);
@@ -42,19 +37,19 @@ namespace TrelloApiTests.Methods
             else
             {
                 var orgBody = new
-                {                    
+                {
                     displayName = StringGenerator.GenerateString(35),
                     desc = StringGenerator.GenerateString(150),
-                    website = UrlGenerator.GenerateRandomUrl()
+                    website = UrlGenerator.GenerateRandomUrl(),
                 };
 
-                var response = ApiMethods.PutBodyRequestApiAsync(endpoints.organizationId(id), orgBody);                
+                var response = ApiMethods.PutBodyRequestApiAsync(this.endpoints.OrganizationId(id), orgBody);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(orgBody.displayName, jsonResponse["displayName"]);
                 Assert.AreEqual(orgBody.desc, jsonResponse["desc"]);
                 Assert.AreEqual(orgBody.website, jsonResponse["website"]);
-            }                
+            }
         }
 
         public void GetOrganization()
@@ -65,10 +60,10 @@ namespace TrelloApiTests.Methods
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(endpoints.organizationId(id));
+                var response = ApiMethods.GetRequestApiAsync(this.endpoints.OrganizationId(id));
                 var jsonResponse = JObject.Parse(response.Content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
-            }                
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }
         }
 
         public void GetFieldOnOrganization()
@@ -79,15 +74,15 @@ namespace TrelloApiTests.Methods
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(endpoints.CustomFieldIdEndpoint(id));
+                var response = ApiMethods.GetRequestApiAsync(this.endpoints.CustomFieldIdEndpoint(id));
                 var jsonResponse = JObject.Parse(response.Content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);                
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
 
         public void CreateBoard()
         {
-            boardMethods.CreateBoard();
+            this.boardMethods.CreateBoard();
         }
 
         public void GetBoardInOrganization()
@@ -98,8 +93,8 @@ namespace TrelloApiTests.Methods
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(endpoints.organizationBoardId(id));
-                var jsonResponse = JArray.Parse(response.Content).First;                                                             
+                var response = ApiMethods.GetRequestApiAsync(this.endpoints.OrganizationBoardId(id));
+                var jsonResponse = JArray.Parse(response.Content).First;
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.IsNotNull(jsonResponse["id"]);
             }
@@ -113,14 +108,14 @@ namespace TrelloApiTests.Methods
             }
             else
             {
-                var response = ApiMethods.DeleteRequestApiAsync(endpoints.organizationId(id));
+                var response = ApiMethods.DeleteRequestApiAsync(this.endpoints.OrganizationId(id));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
 
         public void DeleteBoard()
         {
-            boardMethods.DeleteBoard();
+            this.boardMethods.DeleteBoard();
         }
     }
 }

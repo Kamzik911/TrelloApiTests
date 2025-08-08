@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.OData;
 
 namespace TrelloApiTests.Methods
-{    
+{
     public class ApiMethods : Tokens
-    {    
+    {
         static string stringPattern = "[A-Za-z0-9]";
         static string numberPattern = "[0-9]";
         static string alphabetPattern = "[A-Za-z]";
@@ -34,13 +34,13 @@ namespace TrelloApiTests.Methods
             var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
             return response;
         }
-        
+
         public static RestResponse PostBodyRequestApiAsync(string endpoint, object body)
-        {            
+        {
             var request = new RestRequest($"{endpoint}", Method.Post).AddBody(body);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;            
+            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
             return response;
         }
 
@@ -70,12 +70,12 @@ namespace TrelloApiTests.Methods
             var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
             return response;
         }
-        
+
         public static void StringPatternCheck(RestResponse response, object property)
-        {            
+        {
             var jsonResponse = JObject.Parse(response.Content);
             var checkPatternIdProperty = jsonResponse[property].ToString();
-            var checkPattern = Regex.IsMatch(checkPatternIdProperty, stringPattern);            
+            var checkPattern = Regex.IsMatch(checkPatternIdProperty, stringPattern);
         }
 
         public static void StringArrayPatternCheck(RestResponse response, object property)
@@ -85,7 +85,7 @@ namespace TrelloApiTests.Methods
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, stringPattern);
         }
 
-        public static void NumberPatternCheck(RestResponse response, object property)        
+        public static void NumberPatternCheck(RestResponse response, object property)
         {
             var jsonResponse = JObject.Parse(response.Content);
             var checkPatternIdProperty = jsonResponse[property].ToString();
@@ -106,7 +106,7 @@ namespace TrelloApiTests.Methods
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, alphabetPattern);
         }
 
-        public class CleanupIds        
+        public class CleanupIds
         {
             public static void CleanIds()
             {
@@ -114,23 +114,23 @@ namespace TrelloApiTests.Methods
                 {
                     BoardProperties.id = null;
                 }
-                else if (BoardProperties.idOrganization != null)
+                if (BoardProperties.idOrganization != null)
                 {
                     BoardProperties.idOrganization = null;
                 }
-                else if (CardProperties.id != null)
+                if (CardProperties.id != null)
                 {
                     CardProperties.id = null;
                 }
-                else if (LabelProperties.id != null)
+                if (LabelProperties.id != null)
                 {
                     LabelProperties.id = null;
                 }
-                else if (ListProperties.id != null)
+                if (ListProperties.id != null)
                 {
                     ListProperties.id = null;
                 }
             }
-        }        
+        }
     }
 }

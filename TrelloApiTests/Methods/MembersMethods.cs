@@ -2,16 +2,15 @@
 {
     public class MembersMethods
     {
-        SettingEndpoints endpoints = new SettingEndpoints();
-        
+        private SettingEndpoints endpoints = new SettingEndpoints();
+
         public void GetMemberId()
         {
-            var response = ApiMethods.GetRequestApiAsync(endpoints.memberIdEndpoint(Tokens.memberId));
+            var response = ApiMethods.GetRequestApiAsync(this.endpoints.MemberIdEndpoint(Tokens.memberId));
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             MembersProperties.id = jsonResponse["id"].ToString();
-            Assert.IsNotNull(MembersProperties.id);     
-            Console.WriteLine(jsonResponse.ToString());
+            Assert.IsNotNull(MembersProperties.id);
         }
 
         public void UpdateMember() 
@@ -23,12 +22,11 @@
 
             var memberBody = new
             {
-                id = Tokens.memberId
+                id = Tokens.memberId,
             };
-            var response = ApiMethods.PutBodyRequestApiAsync(endpoints.memberIdEndpoint(MembersProperties.id), memberBody);
+            var response = ApiMethods.PutBodyRequestApiAsync(this.endpoints.MemberIdEndpoint(MembersProperties.id), memberBody);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Console.WriteLine(jsonResponse.ToString());
         }
 
         public void GetBoardBackgroundForMember()
@@ -38,8 +36,8 @@
                 throw new Exception("Member id doesn't exist");
             }
 
-            var response = ApiMethods.GetRequestApiAsync(endpoints.memberBoardBackgroundEndpoint(MembersProperties.idBackground));
-            var arrayResponse = JArray.Parse(response.Content).First;            
+            var response = ApiMethods.GetRequestApiAsync(this.endpoints.MemberBoardBackgroundEndpoint(MembersProperties.idBackground));
+            var arrayResponse = JArray.Parse(response.Content).First;
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Console.WriteLine(arrayResponse.ToString());
             Assert.IsFalse((bool)arrayResponse["tile"]);
@@ -47,8 +45,6 @@
             ApiMethods.AlphabetArrayPatternCheck(response, "type");
             ApiMethods.AlphabetArrayPatternCheck(response, "brightness");
             ApiMethods.StringArrayPatternCheck(response, "color");
-
-
         }
     }
 }
