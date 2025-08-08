@@ -1,6 +1,6 @@
 ﻿namespace TrelloApiTests.Methods
 {
-    internal class CustomFieldsMethods : CustomFieldProperties
+    public class CustomFieldsMethods : CustomFieldProperties
     {
         SettingEndpoints endpoints = new SettingEndpoints();
 

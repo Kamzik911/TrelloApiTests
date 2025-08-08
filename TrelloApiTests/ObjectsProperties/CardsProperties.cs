@@ -30,7 +30,7 @@
 
         public string? shortLink { get; set; }
 
-        public string? shortUrl { get; set; }
+        public string shortUrl { get; set; }
 
         public bool subscribed { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace TrelloApiTests.Methods
 {
-    class NotificationsMethods : NotificationsProperties
+    public class NotificationsMethods : NotificationsProperties
     {
         SettingEndpoints endpoints = new SettingEndpoints();
         BoardMethods boardMethods = new BoardMethods();

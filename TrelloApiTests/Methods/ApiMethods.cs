@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.OData;
-
-namespace TrelloApiTests.Methods
+﻿namespace TrelloApiTests.Methods
 {
     public class ApiMethods : Tokens
     {
@@ -104,32 +102,31 @@ namespace TrelloApiTests.Methods
             var jsonResponse = JArray.Parse(response.Content).First;
             var checkPatternIdProperty = jsonResponse[property].ToString();
             var checkPattern = Regex.IsMatch(checkPatternIdProperty, alphabetPattern);
-        }
-
-        public class CleanupIds
+        }        
+    }
+    public class CleanupIds
+    {
+        public void CleanIds()
         {
-            public static void CleanIds()
+            if (BoardProperties.id != null)
             {
-                if (BoardProperties.id != null)
-                {
-                    BoardProperties.id = null;
-                }
-                if (BoardProperties.idOrganization != null)
-                {
-                    BoardProperties.idOrganization = null;
-                }
-                if (CardProperties.id != null)
-                {
-                    CardProperties.id = null;
-                }
-                if (LabelProperties.id != null)
-                {
-                    LabelProperties.id = null;
-                }
-                if (ListProperties.id != null)
-                {
-                    ListProperties.id = null;
-                }
+                BoardProperties.id = null;
+            }
+            if (BoardProperties.idOrganization != null)
+            {
+                BoardProperties.idOrganization = null;
+            }
+            if (CardProperties.id != null)
+            {
+                CardProperties.id = null;
+            }
+            if (LabelProperties.id != null)
+            {
+                LabelProperties.id = null;
+            }
+            if (ListProperties.id != null)
+            {
+                ListProperties.id = null;
             }
         }
     }

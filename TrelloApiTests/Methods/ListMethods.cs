@@ -1,6 +1,6 @@
 ﻿namespace TrelloApiTests.Methods
 {
-    class ListMethods : ListProperties
+    public class ListMethods : ListProperties
     {
         private SettingEndpoints endpoints = new SettingEndpoints();
 

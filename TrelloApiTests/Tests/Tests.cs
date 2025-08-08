@@ -3,7 +3,7 @@
     [TestClass]
     public class MemberTests
     {
-        private MembersMethods members = new MembersMethods();
+        private MembersMethods members = new MembersMethods();        
 
         [TestMethod]
         public void M100_GetMemberId_ShouldPass()
@@ -25,14 +25,14 @@
     }
 
     [TestClass]
-    public class BoardTests
+    public class BoardTests : CleanupIds
     {
         private BoardMethods boards = new BoardMethods();
         private LabelMethods labels = new LabelMethods();
         private ListMethods lists = new ListMethods();
         private CardMethods cards = new CardMethods();
         private CustomFieldsMethods customFields = new CustomFieldsMethods();
-        private CheckListMethods checkLists = new CheckListMethods();
+        private CheckListMethods checkLists = new CheckListMethods();        
 
         [TestMethod]
         public void A100_CreateBoard_ShouldPass()
@@ -209,7 +209,7 @@
         [TestMethod]
         public void A999_CleanAllIdsAfterTests()
         {
-            ApiMethods.CleanupIds.CleanIds();
+            CleanIds();
         }
     }
 

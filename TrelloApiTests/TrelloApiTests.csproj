@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>warnings</Nullable>
     <AppDesignerFolder>ObjectsProperties</AppDesignerFolder>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -12,14 +12,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.3.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Playwright" Version="1.53.0" />
     <PackageReference Include="MSTest" Version="3.9.3" />
+    <PackageReference Include="NuGet.Modules.JObjectExtensions" Version="1.0.1" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
-    <PackageReference Include="Simple.OData.Client" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>

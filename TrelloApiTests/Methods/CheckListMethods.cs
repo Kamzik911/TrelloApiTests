@@ -1,6 +1,6 @@
 ﻿namespace TrelloApiTests.Methods
 {
-    class CheckListMethods : ChecklistProperties
+    public class CheckListMethods : ChecklistProperties
     {
         SettingEndpoints endpoints = new SettingEndpoints();
         string randomString = StringGenerator.GenerateString(15);

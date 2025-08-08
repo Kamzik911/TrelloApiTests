@@ -3,10 +3,10 @@
     public class SettingEndpoints
     {
         // Main endpoint
-        public static string mainEndpoint = "https://api.trello.com/1";
+        public const string mainEndpoint = "https://api.trello.com/1";
 
         // Boards endpoints
-        public string boardsEndpoint = "/boards";
+        public readonly string boardsEndpoint = "/boards";
 
         public string BoardIdEndpoint(string boardId) => $"{this.boardsEndpoint}/{boardId}";
 
@@ -34,7 +34,7 @@
         public string GetCardsListIsOn(string id) => $"{this.listsEndpoint}/{id}/cards";
 
         // Custom field endpoints
-        public string customFieldEndpoint = "/customFields";
+        public readonly string customFieldEndpoint = "/customFields";
 
         public string CustomFieldIdEndpoint(string id) => $"{this.customFieldEndpoint}/{id}";
 
@@ -52,7 +52,7 @@
         public string EmailEndpoint(string id) => $"{this.boardsEndpoint}/{id}/emailKey/generate";
 
         // Tag endpoints
-        private readonly string tagEndopint = "/idTags";
+        //private readonly string tagEndopint = "/idTags";
 
         // MarkedAsViewed endpoints
         public string MarkedAsViewedEndpoint(string id) => $"{this.boardsEndpoint}/{id}/markedAsViewed";
@@ -62,15 +62,16 @@
 
         public string MemberIdEndpoint(string id) => $"{memberEndpoint}/{id}";
 
-        public string MemberBoardBackgroundEndpoint(string id) => $"{this.MemberIdEndpoint(MembersProperties.id)}/boardBackgrounds/{id}";
+
+        public string MemberBoardBackgroundEndpoint(string id) => $"{MemberIdEndpoint(MembersProperties.id)}/boardBackgrounds/{id}";
 
         // Checklists endpoints
-        public string checklistEndpoint = "/checklists";
+        public readonly string checklistEndpoint = "/checklists";
 
         public string ChecklistIdEndpoint(string id) => $"{this.checklistEndpoint}/{id}";
 
         // Notification endpoints
-        private readonly string notificationBoardEndpoint = "/notifications";
+        private readonly string notificationBoardEndpoint = "/notifications";        
 
         public string NotificationIdEndpoint(string id) => $"{this.notificationBoardEndpoint}/{id}";
 
