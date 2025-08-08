@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AppDesignerFolder>ObjectsProperties</AppDesignerFolder>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,10 +19,7 @@
     <PackageReference Include="Microsoft.Playwright" Version="1.53.0" />
     <PackageReference Include="MSTest" Version="3.9.3" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Simple.OData.Client" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
