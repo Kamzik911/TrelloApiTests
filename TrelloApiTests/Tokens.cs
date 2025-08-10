@@ -1,11 +1,36 @@
-﻿namespace TrelloApiTests
+﻿using System;
+
+namespace TrelloApiTests
 {
     public class Tokens
     {
-        static string[] lines = File.ReadAllLines("Credentials.txt");
-        public static string trelloApiKey = lines[0];
-        public static string trelloApiToken = lines[1];
-        public static string memberId = lines[2];
-        public static string calendarKey = lines[3];
-    }    
-}
+        private static string GetCredentials(int fileIndex)
+        {
+            const string fileName = "Credentials.txt";
+
+            if (!File.Exists(fileName))
+            {
+                throw new FileNotFoundException($"Missing credentials file: {fileName}");
+            }
+            
+            if (fileIndex < 0)            
+            {
+                throw new ArgumentOutOfRangeException(nameof(fileIndex), "Index cannot be negative ");
+            }
+            
+            var line = File.ReadLines(fileName).Skip(fileIndex).FirstOrDefault();
+            
+            if (line == null) 
+            {
+                throw new IndexOutOfRangeException($"Credentials file '{fileName}' does not contain a line at index {fileIndex}.");
+            }
+
+            return line;
+        }
+        public static string trelloApiKey = GetCredentials(0);
+        public static string trelloApiToken = GetCredentials(1);
+        public static string memberId = GetCredentials(2);
+        public static string calendarKey = GetCredentials(3);
+    }
+}     
+

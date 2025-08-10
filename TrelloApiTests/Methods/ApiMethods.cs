@@ -1,4 +1,6 @@
-﻿namespace TrelloApiTests.Methods
+﻿using RestSharp;
+
+namespace TrelloApiTests.Methods
 {
     public class ApiMethods : Tokens
     {
