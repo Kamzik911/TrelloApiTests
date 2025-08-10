@@ -35,16 +35,22 @@
             {
                 throw new Exception("Member id doesn't exist");
             }
-
-            var response = ApiMethods.GetRequestApiAsync(this.endpoints.MemberBoardBackgroundEndpoint(MembersProperties.idBackground));
-            var arrayResponse = JArray.Parse(response.Content).First;
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Console.WriteLine(arrayResponse.ToString());
-            Assert.IsFalse((bool)arrayResponse["tile"]);
-            ApiMethods.AlphabetArrayPatternCheck(response, "id");
-            ApiMethods.AlphabetArrayPatternCheck(response, "type");
-            ApiMethods.AlphabetArrayPatternCheck(response, "brightness");
-            ApiMethods.StringArrayPatternCheck(response, "color");
+            else if (string.IsNullOrEmpty(MembersProperties.idBackground))
+            {
+                throw new Exception("Background id doesn't exist");
+            }
+            else            
+            {
+                var response = ApiMethods.GetRequestApiAsync(this.endpoints.MemberBoardBackgroundEndpoint(MembersProperties.idBackground));
+                var arrayResponse = JArray.Parse(response.Content).First;
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Console.WriteLine(arrayResponse.ToString());
+                Assert.IsFalse((bool)arrayResponse["tile"]);
+                ApiMethods.AlphabetArrayPatternCheck(response, "id");
+                ApiMethods.AlphabetArrayPatternCheck(response, "type");
+                ApiMethods.AlphabetArrayPatternCheck(response, "brightness");
+                ApiMethods.StringArrayPatternCheck(response, "color");
+            }            
         }
     }
 }

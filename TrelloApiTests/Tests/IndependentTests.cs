@@ -11,14 +11,14 @@ namespace TrelloApiTests.Tests
         private ListMethods listMethods = new ListMethods();
 
         [TestMethod]
-        public void CreateBoard()
+        public void B001CreateBoard()
         {
             this.boardMethods.CreateBoard();
             this.boardMethods.DeleteBoard();
         }
 
         [TestMethod]
-        public void GetBoardId()
+        public void B002GetBoardId()
         {
             this.boardMethods.CreateBoard();
             this.boardMethods.GetBoard();
@@ -26,7 +26,7 @@ namespace TrelloApiTests.Tests
         }
 
         [TestMethod]
-        public void CreateACalendarKeyForABoard_ShouldPass()
+        public void B003CreateACalendarKeyForABoard_ShouldPass()
         {
             this.boardMethods.CreateBoard();
             this.boardMethods.CreateACalendarKeyForABoard();
@@ -34,7 +34,7 @@ namespace TrelloApiTests.Tests
         }
 
         [TestMethod]
-        public void CreateEmailKeyForBoard_ShouldPass()
+        public void B004CreateEmailKeyForBoard_ShouldPass()
         {
             this.boardMethods.CreateBoard();
             this.boardMethods.CreateEmailKeyForABoard();
@@ -42,7 +42,7 @@ namespace TrelloApiTests.Tests
         }
 
         [TestMethod]
-        public void UpdateBoard_ShouldPass()
+        public void B005UpdateBoard_ShouldPass()
         {
             this.boardMethods.CreateBoard();
             this.boardMethods.UpdateBoard();
@@ -60,7 +60,7 @@ namespace TrelloApiTests.Tests
         [DataRow("sky")]
         [DataRow("pink")]
         [DataRow("lime")]
-        public void CreateLabelOnBoard_ShouldPass(string color)
+        public void B006CreateLabelOnBoard_ShouldPass(string color)
         {
             this.boardMethods.CreateBoard();
             this.labelMethods.CreateLabelOnBoard(color);
@@ -69,7 +69,7 @@ namespace TrelloApiTests.Tests
 
         [DataTestMethod]
         [DataRow("yellow")]
-        public void GetLabelOnBoard_ShouldPass(string color)
+        public void B007GetLabelOnBoard_ShouldPass(string color)
         {
             this.boardMethods.CreateBoard();
             this.labelMethods.CreateLabelOnBoard(color);
@@ -80,7 +80,7 @@ namespace TrelloApiTests.Tests
         [DataTestMethod]
         [DataRow("yellow")]
         [DataRow("sky")]
-        public void UpdateCreatedLabel_ShouldPass(string color)
+        public void B008UpdateCreatedLabel_ShouldPass(string color)
         {
             this.boardMethods.CreateBoard();
             this.labelMethods.CreateLabelOnBoard(color);
@@ -88,15 +88,22 @@ namespace TrelloApiTests.Tests
             this.boardMethods.DeleteBoard();
         }
 
-        [DataTestMethod]
-        [DataRow("yellow")]
-        [DataRow("purple")]
-        public void CreateList_ShouldPass(string color)
+        [TestMethod]        
+        public void B009CreateList_ShouldPass()
         {
-            this.boardMethods.CreateBoard();
-            this.labelMethods.CreateLabelOnBoard(color);
+            this.boardMethods.CreateBoard();            
             this.listMethods.CreateList();
             this.boardMethods.DeleteBoard();
         }
+
+        [TestMethod]
+        public void B010GetList_ShouldPass()
+        {
+            this.boardMethods.CreateBoard();
+            this.listMethods.CreateList();
+            this.listMethods.GetListId();
+            this.boardMethods.DeleteBoard();
+        }
+
     }
 }
