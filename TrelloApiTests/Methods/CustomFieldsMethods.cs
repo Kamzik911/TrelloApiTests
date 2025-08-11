@@ -4,7 +4,7 @@
     {
         SettingEndpoints endpoints = new SettingEndpoints();
 
-        public void CreateCustomFieldOnBoard()
+        public async Task CreateCustomFieldOnBoard()
         {
             if (string.IsNullOrEmpty(BoardProperties.id))
                 {
@@ -20,16 +20,16 @@
                     type = "checkbox", // Valid values: checkbox, list, number, text, date 
                     pos = "top",
                 };
-                var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.customFieldEndpoint, customFieldBody);
+                var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.customFieldEndpoint, customFieldBody).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 var jsonResponse = JObject.Parse(response.Content);
                 id = jsonResponse["id"].ToString();
             }
         }
 
-        public void DeleteCustomFieldDefinition()
+        public async Task DeleteCustomFieldDefinition()
         {
-            var response = ApiMethods.DeleteRequestApiAsync(this.endpoints.CustomFieldIdEndpoint(id));
+            var response = await ApiMethods.DeleteRequestApiAsync(this.endpoints.CustomFieldIdEndpoint(id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }

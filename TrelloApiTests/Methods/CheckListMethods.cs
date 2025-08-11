@@ -5,7 +5,7 @@
         SettingEndpoints endpoints = new SettingEndpoints();
         string randomString = StringGenerator.GenerateString(15);
 
-        public void CreateCheckList()
+        public async Task CreateCheckList()
         {
             if (string.IsNullOrEmpty(BoardProperties.id))
             {
@@ -18,7 +18,7 @@
                     idCard = CardProperties.id,
                     name = this.randomString,
                 };
-                var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.checklistEndpoint, checklistBody);
+                var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.checklistEndpoint, checklistBody).ConfigureAwait(false);
                 var jsonRensponse = JObject.Parse(response.Content);
                 id = jsonRensponse["id"].ToString();
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -27,16 +27,16 @@
             }
         }
 
-        public void GetCheckList()
+        public async Task GetCheckList()
         {
             if (string.IsNullOrEmpty(id)) 
             {
-                var response = ApiMethods.GetRequestApiAsync(id);
+                var response = await ApiMethods.GetRequestApiAsync(id).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
 
-        public void DeleteCheckList() 
+        public async Task DeleteCheckList() 
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -44,7 +44,7 @@
             }
             else
             {
-                var response = ApiMethods.DeleteRequestApiAsync(this.endpoints.ChecklistIdEndpoint(id));
+                var response = await ApiMethods.DeleteRequestApiAsync(this.endpoints.ChecklistIdEndpoint(id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

@@ -1,7 +1,4 @@
-﻿using Microsoft.Testing.Platform.OutputDevice;
-using System.Drawing;
-
-namespace TrelloApiTests.Tests
+﻿namespace TrelloApiTests.Tests
 {
     [TestClass]
     public class IndependentTests
@@ -10,46 +7,52 @@ namespace TrelloApiTests.Tests
         private LabelMethods labelMethods = new LabelMethods();
         private ListMethods listMethods = new ListMethods();
 
-        [TestMethod]
-        public void B001CreateBoard()
+        [TestInitialize]
+        public void TestInitialization()
         {
-            this.boardMethods.CreateBoard();
-            this.boardMethods.DeleteBoard();
+
+        }
+        
+        [TestMethod]
+        public async Task B001CreateBoard()
+        {
+            await boardMethods.CreateBoard().ConfigureAwait(false);
+            await boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
         [TestMethod]
-        public void B002GetBoardId()
+        public async Task B002GetBoardId()
         {
-            this.boardMethods.CreateBoard();
-            this.boardMethods.GetBoard();
-            this.boardMethods.DeleteBoard();
+            await boardMethods.CreateBoard().ConfigureAwait(false);
+            await boardMethods.GetBoard().ConfigureAwait(false);
+            await boardMethods.DeleteBoard().ConfigureAwait(false);                                  
         }
 
         [TestMethod]
-        public void B003CreateACalendarKeyForABoard_ShouldPass()
+        public async Task B003CreateACalendarKeyForABoard_ShouldPass()
         {
-            this.boardMethods.CreateBoard();
-            this.boardMethods.CreateACalendarKeyForABoard();
-            this.boardMethods.DeleteBoard();
+            await boardMethods.CreateBoard().ConfigureAwait(false);
+            await boardMethods.CreateACalendarKeyForABoard().ConfigureAwait(false);
+            await boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
         [TestMethod]
-        public void B004CreateEmailKeyForBoard_ShouldPass()
+        public async Task B004CreateEmailKeyForBoard_ShouldPass()
         {
-            this.boardMethods.CreateBoard();
-            this.boardMethods.CreateEmailKeyForABoard();
-            this.boardMethods.DeleteBoard();
+            await boardMethods.CreateBoard().ConfigureAwait(false);
+            await boardMethods.CreateEmailKeyForABoard().ConfigureAwait(false); ;
+            await boardMethods.DeleteBoard().ConfigureAwait(false); ;
         }
 
         [TestMethod]
         public void B005UpdateBoard_ShouldPass()
         {
-            this.boardMethods.CreateBoard();
-            this.boardMethods.UpdateBoard();
-            this.boardMethods.DeleteBoard();
+            this.boardMethods.CreateBoard().ConfigureAwait(false);
+            this.boardMethods.UpdateBoard().ConfigureAwait(false); ;
+            this.boardMethods.DeleteBoard().ConfigureAwait(false); ;
         }
 
-        [DataTestMethod]
+        [TestMethodAttribute]
         [DataRow("yellow")]
         [DataRow("purple")]
         [DataRow("blue")]
@@ -62,47 +65,47 @@ namespace TrelloApiTests.Tests
         [DataRow("lime")]
         public void B006CreateLabelOnBoard_ShouldPass(string color)
         {
-            this.boardMethods.CreateBoard();
-            this.labelMethods.CreateLabelOnBoard(color);
-            this.boardMethods.DeleteBoard();
+            this.boardMethods.CreateBoard().ConfigureAwait(false);
+            this.labelMethods.CreateLabelOnBoard(color).ConfigureAwait(false);
+            this.boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
-        [DataTestMethod]
+        [TestMethodAttribute]
         [DataRow("yellow")]
         public void B007GetLabelOnBoard_ShouldPass(string color)
         {
-            this.boardMethods.CreateBoard();
-            this.labelMethods.CreateLabelOnBoard(color);
-            this.labelMethods.GetCreatedLabel();
-            this.boardMethods.DeleteBoard();
+            this.boardMethods.CreateBoard().ConfigureAwait(false);
+            this.labelMethods.CreateLabelOnBoard(color).ConfigureAwait(false);
+            this.labelMethods.GetCreatedLabel().ConfigureAwait(false);
+            this.boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
-        [DataTestMethod]
+        [TestMethodAttribute]
         [DataRow("yellow")]
         [DataRow("sky")]
         public void B008UpdateCreatedLabel_ShouldPass(string color)
         {
-            this.boardMethods.CreateBoard();
-            this.labelMethods.CreateLabelOnBoard(color);
-            this.labelMethods.UpdateCreatedLabel(color);
-            this.boardMethods.DeleteBoard();
+            this.boardMethods.CreateBoard().ConfigureAwait(false);
+            this.labelMethods.CreateLabelOnBoard(color).ConfigureAwait(false);
+            this.labelMethods.UpdateCreatedLabel(color).ConfigureAwait(false);
+            this.boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
         [TestMethod]        
         public void B009CreateList_ShouldPass()
         {
-            this.boardMethods.CreateBoard();            
-            this.listMethods.CreateList();
-            this.boardMethods.DeleteBoard();
+            this.boardMethods.CreateBoard().ConfigureAwait(false);            
+            this.listMethods.CreateList().ConfigureAwait(false);
+            this.boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
         [TestMethod]
         public void B010GetList_ShouldPass()
         {
-            this.boardMethods.CreateBoard();
-            this.listMethods.CreateList();
-            this.listMethods.GetListId();
-            this.boardMethods.DeleteBoard();
+            this.boardMethods.CreateBoard().ConfigureAwait(false);
+            this.listMethods.CreateList().ConfigureAwait(false);
+            this.listMethods.GetListId().ConfigureAwait(false);
+            this.boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
     }

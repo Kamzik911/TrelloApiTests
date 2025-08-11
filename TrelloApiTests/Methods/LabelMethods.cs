@@ -4,7 +4,7 @@
     {
         private SettingEndpoints endpoints = new SettingEndpoints();
 
-        public void CreateLabelOnBoard(string color)
+        public async Task CreateLabelOnBoard(string color)
         {
             if (string.IsNullOrEmpty(BoardProperties.id))
             {
@@ -19,7 +19,7 @@
                     idBoard = BoardProperties.id,
                 };
 
-                var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.labelsEndpoint, labelBody);
+                var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.labelsEndpoint, labelBody).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 var jsonResponse = JObject.Parse(response.Content);
                 id = jsonResponse["id"].ToString();
@@ -29,18 +29,18 @@
             }
         }
 
-        public void GetCreatedLabel()
+        public async Task GetCreatedLabel()
         {
             if (string.IsNullOrEmpty(BoardProperties.id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
 
-            var response = ApiMethods.GetRequestApiAsync(this.endpoints.LabelIdEndpoint(id));
+            var response = await ApiMethods.GetRequestApiAsync(endpoints.LabelIdEndpoint(id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
-        public void UpdateCreatedLabel(string color)
+        public async Task UpdateCreatedLabel(string color)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -61,14 +61,14 @@
                 var request = new RestRequest($"{this.endpoints.LabelIdEndpoint(id)}", Method.Put).AddBody(labelBody);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
-                var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+                var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(labelBody.color, jsonResponse["color"]);
             }
         }
 
-        public void DeleteLabel()
+        public async Task DeleteLabel()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -80,7 +80,7 @@
             }
             else
             {
-                var response = ApiMethods.DeleteRequestApiAsync(this.endpoints.LabelIdEndpoint(id));
+                var response = await ApiMethods.DeleteRequestApiAsync(this.endpoints.LabelIdEndpoint(id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

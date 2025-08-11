@@ -8,19 +8,19 @@
         [TestMethod]
         public void M100_GetMemberId_ShouldPass()
         {
-            this.members.GetMemberId();
+            this.members.GetMemberId().ConfigureAwait(false);
         }
 
         [TestMethod]
         public void M101_UpdateMember_ShouldPass()
         {
-          this.members.UpdateMember();
+          this.members.UpdateMember().ConfigureAwait(false);
         }
 
         [TestMethod]
         public void M102_GetBoardBackgroundForMember_ShouldPass()
         {
-            this.members.GetBoardBackgroundForMember();
+            this.members.GetBoardBackgroundForMember().ConfigureAwait(false);
         }
     }
 
@@ -37,40 +37,40 @@
         [TestMethod]
         public void A100_CreateBoard_ShouldPass()
         {
-            this.boards.CreateBoard();
+            boards.CreateBoard().ConfigureAwait(false);
         }
 
         [TestMethod]
         public void A101_GetBoard_ShouldPass()
         {
-            this.boards.GetBoard();
+            this.boards.GetBoard().ConfigureAwait(false);
         }
 
         //[TestMethod] //Test for Power-Up
         public void A102CreateCustomFieldOnBoard_ShouldPass()
         {
-            this.customFields.CreateCustomFieldOnBoard();
+            this.customFields.CreateCustomFieldOnBoard().ConfigureAwait(false);
         }
 
         [TestMethod]
         public void A103_CreateACalendarKeyForABoard_ShouldPass()
         {
-            boards.CreateACalendarKeyForABoard();
+            boards.CreateACalendarKeyForABoard().ConfigureAwait(false);
         }
 
         [TestMethod]
         public void A104_DCreateEmailKeyForABoard_ShouldPass()
         {
-            boards.CreateEmailKeyForABoard();
+            boards.CreateEmailKeyForABoard().ConfigureAwait(false);
         }
 
         [TestMethod]
         public void A105_UpdateBoard_ShouldPass()
         {
-            boards.UpdateBoard();
+            boards.UpdateBoard().ConfigureAwait(false);
         }
 
-        [DataTestMethod]
+        [TestMethodAttribute]
         [DataRow("yellow")]
         [DataRow("purple")]
         [DataRow("blue")]
@@ -83,16 +83,16 @@
         [DataRow("lime")]
         public void A200_CreateLabelOnBoard_ShouldPass(string color)
         {
-            labels.CreateLabelOnBoard(color);
+            labels.CreateLabelOnBoard(color).ConfigureAwait(false);
         }
 
         [TestMethod]
         public void A201_GetLabelOnBoard_ShouldPass()
         {
-            labels.GetCreatedLabel();
+            labels.GetCreatedLabel().ConfigureAwait(false);
         }
 
-        [DataTestMethod]
+        [TestMethodAttribute]
         [DataRow("yellow")]
         [DataRow("purple")]
         [DataRow("blue")]
@@ -105,7 +105,7 @@
         [DataRow("lime")]
         public void A202_UpdateCreatedLabel_ShouldPass(string color)
         {
-            labels.UpdateCreatedLabel(color);
+            labels.UpdateCreatedLabel(color).ConfigureAwait(false);
         }
 
         [TestMethod]

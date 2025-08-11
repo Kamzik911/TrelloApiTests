@@ -4,16 +4,16 @@
     {
         private SettingEndpoints endpoints = new SettingEndpoints();
 
-        public void GetMemberId()
+        public async Task GetMemberId()
         {
-            var response = ApiMethods.GetRequestApiAsync(this.endpoints.MemberIdEndpoint(Tokens.memberId));
+            var response = await ApiMethods.GetRequestApiAsync(this.endpoints.MemberIdEndpoint(Tokens.memberId)).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             MembersProperties.id = jsonResponse["id"].ToString();
             Assert.IsNotNull(MembersProperties.id);
         }
 
-        public void UpdateMember() 
+        public async Task UpdateMember() 
         {
             if (string.IsNullOrEmpty(MembersProperties.id))
             {
@@ -24,12 +24,12 @@
             {
                 id = Tokens.memberId,
             };
-            var response = ApiMethods.PutBodyRequestApiAsync(this.endpoints.MemberIdEndpoint(MembersProperties.id), memberBody);
+            var response = await ApiMethods.PutBodyRequestApiAsync(this.endpoints.MemberIdEndpoint(MembersProperties.id), memberBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
-        public void GetBoardBackgroundForMember()
+        public async Task GetBoardBackgroundForMember()
         {
             if (string.IsNullOrEmpty(MembersProperties.id))
             {
@@ -41,7 +41,7 @@
             }
             else            
             {
-                var response = ApiMethods.GetRequestApiAsync(this.endpoints.MemberBoardBackgroundEndpoint(MembersProperties.idBackground));
+                var response = await ApiMethods.GetRequestApiAsync(this.endpoints.MemberBoardBackgroundEndpoint(MembersProperties.idBackground)).ConfigureAwait(false);
                 var arrayResponse = JArray.Parse(response.Content).First;
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Console.WriteLine(arrayResponse.ToString());

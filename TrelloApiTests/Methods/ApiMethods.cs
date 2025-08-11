@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using System.Threading.Tasks;
 
 namespace TrelloApiTests.Methods
 {
@@ -8,12 +9,12 @@ namespace TrelloApiTests.Methods
         static string numberPattern = "[0-9]";
         static string alphabetPattern = "[A-Za-z]";
 
-        public static RestResponse GetRequestApiAsync(string endpoint)
+        public static async Task<RestResponse> GetRequestApiAsync(string endpoint)
         {
             var request = new RestRequest($"{endpoint}", Method.Get);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+            var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);            
             return response;
         }
 
@@ -26,30 +27,29 @@ namespace TrelloApiTests.Methods
             return response;
         }
 
-        public static RestResponse PostRequestApiAsync(string endpoint)
+        public static async Task<RestResponse> PostRequestApiAsync(string endpoint)
         {
             var request = new RestRequest($"{endpoint}", Method.Post);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+            var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
             return response;
         }
 
-        public static RestResponse PostBodyRequestApiAsync(string endpoint, object body)
+        public static async Task<RestResponse> PostBodyRequestApiAsync(string endpoint, object body)
         {
             var request = new RestRequest($"{endpoint}", Method.Post).AddBody(body);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
-            return response;
+            return await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);            
         }
 
-        public static RestResponse PutBodyRequestApiAsync(string endpoint, object body)
+        public static async Task<RestResponse> PutBodyRequestApiAsync(string endpoint, object body)
         {
             var request = new RestRequest($"{endpoint}", Method.Put).AddBody(body);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+            var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
             return response;
         }
 
@@ -62,12 +62,12 @@ namespace TrelloApiTests.Methods
             return response;
         }
 
-        public static RestResponse DeleteRequestApiAsync(string endpoint)
+        public static async Task<RestResponse> DeleteRequestApiAsync(string endpoint)
         {
             var request = new RestRequest($"{endpoint}", Method.Delete);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+            var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
             return response;
         }
 

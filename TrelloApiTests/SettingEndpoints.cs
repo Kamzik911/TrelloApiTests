@@ -8,54 +8,54 @@
         // Boards endpoints
         public readonly string boardsEndpoint = "/boards";
 
-        public string BoardIdEndpoint(string boardId) => $"{this.boardsEndpoint}/{boardId}";
+        public string BoardIdEndpoint(string boardId) => $"{boardsEndpoint}/{boardId}";
 
         // Labels endpoints
         public readonly string labelsEndpoint = "/labels";
 
-        public string LabelIdEndpoint(string labelId) => $"{this.labelsEndpoint}/{labelId}";
+        public string LabelIdEndpoint(string labelId) => $"{labelsEndpoint}/{labelId}";
 
         // Cards endpoints
         public readonly string cardsEndpoint = "/cards";
 
-        public string CardsIdEndpoint(string cardId) => $"{this.cardsEndpoint}/{cardId}";
+        public string CardsIdEndpoint(string cardId) => $"{cardsEndpoint}/{cardId}";
 
         // Lists endpoints
         private readonly string listsEndpoint = "/lists";
 
-        public string ListIdEndpoint(string id) => $"{this.listsEndpoint}/{id}";
+        public string ListIdEndpoint(string id) => $"{listsEndpoint}/{id}";
 
-        public string ArchiveAllcardsEndpoint(string id) => $"{this.listsEndpoint}/{id}/archiveAllCards";
+        public string ArchiveAllcardsEndpoint(string id) => $"{listsEndpoint}/{id}/archiveAllCards";
 
-        public string ActionsForListEndpoint(string id) => $"{this.listsEndpoint}/{id}/actions";
+        public string ActionsForListEndpoint(string id) => $"{listsEndpoint}/{id}/actions";
 
-        public string GetBoardListIsOn(string id) => $"{this.listsEndpoint}/{id}/board";
+        public string GetBoardListIsOn(string id) => $"{listsEndpoint}/{id}/board";
 
-        public string GetCardsListIsOn(string id) => $"{this.listsEndpoint}/{id}/cards";
+        public string GetCardsListIsOn(string id) => $"{listsEndpoint}/{id}/cards";
 
         // Custom field endpoints
         public readonly string customFieldEndpoint = "/customFields";
 
-        public string CustomFieldIdEndpoint(string id) => $"{this.customFieldEndpoint}/{id}";
+        public string CustomFieldIdEndpoint(string id) => $"{customFieldEndpoint}/{id}";
 
         // Organization endpoints
         public readonly string organizationEndpoint = "/organizations";
 
-        public string OrganizationId(string id) => $"{this.organizationEndpoint}/{id}";
+        public string OrganizationId(string id) => $"{organizationEndpoint}/{id}";
 
-        public string OrganizationBoardId(string id) => $"{this.organizationEndpoint}/{id}/boards";
+        public string OrganizationBoardId(string id) => $"{organizationEndpoint}/{id}/boards";
 
         // Calendar endpoints
-        public string CalendarEndpoint(string id) => $"{this.boardsEndpoint}/{id}/calendarKey/generate";
+        public string CalendarEndpoint(string id) => $"{boardsEndpoint}/{id}/calendarKey/generate";
 
         // Email endpoints
-        public string EmailEndpoint(string id) => $"{this.boardsEndpoint}/{id}/emailKey/generate";
+        public string EmailEndpoint(string id) => $"{boardsEndpoint}/{id}/emailKey/generate";
 
         // Tag endpoints
         //private readonly string tagEndopint = "/idTags";
 
         // MarkedAsViewed endpoints
-        public string MarkedAsViewedEndpoint(string id) => $"{this.boardsEndpoint}/{id}/markedAsViewed";
+        public string MarkedAsViewedEndpoint(string id) => $"{boardsEndpoint}/{id}/markedAsViewed";
 
         // Member endpoints
         private static string memberEndpoint = "/members";
@@ -68,13 +68,13 @@
         // Checklists endpoints
         public readonly string checklistEndpoint = "/checklists";
 
-        public string ChecklistIdEndpoint(string id) => $"{this.checklistEndpoint}/{id}";
+        public string ChecklistIdEndpoint(string id) => $"{checklistEndpoint}/{id}";
 
         // Notification endpoints
         private readonly string notificationBoardEndpoint = "/notifications";        
 
-        public string NotificationIdEndpoint(string id) => $"{this.notificationBoardEndpoint}/{id}";
+        public string NotificationIdEndpoint(string id) => $"{notificationBoardEndpoint}/{id}";
 
-        public string NotificationBoardIdEndpoint(string id) => $"{this.notificationBoardEndpoint}/{id}/board";
+        public string NotificationBoardIdEndpoint(string id) => $"{notificationBoardEndpoint}/{id}/board";
     }
 }

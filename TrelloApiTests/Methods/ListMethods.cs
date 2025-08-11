@@ -4,7 +4,7 @@
     {
         private SettingEndpoints endpoints = new SettingEndpoints();
 
-        public void CreateList()
+        public async Task CreateList()
         {
             if (string.IsNullOrEmpty(BoardProperties.id))
             {
@@ -16,7 +16,7 @@
                 name = "Rest Api list",
                 idBoard = BoardProperties.id,
             };
-            var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody);
+            var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -24,7 +24,7 @@
             Assert.AreEqual(id, jsonResponse["id"]);            
         }
 
-        public void UpdateListId()
+        public async Task UpdateListId()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -37,24 +37,24 @@
                 closed = false,
             };
 
-            var response = ApiMethods.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody);
+            var response = await ApiMethods.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.closed, jsonResponse["closed"]);
             ApiMethods.NumberPatternCheck(response, "pos");            
         }
 
-        public void GetListId()
+        public async Task GetListId()
         {
             if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("Id list doesn't exist");
             }
-            var response = ApiMethods.GetRequestApiAsync(this.endpoints.ListIdEndpoint(id));
+            var response = await ApiMethods.GetRequestApiAsync(this.endpoints.ListIdEndpoint(id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
-        public void ArchiveUnarchiveList(bool value)
+        public async Task ArchiveUnarchiveList(bool value)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -67,14 +67,14 @@
                     id = id,
                     closed = value
                 };
-                var response = ApiMethods.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody);
+                var response = await ApiMethods.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(listBody.closed, (bool)jsonResponse["closed"]);
             }
         }
 
-        public void GetActionsForList()
+        public async Task GetActionsForList()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -82,13 +82,13 @@
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(this.endpoints.GetBoardListIsOn(id));
+                var response = await ApiMethods.GetRequestApiAsync(this.endpoints.GetBoardListIsOn(id)).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
 
-        public void GetCardInList()
+        public async Task GetCardInList()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -104,14 +104,14 @@
                 var request = new RestRequest($"{this.endpoints.GetCardsListIsOn(id)}", Method.Get);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
-                var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;                
+                var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
                 var jsonResponse = JArray.Parse(response.Content);                
                 bool location = jsonResponse.Any(l => l["badges"]?["location"].Type == JTokenType.Boolean);
                 Assert.IsTrue(location);
             }
         }
 
-        public void ArchiveAllCardsInList()
+        public async Task ArchiveAllCardsInList()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -119,7 +119,7 @@
             }
             else
             {
-                var response = ApiMethods.PostRequestApiAsync(this.endpoints.ArchiveAllcardsEndpoint(id));
+                var response = await ApiMethods.PostRequestApiAsync(this.endpoints.ArchiveAllcardsEndpoint(id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

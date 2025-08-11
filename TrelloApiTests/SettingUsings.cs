@@ -5,3 +5,6 @@ global using TrelloApiTests.Methods;
 global using System.Text.RegularExpressions;
 global using TrelloApiTests.ObjectsProperties;
 global using Microsoft.AspNetCore.OData;
+global using Microsoft.Testing.Platform.OutputDevice;
+global using System.Drawing;
+global using System.Threading.Tasks;

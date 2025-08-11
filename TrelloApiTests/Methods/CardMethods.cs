@@ -4,20 +4,20 @@
     {
         SettingEndpoints endpoints = new SettingEndpoints();
 
-        public void CreateNewCard()
+        public async Task CreateNewCard()
         {
             var cardBody = new
             {
                 name = "RestApi tests",
                 idList = ListProperties.id,
             };
-            var response = ApiMethods.PostBodyRequestApiAsync(endpoints.cardsEndpoint, cardBody);
+            var response = await ApiMethods.PostBodyRequestApiAsync(endpoints.cardsEndpoint, cardBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
-        public void GetCardId()
+        public async Task GetCardId()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -25,12 +25,12 @@
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(endpoints.CardsIdEndpoint(id));
+                var response = await ApiMethods.GetRequestApiAsync(endpoints.CardsIdEndpoint(id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
 
-        public void DeleteCardId()
+        public async Task DeleteCardId()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -41,7 +41,7 @@
                 var request = new RestRequest($"{endpoints.CardsIdEndpoint(id)}", Method.Delete);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
-                var response = MainRestApiUrl.Client.ExecuteAsync(request).Result;
+                var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

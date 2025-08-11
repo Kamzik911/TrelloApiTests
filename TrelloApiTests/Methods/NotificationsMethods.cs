@@ -5,10 +5,10 @@
         SettingEndpoints endpoints = new SettingEndpoints();
         BoardMethods boardMethods = new BoardMethods();
 
-        public void NotificationDoesntExist()
+        public async Task NotificationDoesntExist()
         {
             
-            var response = ApiMethods.GetRequestApiAsync(endpoints.NotificationIdEndpoint(id));
+            var response = await ApiMethods.GetRequestApiAsync(endpoints.NotificationIdEndpoint(id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);                                     
         }
     }

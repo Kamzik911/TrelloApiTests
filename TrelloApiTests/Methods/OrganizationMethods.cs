@@ -5,7 +5,7 @@
         private SettingEndpoints endpoints = new SettingEndpoints();
         private BoardMethods boardMethods = new BoardMethods();
 
-        public void CreateOrganization()
+        public async Task CreateOrganization()
         {
             var orgBody = new
             {
@@ -14,7 +14,7 @@
                 desc = StringGenerator.GenerateString(150),
                 website = UrlGenerator.GenerateRandomUrl(),
             };
-            var response = ApiMethods.PostBodyRequestApiAsync(this.endpoints.organizationEndpoint, orgBody);
+            var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.organizationEndpoint, orgBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             id = jsonResponse["id"].ToString();
             Assert.IsNotNull(id);
@@ -28,7 +28,7 @@
             Console.WriteLine(jsonResponse.ToString());
         }
 
-        public void UpdateOrganization()
+        public async Task UpdateOrganization()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -43,7 +43,7 @@
                     website = UrlGenerator.GenerateRandomUrl(),
                 };
 
-                var response = ApiMethods.PutBodyRequestApiAsync(this.endpoints.OrganizationId(id), orgBody);
+                var response = await ApiMethods.PutBodyRequestApiAsync(this.endpoints.OrganizationId(id), orgBody).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(orgBody.displayName, jsonResponse["displayName"]);
@@ -52,7 +52,7 @@
             }
         }
 
-        public void GetOrganization()
+        public async Task GetOrganization()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -60,13 +60,13 @@
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(this.endpoints.OrganizationId(id));
+                var response = await ApiMethods.GetRequestApiAsync(this.endpoints.OrganizationId(id)).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
 
-        public void GetFieldOnOrganization()
+        public async Task GetFieldOnOrganization()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -74,18 +74,13 @@
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(this.endpoints.CustomFieldIdEndpoint(id));
+                var response = await ApiMethods.GetRequestApiAsync(this.endpoints.CustomFieldIdEndpoint(id)).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
-
-        public void CreateBoard()
-        {
-            this.boardMethods.CreateBoard();
-        }
-
-        public void GetBoardInOrganization()
+        
+        public async Task GetBoardInOrganization()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -93,14 +88,14 @@
             }
             else
             {
-                var response = ApiMethods.GetRequestApiAsync(this.endpoints.OrganizationBoardId(id));
+                var response = await ApiMethods.GetRequestApiAsync(this.endpoints.OrganizationBoardId(id)).ConfigureAwait(false);
                 var jsonResponse = JArray.Parse(response.Content).First;
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.IsNotNull(jsonResponse["id"]);
             }
         }
 
-        public void DeleteOrganization()
+        public async Task DeleteOrganization()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -108,14 +103,9 @@
             }
             else
             {
-                var response = ApiMethods.DeleteRequestApiAsync(this.endpoints.OrganizationId(id));
+                var response = await ApiMethods.DeleteRequestApiAsync(this.endpoints.OrganizationId(id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
-        }
-
-        public void DeleteBoard()
-        {
-            this.boardMethods.DeleteBoard();
         }
     }
 }
