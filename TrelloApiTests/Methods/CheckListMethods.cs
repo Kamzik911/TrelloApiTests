@@ -7,7 +7,7 @@
 
         public async Task CreateCheckList()
         {
-            if (string.IsNullOrEmpty(BoardProperties.id))
+            if (string.IsNullOrEmpty(BoardProperties.Id))
             {
                 throw new Exception("Board ID doesn't exist");
             }
@@ -30,6 +30,10 @@
         public async Task GetCheckList()
         {
             if (string.IsNullOrEmpty(id)) 
+            {
+                throw new Exception("Checklist id doesn't exist");
+            }
+            else
             {
                 var response = await ApiMethods.GetRequestApiAsync(id).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

@@ -21,7 +21,7 @@
         public string CardsIdEndpoint(string cardId) => $"{cardsEndpoint}/{cardId}";
 
         // Lists endpoints
-        private readonly string listsEndpoint = "/lists";
+        public readonly string listsEndpoint = "/lists";
 
         public string ListIdEndpoint(string id) => $"{listsEndpoint}/{id}";
 

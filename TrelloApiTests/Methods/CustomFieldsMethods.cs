@@ -6,7 +6,7 @@
 
         public async Task CreateCustomFieldOnBoard()
         {
-            if (string.IsNullOrEmpty(BoardProperties.id))
+            if (string.IsNullOrEmpty(BoardProperties.Id))
                 {
                     throw new Exception("Board Id doesn't exist");
                 }
@@ -14,7 +14,7 @@
             {
                 var customFieldBody = new
                 {
-                    idModel = BoardProperties.id,
+                    idModel = BoardProperties.Id,
                     modelType = "board",
                     name = "New custom field",
                     type = "checkbox", // Valid values: checkbox, list, number, text, date 

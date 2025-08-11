@@ -46,10 +46,10 @@
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Console.WriteLine(arrayResponse.ToString());
                 Assert.IsFalse((bool)arrayResponse["tile"]);
-                ApiMethods.AlphabetArrayPatternCheck(response, "id");
-                ApiMethods.AlphabetArrayPatternCheck(response, "type");
-                ApiMethods.AlphabetArrayPatternCheck(response, "brightness");
-                ApiMethods.StringArrayPatternCheck(response, "color");
+                Assert.IsTrue(ApiMethods.AlphabetArrayPatternCheck(response, "id"));
+                Assert.IsTrue(ApiMethods.AlphabetArrayPatternCheck(response, "type"));
+                Assert.IsTrue(ApiMethods.AlphabetArrayPatternCheck(response, "brightness"));
+                Assert.IsTrue(ApiMethods.StringArrayPatternCheck(response, "color"));
             }            
         }
     }

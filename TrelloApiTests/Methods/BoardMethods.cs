@@ -3,7 +3,7 @@
     public class BoardMethods : BoardProperties
     {
         private static readonly SettingEndpoints endpoints = new SettingEndpoints();
-        private readonly Tokens tokensForBoards = new Tokens();
+        private readonly Tokens tokensForBoards = new Tokens();        
 
         private string randomString = StringGenerator.GenerateString(15);
 
@@ -16,7 +16,7 @@
             };
             var response = await ApiMethods.PostBodyRequestApiAsync(endpoints.boardsEndpoint, boardBody).ConfigureAwait(false);
             JObject jsonObjects = JObject.Parse(response.Content);
-            id = jsonObjects["id"].ToString();
+            Id = jsonObjects["id"].ToString();
             idOrganization = jsonObjects["idOrganization"]?.ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             ApiMethods.StringPatternCheck(response, "name");
@@ -33,54 +33,54 @@
                 id = Tokens.calendarKey,
             };
 
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(Id))
             {
                 throw new Exception("Board id is empty");
             }
             else
             {
-                var response = await ApiMethods.PostBodyRequestApiAsync(endpoints.CalendarEndpoint(id), calendarKeyBody).ConfigureAwait(false);
-                Assert.IsNotNull(id);
+                var response = await ApiMethods.PostBodyRequestApiAsync(endpoints.CalendarEndpoint(Id), calendarKeyBody).ConfigureAwait(false);
+                Assert.IsNotNull(Id);
                 Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
             }
         }
 
         public async Task CreateEmailKeyForABoard()
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(Id))
             {
                 throw new Exception("Created board ID is null or empty.");
             }
-            var response = await ApiMethods.PostRequestApiAsync(endpoints.EmailEndpoint(id)).ConfigureAwait(false);
+            var response = await ApiMethods.PostRequestApiAsync(endpoints.EmailEndpoint(Id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public async Task GetBoard()
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(Id))
             {
                 throw new Exception("Created board ID is null or empty.");
             }
             else
             {
-                var response = await ApiMethods.GetRequestApiAsync(endpoints.BoardIdEndpoint(id)).ConfigureAwait(false);
+                var response = await ApiMethods.GetRequestApiAsync(endpoints.BoardIdEndpoint(Id)).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
-                Assert.AreEqual(id, jsonResponse["id"]);
+                Assert.AreEqual(Id, jsonResponse["id"]);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }            
         }
 
         public async Task MarkBoardViewed()
         {
-            var response = await ApiMethods.PostRequestApiAsync(endpoints.MarkedAsViewedEndpoint(id)).ConfigureAwait(false);
+            var response = await ApiMethods.PostRequestApiAsync(endpoints.MarkedAsViewedEndpoint(Id)).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
-            Assert.AreEqual(id, jsonResponse["id"]);
+            Assert.AreEqual(Id, jsonResponse["id"]);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public async Task UpdateBoard()
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(Id))
             {
                 throw new Exception("Created board ID is null or empty.");
             }
@@ -88,7 +88,7 @@
             {
                 name = this.randomString,
             };
-            var response = await ApiMethods.PutBodyRequestApiAsync(endpoints.BoardIdEndpoint(id), boardBody).ConfigureAwait(false);
+            var response = await ApiMethods.PutBodyRequestApiAsync(endpoints.BoardIdEndpoint(Id), boardBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(boardBody.name, jsonResponse["name"]);
@@ -98,12 +98,12 @@
 
         public async Task MarkBoardAsViewed()
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(Id))
             {
                 throw new Exception("Created board ID is null or empty.");
             }
 
-            var request = new RestRequest(endpoints.MarkedAsViewedEndpoint(id), Method.Post);
+            var request = new RestRequest(endpoints.MarkedAsViewedEndpoint(Id), Method.Post);
             request.AddQueryParameter("key", Tokens.trelloApiKey);
             request.AddQueryParameter("token", Tokens.trelloApiToken);
             var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
@@ -113,11 +113,11 @@
 
         public async Task DeleteBoard()
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(Id))
             {
                 throw new InvalidOperationException("Created board ID is null.");
             }
-            var response = await ApiMethods.DeleteRequestApiAsync(endpoints.BoardIdEndpoint(id)).ConfigureAwait(false);
+            var response = await ApiMethods.DeleteRequestApiAsync(endpoints.BoardIdEndpoint(Id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }

@@ -6,7 +6,7 @@
 
         public async Task CreateLabelOnBoard(string color)
         {
-            if (string.IsNullOrEmpty(BoardProperties.id))
+            if (string.IsNullOrEmpty(BoardProperties.Id))
             {
                 throw new Exception("Board ID doens't exist.");
             }
@@ -16,7 +16,7 @@
                 {
                     name = "New rest api label",
                     color = color,
-                    idBoard = BoardProperties.id,
+                    idBoard = BoardProperties.Id,
                 };
 
                 var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.labelsEndpoint, labelBody).ConfigureAwait(false);
@@ -31,7 +31,7 @@
 
         public async Task GetCreatedLabel()
         {
-            if (string.IsNullOrEmpty(BoardProperties.id))
+            if (string.IsNullOrEmpty(BoardProperties.Id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
@@ -42,7 +42,7 @@
 
         public async Task UpdateCreatedLabel(string color)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(BoardProperties.Id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
@@ -70,7 +70,7 @@
 
         public async Task DeleteLabel()
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(BoardProperties.Id))
             {
                 throw new Exception("Created board ID is null or empty");
             }

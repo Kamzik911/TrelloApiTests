@@ -20,7 +20,7 @@
             Assert.IsNotNull(id);
             Assert.AreEqual(id, jsonResponse["id"]);
             Assert.IsNotNull(jsonResponse["name"]);
-            ApiMethods.StringPatternCheck(response, "displayName");
+            Assert.IsTrue(ApiMethods.StringPatternCheck(response, "displayName"));
             Assert.AreEqual(orgBody.displayName, jsonResponse["displayName"]);
             Assert.AreEqual(orgBody.desc, jsonResponse["desc"]);
             Assert.AreEqual(orgBody.website, jsonResponse["website"]);

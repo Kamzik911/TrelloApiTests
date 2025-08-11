@@ -6,7 +6,7 @@
 
         public async Task CreateList()
         {
-            if (string.IsNullOrEmpty(BoardProperties.id))
+            if (string.IsNullOrEmpty(BoardProperties.Id))
             {
                 throw new Exception("Id board doesn't exist");
             }
@@ -14,9 +14,9 @@
             var listBody = new
             {
                 name = "Rest Api list",
-                idBoard = BoardProperties.id,
+                idBoard = BoardProperties.Id,
             };
-            var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
+            var response = await ApiMethods.PostBodyRequestApiAsync(endpoints.listsEndpoint, listBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -41,7 +41,7 @@
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.closed, jsonResponse["closed"]);
-            ApiMethods.NumberPatternCheck(response, "pos");            
+            Assert.IsTrue(ApiMethods.NumberPatternCheck(response, "pos"));
         }
 
         public async Task GetListId()
@@ -50,7 +50,7 @@
             {
                 throw new Exception("Id list doesn't exist");
             }
-            var response = await ApiMethods.GetRequestApiAsync(this.endpoints.ListIdEndpoint(id)).ConfigureAwait(false);
+            var response = await ApiMethods.GetRequestApiAsync(endpoints.ListIdEndpoint(id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -67,7 +67,7 @@
                     id = id,
                     closed = value
                 };
-                var response = await ApiMethods.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
+                var response = await ApiMethods.PutBodyRequestApiAsync(endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(listBody.closed, (bool)jsonResponse["closed"]);
@@ -82,7 +82,7 @@
             }
             else
             {
-                var response = await ApiMethods.GetRequestApiAsync(this.endpoints.GetBoardListIsOn(id)).ConfigureAwait(false);
+                var response = await ApiMethods.GetRequestApiAsync(endpoints.GetBoardListIsOn(id)).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
