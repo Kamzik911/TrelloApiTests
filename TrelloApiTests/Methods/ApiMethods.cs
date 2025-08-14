@@ -116,9 +116,9 @@ namespace TrelloApiTests.Methods
             {
                 BoardProperties.Id = null;
             }
-            if (BoardProperties.idOrganization != null)
+            if (BoardProperties.IdOrganization != null)
             {
-                BoardProperties.idOrganization = null;
+                BoardProperties.IdOrganization = null;
             }
             if (CardProperties.id != null)
             {

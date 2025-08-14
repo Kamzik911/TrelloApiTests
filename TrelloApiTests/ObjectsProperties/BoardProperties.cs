@@ -12,7 +12,7 @@
 
         public string idMemberCreator { get; set; }
 
-        public static string? idOrganization { get; set; }
+        public static string? IdOrganization { get; set; }
 
         public bool? pinned { get; set; }
 

@@ -1,4 +1,6 @@
-﻿namespace TrelloApiTests
+﻿using TrelloApiTests;
+
+namespace TrelloApiTests
 {
     public class SettingEndpoints
     {
@@ -52,7 +54,7 @@
         public string EmailEndpoint(string id) => $"{boardsEndpoint}/{id}/emailKey/generate";
 
         // Tag endpoints
-        //private readonly string tagEndopint = "/idTags";
+        //private string tagEndopint = "/idTags";
 
         // MarkedAsViewed endpoints
         public string MarkedAsViewedEndpoint(string id) => $"{boardsEndpoint}/{id}/markedAsViewed";
@@ -77,4 +79,9 @@
 
         public string NotificationBoardIdEndpoint(string id) => $"{notificationBoardEndpoint}/{id}/board";
     }
+    public class MainRestApiUrl : SettingEndpoints
+    {
+        public static RestClient Client { get; } = new RestClient(mainEndpoint);
+    }
+
 }

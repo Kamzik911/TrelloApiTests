@@ -17,7 +17,9 @@
             var response = await ApiMethods.PostBodyRequestApiAsync(endpoints.boardsEndpoint, boardBody).ConfigureAwait(false);
             JObject jsonObjects = JObject.Parse(response.Content);
             Id = jsonObjects["id"].ToString();
-            idOrganization = jsonObjects["idOrganization"]?.ToString();
+            IdOrganization = jsonObjects["idOrganization"].ToString();
+            Assert.IsNotNull(Id);
+            Assert.IsNotNull(IdOrganization);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             ApiMethods.StringPatternCheck(response, "name");
             Assert.AreEqual(JTokenType.String, jsonObjects["name"]?.Type);
@@ -27,22 +29,16 @@
         }
 
         public async Task CreateACalendarKeyForABoard()
-        {
-            var calendarKeyBody = new
+        {            
+            if (Id != null)
             {
-                id = Tokens.calendarKey,
-            };
-
-            if (string.IsNullOrEmpty(Id))
-            {
-                throw new Exception("Board id is empty");
-            }
-            else
-            {
+                var calendarKeyBody = new
+                {
+                    id = Tokens.calendarKey,
+                };
                 var response = await ApiMethods.PostBodyRequestApiAsync(endpoints.CalendarEndpoint(Id), calendarKeyBody).ConfigureAwait(false);
-                Assert.IsNotNull(Id);
                 Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
-            }
+            }            
         }
 
         public async Task CreateEmailKeyForABoard()
@@ -53,6 +49,9 @@
             }
             var response = await ApiMethods.PostRequestApiAsync(endpoints.EmailEndpoint(Id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            JObject jsonResponse = JObject.Parse(response.Content);
+            string emailId = jsonResponse["myPrefs"]["idEmailList"].ToString();
+            Assert.IsNotNull(emailId);
         }
 
         public async Task GetBoard()

@@ -1,12 +1,12 @@
 ﻿namespace TrelloApiTests.Tests
 {
     [TestClass]
-    public class Tests
+    public class IndependentTests
     {
         private BoardMethods boardMethods = new BoardMethods();
         private LabelMethods labelMethods = new LabelMethods();
         private ListMethods listMethods = new ListMethods();
-
+        
         [TestMethod]
         public async Task B001CreateBoard()
         {
@@ -23,7 +23,7 @@
         }
 
         [TestMethod]
-        public async Task B003CreateACalendarKeyForABoard_ShouldPass()
+        public async Task B003CreateACalendarKeyForABoard_Forbidden()
         {
             await boardMethods.CreateBoard().ConfigureAwait(false);
             await boardMethods.CreateACalendarKeyForABoard().ConfigureAwait(false);
