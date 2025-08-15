@@ -91,8 +91,7 @@
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(boardBody.name, jsonResponse["name"]);
-            Assert.AreEqual("private", jsonResponse["prefs"]?["permissionLevel"]?.ToString());
-            Console.WriteLine(jsonResponse);
+            Assert.AreEqual("private", jsonResponse["prefs"]?["permissionLevel"]?.ToString());            
         }
 
         public async Task MarkBoardAsViewed()
@@ -118,6 +117,9 @@
             }
             var response = await ApiMethods.DeleteRequestApiAsync(endpoints.BoardIdEndpoint(Id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            JObject jsonResponse = JObject.Parse(response.Content);
+            bool idBoardIsNull = jsonResponse["id"] == null;
+            Assert.IsTrue(idBoardIsNull);
         }
     }
 }

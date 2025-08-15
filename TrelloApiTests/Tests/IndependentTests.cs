@@ -3,9 +3,11 @@
     [TestClass]
     public class IndependentTests
     {
-        private BoardMethods boardMethods = new BoardMethods();
-        private LabelMethods labelMethods = new LabelMethods();
-        private ListMethods listMethods = new ListMethods();
+        private readonly BoardMethods boardMethods = new BoardMethods();
+        private readonly LabelMethods labelMethods = new LabelMethods();
+        private readonly ListMethods listMethods = new ListMethods();
+        private readonly MembersMethods membersMethods = new MembersMethods();
+        private readonly MembershipMethods membershipMethods = new MembershipMethods();
         
         [TestMethod]
         public async Task B001CreateBoard()
@@ -102,5 +104,12 @@
             await boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
+        [TestMethod]
+        public async Task B11GetMembershipsOfBoard_ShouldPass()
+        {
+            await boardMethods.CreateBoard().ConfigureAwait(false);
+            await membershipMethods.GetMembershipOfBoard().ConfigureAwait(false);
+            await boardMethods.DeleteBoard().ConfigureAwait(false);
+        }
     }
 }
