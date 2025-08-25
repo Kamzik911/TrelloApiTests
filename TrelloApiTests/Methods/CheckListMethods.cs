@@ -1,9 +1,17 @@
-﻿namespace TrelloApiTests.Methods
+﻿using TrelloApiTests.Utils;
+
+namespace TrelloApiTests.Methods
 {
     public class CheckListMethods : ChecklistProperties
     {
         SettingEndpoints endpoints = new SettingEndpoints();
+        private readonly ApiMethods apiClient;
         string randomString = StringGenerator.GenerateString(15);
+
+        public CheckListMethods()
+        {
+            this.apiClient = new ApiMethods();
+        }
 
         public async Task CreateCheckList()
         {
@@ -18,7 +26,7 @@
                     idCard = CardProperties.id,
                     name = this.randomString,
                 };
-                var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.checklistEndpoint, checklistBody).ConfigureAwait(false);
+                var response = await apiClient.PostBodyRequestApiAsync(this.endpoints.checklistEndpoint, checklistBody).ConfigureAwait(false);
                 var jsonRensponse = JObject.Parse(response.Content);
                 id = jsonRensponse["id"].ToString();
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -35,7 +43,7 @@
             }
             else
             {
-                var response = await ApiMethods.GetRequestApiAsync(id).ConfigureAwait(false);
+                var response = await apiClient.GetRequestApiAsync(id).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
@@ -48,7 +56,7 @@
             }
             else
             {
-                var response = await ApiMethods.DeleteRequestApiAsync(this.endpoints.ChecklistIdEndpoint(id)).ConfigureAwait(false);
+                var response = await apiClient.DeleteRequestApiAsync(this.endpoints.ChecklistIdEndpoint(id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

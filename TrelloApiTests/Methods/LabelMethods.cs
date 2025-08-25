@@ -3,6 +3,12 @@
     public class LabelMethods : LabelProperties
     {
         private SettingEndpoints endpoints = new SettingEndpoints();
+        private readonly ApiMethods apiClient;
+
+        public LabelMethods()
+        {
+            this.apiClient = new ApiMethods();
+        }
 
         public async Task CreateLabelOnBoard(string color)
         {
@@ -19,7 +25,7 @@
                     idBoard = BoardProperties.Id,
                 };
 
-                var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.labelsEndpoint, labelBody).ConfigureAwait(false);
+                var response = await apiClient.PostBodyRequestApiAsync(this.endpoints.labelsEndpoint, labelBody).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 var jsonResponse = JObject.Parse(response.Content);
                 id = jsonResponse["id"].ToString();
@@ -36,7 +42,7 @@
                 throw new Exception("Created board ID is null or empty");
             }
 
-            var response = await ApiMethods.GetRequestApiAsync(endpoints.LabelIdEndpoint(id)).ConfigureAwait(false);
+            var response = await apiClient.GetRequestApiAsync(endpoints.LabelIdEndpoint(id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -80,7 +86,7 @@
             }
             else
             {
-                var response = await ApiMethods.DeleteRequestApiAsync(this.endpoints.LabelIdEndpoint(id)).ConfigureAwait(false);
+                var response = await apiClient.DeleteRequestApiAsync(this.endpoints.LabelIdEndpoint(id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

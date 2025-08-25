@@ -3,6 +3,12 @@
     public class CardMethods : CardProperties
     {
         SettingEndpoints endpoints = new SettingEndpoints();
+        private readonly ApiMethods apiMethods;
+
+        public CardMethods()
+        {
+            this.apiMethods = new ApiMethods();
+        }
 
         public async Task CreateNewCard()
         {
@@ -11,7 +17,7 @@
                 name = "RestApi tests",
                 idList = ListProperties.id,
             };
-            var response = await ApiMethods.PostBodyRequestApiAsync(endpoints.cardsEndpoint, cardBody).ConfigureAwait(false);
+            var response = await apiMethods.PostBodyRequestApiAsync(endpoints.cardsEndpoint, cardBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -25,7 +31,7 @@
             }
             else
             {
-                var response = await ApiMethods.GetRequestApiAsync(endpoints.CardsIdEndpoint(id)).ConfigureAwait(false);
+                var response = await apiMethods.GetRequestApiAsync(endpoints.CardsIdEndpoint(id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

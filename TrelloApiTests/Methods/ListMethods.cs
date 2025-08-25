@@ -1,8 +1,16 @@
-﻿namespace TrelloApiTests.Methods
+﻿using TrelloApiTests.Utils;
+
+namespace TrelloApiTests.Methods
 {
     public class ListMethods : ListProperties
     {
-        private SettingEndpoints endpoints = new SettingEndpoints();
+        private SettingEndpoints endpoints = new SettingEndpoints();        
+        private readonly ApiMethods apiClient;
+
+        public ListMethods()
+        {
+            this.apiClient = new ApiMethods();
+        }
 
         public async Task CreateList()
         {
@@ -16,7 +24,7 @@
                 name = "Rest Api list",
                 idBoard = BoardProperties.Id,
             };
-            var response = await ApiMethods.PostBodyRequestApiAsync(endpoints.listsEndpoint, listBody).ConfigureAwait(false);
+            var response = await apiClient.PostBodyRequestApiAsync(endpoints.listsEndpoint, listBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -37,11 +45,11 @@
                 closed = false,
             };
 
-            var response = await ApiMethods.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
+            var response = await apiClient.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.closed, jsonResponse["closed"]);
-            Assert.IsTrue(ApiMethods.NumberPatternCheck(response, "pos"));
+            Assert.IsTrue(ResponseValidator.NumberPatternCheck(response, "pos"));
         }
 
         public async Task GetListId()
@@ -50,7 +58,7 @@
             {
                 throw new Exception("Id list doesn't exist");
             }
-            var response = await ApiMethods.GetRequestApiAsync(endpoints.ListIdEndpoint(id)).ConfigureAwait(false);
+            var response = await apiClient.GetRequestApiAsync(endpoints.ListIdEndpoint(id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -67,7 +75,7 @@
                     id = id,
                     closed = value
                 };
-                var response = await ApiMethods.PutBodyRequestApiAsync(endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
+                var response = await apiClient.PutBodyRequestApiAsync(endpoints.ListIdEndpoint(id), listBody).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(listBody.closed, (bool)jsonResponse["closed"]);
@@ -82,7 +90,7 @@
             }
             else
             {
-                var response = await ApiMethods.GetRequestApiAsync(endpoints.GetBoardListIsOn(id)).ConfigureAwait(false);
+                var response = await apiClient.GetRequestApiAsync(endpoints.GetBoardListIsOn(id)).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
@@ -119,7 +127,7 @@
             }
             else
             {
-                var response = await ApiMethods.PostRequestApiAsync(this.endpoints.ArchiveAllcardsEndpoint(id)).ConfigureAwait(false);
+                var response = await apiClient.PostRequestApiAsync(this.endpoints.ArchiveAllcardsEndpoint(id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

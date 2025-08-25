@@ -4,11 +4,17 @@
     {
         SettingEndpoints endpoints = new SettingEndpoints();
         BoardMethods boardMethods = new BoardMethods();
+        private readonly ApiMethods apiClient;
+
+        public NotificationsMethods()
+        {
+            this.apiClient = new ApiMethods();
+        }
 
         public async Task NotificationDoesntExist()
         {
             
-            var response = await ApiMethods.GetRequestApiAsync(endpoints.NotificationIdEndpoint(id)).ConfigureAwait(false);
+            var response = await apiClient.GetRequestApiAsync(endpoints.NotificationIdEndpoint(id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);                                     
         }
     }

@@ -3,6 +3,12 @@
     public class CustomFieldsMethods : CustomFieldProperties
     {
         SettingEndpoints endpoints = new SettingEndpoints();
+        private readonly ApiMethods apiClient;
+
+        public CustomFieldsMethods()
+        {
+            this.apiClient = new ApiMethods();
+        }
 
         public async Task CreateCustomFieldOnBoard()
         {
@@ -20,7 +26,7 @@
                     type = "checkbox", // Valid values: checkbox, list, number, text, date 
                     pos = "top",
                 };
-                var response = await ApiMethods.PostBodyRequestApiAsync(this.endpoints.customFieldEndpoint, customFieldBody).ConfigureAwait(false);
+                var response = await apiClient.PostBodyRequestApiAsync(this.endpoints.customFieldEndpoint, customFieldBody).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 var jsonResponse = JObject.Parse(response.Content);
                 id = jsonResponse["id"].ToString();
@@ -29,7 +35,7 @@
 
         public async Task DeleteCustomFieldDefinition()
         {
-            var response = await ApiMethods.DeleteRequestApiAsync(this.endpoints.CustomFieldIdEndpoint(id)).ConfigureAwait(false);
+            var response = await apiClient.DeleteRequestApiAsync(this.endpoints.CustomFieldIdEndpoint(id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }

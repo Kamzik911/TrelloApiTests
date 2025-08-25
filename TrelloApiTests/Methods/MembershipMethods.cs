@@ -2,11 +2,17 @@
 {
     public class MembershipMethods
     {
-        SettingEndpoints endpoints = new SettingEndpoints();        
+        SettingEndpoints endpoints = new SettingEndpoints();
+        private readonly ApiMethods apiClient;
+
+        public MembershipMethods()
+        {
+            this.apiClient = new ApiMethods();
+        }
 
         public async Task GetMembershipOfBoard()
         {
-            var response = await ApiMethods.GetRequestApiAsync(endpoints.MembershipEndpoint(BoardProperties.Id)).ConfigureAwait(false);            
+            var response = await apiClient.GetRequestApiAsync(endpoints.MembershipEndpoint(BoardProperties.Id)).ConfigureAwait(false);            
             var jsonResponse = JArray.Parse(response.Content).First;
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var memberIdNotNull = jsonResponse["id"].ToString();            

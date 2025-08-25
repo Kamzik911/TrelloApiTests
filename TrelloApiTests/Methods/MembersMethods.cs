@@ -1,12 +1,20 @@
-﻿namespace TrelloApiTests.Methods
+﻿using TrelloApiTests.Utils;
+
+namespace TrelloApiTests.Methods
 {
     public class MembersMethods
     {
         private SettingEndpoints endpoints = new SettingEndpoints();
+        private readonly ApiMethods apiClient;
+
+        public MembersMethods()
+        {
+            this.apiClient = new ApiMethods();
+        }
 
         public async Task GetMemberId()
         {
-            var response = await ApiMethods.GetRequestApiAsync(this.endpoints.MemberIdEndpoint(Tokens.memberId)).ConfigureAwait(false);
+            var response = await apiClient.GetRequestApiAsync(this.endpoints.MemberIdEndpoint(Tokens.memberId)).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             MembersProperties.id = jsonResponse["id"].ToString();
@@ -24,7 +32,7 @@
             {
                 id = Tokens.memberId,
             };
-            var response = await ApiMethods.PutBodyRequestApiAsync(this.endpoints.MemberIdEndpoint(MembersProperties.id), memberBody).ConfigureAwait(false);
+            var response = await apiClient.PutBodyRequestApiAsync(this.endpoints.MemberIdEndpoint(MembersProperties.id), memberBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
@@ -41,15 +49,15 @@
             }
             else            
             {
-                var response = await ApiMethods.GetRequestApiAsync(this.endpoints.MemberBoardBackgroundEndpoint(MembersProperties.idBackground)).ConfigureAwait(false);
+                var response = await apiClient.GetRequestApiAsync(this.endpoints.MemberBoardBackgroundEndpoint(MembersProperties.idBackground)).ConfigureAwait(false);
                 var arrayResponse = JArray.Parse(response.Content).First;
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Console.WriteLine(arrayResponse.ToString());
                 Assert.IsFalse((bool)arrayResponse["tile"]);
-                Assert.IsTrue(ApiMethods.AlphabetArrayPatternCheck(response, "id"));
-                Assert.IsTrue(ApiMethods.AlphabetArrayPatternCheck(response, "type"));
-                Assert.IsTrue(ApiMethods.AlphabetArrayPatternCheck(response, "brightness"));
-                Assert.IsTrue(ApiMethods.StringArrayPatternCheck(response, "color"));
+                Assert.IsTrue(ResponseValidator.AlphabetArrayPatternCheck(response, "id"));
+                Assert.IsTrue(ResponseValidator.AlphabetArrayPatternCheck(response, "type"));
+                Assert.IsTrue(ResponseValidator.AlphabetArrayPatternCheck(response, "brightness"));
+                Assert.IsTrue(ResponseValidator.StringArrayPatternCheck(response, "color"));
             }            
         }
     }
