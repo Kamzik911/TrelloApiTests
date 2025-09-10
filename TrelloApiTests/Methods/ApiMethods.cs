@@ -1,4 +1,6 @@
-﻿namespace TrelloApiTests.Methods
+﻿using TrelloApiTests.Utils;
+
+namespace TrelloApiTests.Methods
 {
     public interface IApiClient
     {

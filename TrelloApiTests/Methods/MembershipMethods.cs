@@ -1,18 +1,22 @@
-﻿namespace TrelloApiTests.Methods
+﻿using TrelloApiTests.Utils;
+
+namespace TrelloApiTests.Methods
 {
     public class MembershipMethods
     {
-        SettingEndpoints endpoints = new SettingEndpoints();
+        EndpointsSetup endpoints = new EndpointsSetup();
         private readonly ApiMethods apiClient;
+        private readonly BoardProperties boardProperties;
 
-        public MembershipMethods()
+        public MembershipMethods(BoardProperties boardProperties)
         {
             this.apiClient = new ApiMethods();
+            this.boardProperties = boardProperties;
         }
 
         public async Task GetMembershipOfBoard()
         {
-            var response = await apiClient.GetRequestApiAsync(endpoints.MembershipEndpoint(BoardProperties.Id)).ConfigureAwait(false);            
+            var response = await apiClient.GetRequestApiAsync(endpoints.MembershipEndpoint(boardProperties.Id)).ConfigureAwait(false);            
             var jsonResponse = JArray.Parse(response.Content).First;
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var memberIdNotNull = jsonResponse["id"].ToString();            

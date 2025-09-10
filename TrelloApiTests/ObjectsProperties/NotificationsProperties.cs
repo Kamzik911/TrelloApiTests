@@ -2,6 +2,6 @@
 {
     public class NotificationsProperties
     {
-        public static string id { get; set; }
+        public string id { get; set; }
     }
 }

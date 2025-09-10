@@ -8,3 +8,4 @@ global using Microsoft.AspNetCore.OData;
 global using Microsoft.Testing.Platform.OutputDevice;
 global using System.Drawing;
 global using System.Threading.Tasks;
+global using TrelloApiTests.Utils;

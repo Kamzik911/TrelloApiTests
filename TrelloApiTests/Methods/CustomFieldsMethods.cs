@@ -1,18 +1,23 @@
-﻿namespace TrelloApiTests.Methods
+﻿using TrelloApiTests.Utils;
+
+namespace TrelloApiTests.Methods
 {
-    public class CustomFieldsMethods : CustomFieldProperties
+    public class CustomFieldsMethods
     {
-        SettingEndpoints endpoints = new SettingEndpoints();
-        private readonly ApiMethods apiClient;
+        private readonly EndpointsSetup endpoints = new EndpointsSetup();
+        private readonly BoardProperties boardProperties;
+        private readonly ApiMethods apiClient = new ApiMethods();
+        private readonly CustomFieldProperties customFieldProperties;
 
-        public CustomFieldsMethods()
+        public CustomFieldsMethods(BoardProperties boardProperties, CustomFieldProperties customFieldProperties)
         {
-            this.apiClient = new ApiMethods();
+            this.boardProperties = boardProperties;
+            this.customFieldProperties = customFieldProperties;
         }
-
+                
         public async Task CreateCustomFieldOnBoard()
         {
-            if (string.IsNullOrEmpty(BoardProperties.Id))
+            if (string.IsNullOrEmpty(boardProperties.Id))
                 {
                     throw new Exception("Board Id doesn't exist");
                 }
@@ -20,7 +25,7 @@
             {
                 var customFieldBody = new
                 {
-                    idModel = BoardProperties.Id,
+                    idModel = boardProperties.Id,
                     modelType = "board",
                     name = "New custom field",
                     type = "checkbox", // Valid values: checkbox, list, number, text, date 
@@ -29,13 +34,13 @@
                 var response = await apiClient.PostBodyRequestApiAsync(this.endpoints.customFieldEndpoint, customFieldBody).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 var jsonResponse = JObject.Parse(response.Content);
-                id = jsonResponse["id"].ToString();
+                customFieldProperties.id = jsonResponse["id"].ToString();
             }
         }
 
         public async Task DeleteCustomFieldDefinition()
         {
-            var response = await apiClient.DeleteRequestApiAsync(this.endpoints.CustomFieldIdEndpoint(id)).ConfigureAwait(false);
+            var response = await apiClient.DeleteRequestApiAsync(this.endpoints.CustomFieldIdEndpoint(customFieldProperties.id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }

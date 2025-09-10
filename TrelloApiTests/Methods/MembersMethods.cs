@@ -4,7 +4,7 @@ namespace TrelloApiTests.Methods
 {
     public class MembersMethods
     {
-        private SettingEndpoints endpoints = new SettingEndpoints();
+        private EndpointsSetup endpoints = new EndpointsSetup();
         private readonly ApiMethods apiClient;
 
         public MembersMethods()

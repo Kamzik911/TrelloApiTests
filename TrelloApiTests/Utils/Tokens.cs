@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrelloApiTests
+namespace TrelloApiTests.Utils
 {
     public class Tokens
     {

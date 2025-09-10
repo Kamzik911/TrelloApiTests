@@ -3,28 +3,33 @@
     public class TestCleanUp
     {
         public class CleanupIds
-        {                        
+        {       
+            public readonly BoardProperties boardProperties;
+            public readonly CardProperties cardProperties;
+            public readonly LabelProperties labelProperties;
+            public readonly ListProperties listProperties;
+
             public void CleanIds()
             {
-                if (BoardProperties.Id != null)
+                if (boardProperties.Id != null)
                 {
-                    BoardProperties.Id = null;
+                    boardProperties.Id = null;
                 }
-                if (BoardProperties.IdOrganization != null)
+                if (boardProperties.IdOrganization != null)
                 {
-                    BoardProperties.IdOrganization = null;
+                    boardProperties.IdOrganization = null;
                 }
-                if (CardProperties.id != null)
+                if (cardProperties.id != null)
                 {
-                    CardProperties.id = null;
+                    cardProperties.id = null;
                 }
-                if (LabelProperties.id != null)
+                if (labelProperties.id != null)
                 {
-                    LabelProperties.id = null;
+                    labelProperties.id = null;
                 }
-                if (ListProperties.id != null)
+                if (listProperties.id != null)
                 {
-                    ListProperties.id = null;
+                    listProperties.id = null;
                 }
             }
         }

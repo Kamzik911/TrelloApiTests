@@ -2,7 +2,7 @@
 {
     public class ChecklistProperties
     {
-        public static string id { get; set; }
+        public string id { get; set; }
         public string cards { get; set; }
         public string checkItems { get; set; }
         public string checkItem_fields { get; set; }

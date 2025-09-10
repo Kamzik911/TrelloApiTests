@@ -2,7 +2,7 @@
 {
     public class BoardProperties
     {
-        public static string? Id { get; set; }
+        public string? Id { get; set; }
 
         public string name { get; set; }
 
@@ -12,7 +12,7 @@
 
         public string idMemberCreator { get; set; }
 
-        public static string? IdOrganization { get; set; }
+        public string? IdOrganization { get; set; }
 
         public bool? pinned { get; set; }
 

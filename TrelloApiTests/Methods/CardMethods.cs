@@ -1,13 +1,20 @@
-﻿namespace TrelloApiTests.Methods
-{
-    public class CardMethods : CardProperties
-    {
-        SettingEndpoints endpoints = new SettingEndpoints();
-        private readonly ApiMethods apiMethods;
+﻿using System.Runtime.CompilerServices;
+using TrelloApiTests.ObjectsProperties;
+using TrelloApiTests.Utils;
 
-        public CardMethods()
+namespace TrelloApiTests.Methods
+{
+    public class CardMethods
+    {
+        EndpointsSetup endpoints = new EndpointsSetup();
+        ApiMethods apiMethods = new ApiMethods();        
+        CardProperties cardProperties;
+        ListProperties listProperties = new ListProperties();
+
+        public CardMethods(CardProperties cardProperties)
         {
             this.apiMethods = new ApiMethods();
+            this.cardProperties = cardProperties;
         }
 
         public async Task CreateNewCard()
@@ -15,36 +22,36 @@
             var cardBody = new
             {
                 name = "RestApi tests",
-                idList = ListProperties.id,
+                idList = listProperties.id,
             };
             var response = await apiMethods.PostBodyRequestApiAsync(endpoints.cardsEndpoint, cardBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
-            id = jsonResponse["id"].ToString();
+            cardProperties.id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public async Task GetCardId()
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(cardProperties.id))
             {
                 throw new Exception("Card id doesn't exist");
             }
             else
             {
-                var response = await apiMethods.GetRequestApiAsync(endpoints.CardsIdEndpoint(id)).ConfigureAwait(false);
+                var response = await apiMethods.GetRequestApiAsync(endpoints.CardsIdEndpoint(cardProperties.id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
 
         public async Task DeleteCardId()
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(cardProperties.id))
             {
                 throw new Exception("Card id doesn't exist");
             }
             else
             {
-                var request = new RestRequest($"{endpoints.CardsIdEndpoint(id)}", Method.Delete);
+                var request = new RestRequest($"{endpoints.CardsIdEndpoint(cardProperties.id)}", Method.Delete);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
                 var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);

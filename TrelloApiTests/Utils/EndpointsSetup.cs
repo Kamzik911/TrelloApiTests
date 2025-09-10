@@ -1,8 +1,6 @@
-﻿using TrelloApiTests;
-
-namespace TrelloApiTests
+﻿namespace TrelloApiTests.Utils
 {
-    public class SettingEndpoints
+    public class EndpointsSetup
     {
         // Main endpoint
         public const string mainEndpoint = "https://api.trello.com/1";
@@ -98,6 +96,7 @@ namespace TrelloApiTests
         //private string tagEndopint = "/idTags";
 
         // MarkedAsViewed endpoints
+        //https://api.trello.com/1/boards/{id}/markedAsViewed?key=APIKey&token=APIToken
         public string MarkedAsViewedEndpoint(string id)
         {
             return $"{boardsEndpoint}/{id}/markedAsViewed";
@@ -137,7 +136,7 @@ namespace TrelloApiTests
             return $"{notificationBoardEndpoint}/{id}/board";
         }
     }
-    public class MainRestApiUrl : SettingEndpoints
+    public class MainRestApiUrl : EndpointsSetup
     {
         public static RestClient Client { get; } = new RestClient(mainEndpoint);
     }

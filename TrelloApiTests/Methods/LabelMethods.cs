@@ -1,18 +1,25 @@
-﻿namespace TrelloApiTests.Methods
+﻿
+namespace TrelloApiTests.Methods
 {
-    public class LabelMethods : LabelProperties
+    public class LabelMethods
     {
-        private SettingEndpoints endpoints = new SettingEndpoints();
+        private EndpointsSetup endpoints = new EndpointsSetup();
         private readonly ApiMethods apiClient;
+        private readonly BoardProperties boardProperties;
+        private readonly LabelProperties labelProperties;
+        private readonly CardProperties cardProperties;
 
-        public LabelMethods()
+        public LabelMethods(LabelProperties labelProperties, BoardProperties boardProperties, CardProperties cardProperties)
         {
             this.apiClient = new ApiMethods();
+            this.labelProperties = labelProperties;
+            this.boardProperties = boardProperties;
+            this.cardProperties = cardProperties;
         }
 
         public async Task CreateLabelOnBoard(string color)
         {
-            if (string.IsNullOrEmpty(BoardProperties.Id))
+            if (string.IsNullOrEmpty(boardProperties.Id))
             {
                 throw new Exception("Board ID doens't exist.");
             }
@@ -22,13 +29,13 @@
                 {
                     name = "New rest api label",
                     color = color,
-                    idBoard = BoardProperties.Id,
+                    idBoard = boardProperties.Id,
                 };
 
                 var response = await apiClient.PostBodyRequestApiAsync(this.endpoints.labelsEndpoint, labelBody).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 var jsonResponse = JObject.Parse(response.Content);
-                id = jsonResponse["id"].ToString();
+                labelProperties.id = jsonResponse["id"].ToString();
                 Assert.AreEqual(labelBody.name, jsonResponse["name"]);
                 Assert.AreEqual(labelBody.color, jsonResponse["color"]);
                 Console.WriteLine(jsonResponse.ToString());
@@ -37,22 +44,22 @@
 
         public async Task GetCreatedLabel()
         {
-            if (string.IsNullOrEmpty(BoardProperties.Id))
+            if (string.IsNullOrEmpty(boardProperties.Id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
 
-            var response = await apiClient.GetRequestApiAsync(endpoints.LabelIdEndpoint(id)).ConfigureAwait(false);
+            var response = await apiClient.GetRequestApiAsync(endpoints.LabelIdEndpoint(labelProperties.id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public async Task UpdateCreatedLabel(string color)
         {
-            if (string.IsNullOrEmpty(BoardProperties.Id))
+            if (string.IsNullOrEmpty(boardProperties.Id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
-            else if(string.IsNullOrEmpty(id))
+            else if(string.IsNullOrEmpty(labelProperties.id))
             {
                 throw new Exception("Created label ID is null or empty");
             }
@@ -64,7 +71,7 @@
                     color = $"{color}"
                 };
 
-                var request = new RestRequest($"{this.endpoints.LabelIdEndpoint(id)}", Method.Put).AddBody(labelBody);
+                var request = new RestRequest($"{this.endpoints.LabelIdEndpoint(labelProperties.id)}", Method.Put).AddBody(labelBody);
                 request.AddQueryParameter("key", Tokens.trelloApiKey);
                 request.AddQueryParameter("token", Tokens.trelloApiToken);
                 var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
@@ -76,17 +83,17 @@
 
         public async Task DeleteLabel()
         {
-            if (string.IsNullOrEmpty(BoardProperties.Id))
+            if (string.IsNullOrEmpty(boardProperties.Id))
             {
                 throw new Exception("Created board ID is null or empty");
             }
-            else if (string.IsNullOrEmpty(id))
+            else if (string.IsNullOrEmpty(labelProperties.id))
             {
                 throw new Exception("Created label ID is null or empty");
             }
             else
             {
-                var response = await apiClient.DeleteRequestApiAsync(this.endpoints.LabelIdEndpoint(id)).ConfigureAwait(false);
+                var response = await apiClient.DeleteRequestApiAsync(this.endpoints.LabelIdEndpoint(labelProperties.id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

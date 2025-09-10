@@ -2,7 +2,7 @@
 {
     public class CardProperties
     {
-        public static string? id { get; set; }
+        public string id { get; set; }
 
         public string? address { get; set; }
 

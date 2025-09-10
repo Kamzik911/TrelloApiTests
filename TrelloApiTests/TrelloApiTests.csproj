@@ -19,6 +19,7 @@
     </PackageReference>
     <PackageReference Include="NuGet.Modules.JObjectExtensions" Version="1.0.1" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
+    <PackageReference Include="xunit.extensibility.execution" Version="2.9.3" />
   </ItemGroup>
 
   <ItemGroup>

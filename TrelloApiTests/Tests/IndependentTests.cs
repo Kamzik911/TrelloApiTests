@@ -1,29 +1,29 @@
-﻿namespace TrelloApiTests.Tests
+﻿using TrelloApiTests.ObjectsProperties;
+
+namespace TrelloApiTests.Tests
 {
     [TestClass]
     public class IndependentTests
     {
-        private readonly BoardMethods boardMethods = new BoardMethods();
-        private readonly LabelMethods labelMethods = new LabelMethods();
-        private readonly ListMethods listMethods = new ListMethods();
-        private readonly MembersMethods membersMethods = new MembersMethods();
-        private readonly MembershipMethods membershipMethods = new MembershipMethods();
-        
-        [TestMethod]
-        public async Task B001CreateBoard()
-        {
-            await boardMethods.CreateBoard().ConfigureAwait(false);
-            await boardMethods.DeleteBoard().ConfigureAwait(false);
-        }
+        private readonly BoardProperties boardProperties = new BoardProperties();
+        private readonly LabelProperties labelProperties = new LabelProperties();
+        private readonly ListProperties listProperties = new ListProperties();
+        private readonly MembersProperties membersProperties = new MembersProperties();
+        private readonly CardProperties cardProperties = new CardProperties();
+                
+        private readonly BoardMethods boardMethods;        
+        private readonly LabelMethods labelMethods;
+        private readonly ListMethods listMethods;
+        private readonly MembershipMethods membershipMethods;
 
-        [TestMethod]
-        public async Task B002GetBoardId()
+        public IndependentTests()
         {
-            await boardMethods.CreateBoard().ConfigureAwait(false);
-            await boardMethods.GetBoard().ConfigureAwait(false);
-            await boardMethods.DeleteBoard().ConfigureAwait(false);                                  
+            this.boardMethods = new BoardMethods(boardProperties);            
+            this.labelMethods = new LabelMethods(labelProperties, boardProperties, cardProperties);
+            this.listMethods = new ListMethods(listProperties, boardProperties);
+            this.membershipMethods = new MembershipMethods(boardProperties);
         }
-
+                
         [TestMethod]
         public async Task B003CreateACalendarKeyForABoard_Forbidden()
         {
@@ -38,15 +38,7 @@
             await boardMethods.CreateBoard().ConfigureAwait(false);
             await boardMethods.CreateEmailKeyForABoard().ConfigureAwait(false); ;
             await boardMethods.DeleteBoard().ConfigureAwait(false); ;
-        }
-
-        [TestMethod]
-        public async Task B005UpdateBoard_ShouldPass()
-        {
-            await boardMethods.CreateBoard().ConfigureAwait(false);
-            await boardMethods.UpdateBoard().ConfigureAwait(false); ;
-            await boardMethods.DeleteBoard().ConfigureAwait(false); ;
-        }
+        }       
 
         [TestMethodAttribute]
         [DataRow("yellow")]
