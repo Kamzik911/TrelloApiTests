@@ -11,7 +11,8 @@ namespace TrelloApiTests.Tests
         private readonly MembersProperties membersProperties = new MembersProperties();
         private readonly CardProperties cardProperties = new CardProperties();
                 
-        private readonly BoardMethods boardMethods;        
+        private readonly BoardMethods boardMethods;
+        //private readonly CardMethods cardMethods;
         private readonly LabelMethods labelMethods;
         private readonly ListMethods listMethods;
         private readonly MembershipMethods membershipMethods;
@@ -20,7 +21,7 @@ namespace TrelloApiTests.Tests
         {
             this.boardMethods = new BoardMethods(boardProperties);            
             this.labelMethods = new LabelMethods(labelProperties, boardProperties, cardProperties);
-            this.listMethods = new ListMethods(listProperties, boardProperties);
+            this.listMethods = new ListMethods(boardProperties, listProperties);
             this.membershipMethods = new MembershipMethods(boardProperties);
         }
                 
@@ -97,11 +98,11 @@ namespace TrelloApiTests.Tests
         }
 
         [TestMethod]
-        public async Task B11GetMembershipsOfBoard_ShouldPass()
+        public async Task B011GetMembershipsOfBoard_ShouldPass()
         {
             await boardMethods.CreateBoard().ConfigureAwait(false);
             await membershipMethods.GetMembershipOfBoard().ConfigureAwait(false);
             await boardMethods.DeleteBoard().ConfigureAwait(false);
-        }
+        }        
     }
 }

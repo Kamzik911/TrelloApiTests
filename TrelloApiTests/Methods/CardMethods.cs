@@ -1,60 +1,67 @@
-﻿using System.Runtime.CompilerServices;
-using TrelloApiTests.ObjectsProperties;
-using TrelloApiTests.Utils;
+﻿using TrelloApiTests.ObjectsProperties;
 
 namespace TrelloApiTests.Methods
 {
     public class CardMethods
     {
-        EndpointsSetup endpoints = new EndpointsSetup();
-        ApiMethods apiMethods = new ApiMethods();        
-        CardProperties cardProperties;
-        ListProperties listProperties = new ListProperties();
+        private readonly EndpointsSetup endpoints = new EndpointsSetup();
+        private readonly IApiClient apiClient;
+        private readonly CardProperties cardProperties;
+        private readonly ListProperties listProperties;
 
-        public CardMethods(CardProperties cardProperties)
+        public CardMethods(CardProperties cardProperties, ListProperties listProperties)
+            : this(cardProperties, listProperties, new ApiMethods())
+        {            
+        }
+
+        public CardMethods(CardProperties cardProperties, ListProperties listProperties, IApiClient apiClient)
         {
-            this.apiMethods = new ApiMethods();
-            this.cardProperties = cardProperties;
+            this.cardProperties = cardProperties ?? throw new ArgumentNullException(nameof(cardProperties));
+            this.listProperties = listProperties ?? throw new ArgumentNullException(nameof(listProperties));            
+            this.apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         }
 
         public async Task CreateNewCard()
         {
+            if (string.IsNullOrEmpty(this.listProperties.id))
+            {
+                throw new InvalidOperationException("List id donesn't exist");
+            }
+
             var cardBody = new
             {
                 name = "RestApi tests",
-                idList = listProperties.id,
+                idList = this.listProperties.id,
             };
-            var response = await apiMethods.PostBodyRequestApiAsync(endpoints.cardsEndpoint, cardBody).ConfigureAwait(false);
+
+            var response = await this.apiClient.PostBodyRequestApiAsync(this.endpoints.cardsEndpoint, cardBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
-            cardProperties.id = jsonResponse["id"].ToString();
+            this.cardProperties.id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         public async Task GetCardId()
         {
-            if (string.IsNullOrEmpty(cardProperties.id))
+            if (string.IsNullOrEmpty(this.cardProperties.id))
             {
                 throw new Exception("Card id doesn't exist");
             }
             else
             {
-                var response = await apiMethods.GetRequestApiAsync(endpoints.CardsIdEndpoint(cardProperties.id)).ConfigureAwait(false);
+                var response = await this.apiClient.GetRequestApiAsync(this.endpoints.CardsIdEndpoint(this.cardProperties.id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
 
         public async Task DeleteCardId()
         {
-            if (string.IsNullOrEmpty(cardProperties.id))
+            if (string.IsNullOrEmpty(this.cardProperties.id))
             {
                 throw new Exception("Card id doesn't exist");
             }
             else
-            {
-                var request = new RestRequest($"{endpoints.CardsIdEndpoint(cardProperties.id)}", Method.Delete);
-                request.AddQueryParameter("key", Tokens.trelloApiKey);
-                request.AddQueryParameter("token", Tokens.trelloApiToken);
-                var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
+            {                
+                var response = await this.apiClient.DeleteRequestApiAsync(this.endpoints.CardsIdEndpoint(this.cardProperties.id)).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }

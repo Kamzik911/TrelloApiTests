@@ -1,21 +1,23 @@
-﻿using TrelloApiTests.ObjectsProperties;
-using TrelloApiTests.Utils;
-
-namespace TrelloApiTests.Methods
+﻿namespace TrelloApiTests.Methods
 {
     public class ListMethods
     {
-        private EndpointsSetup endpoints = new EndpointsSetup();        
-        private readonly ApiMethods apiClient;
-        private readonly BoardProperties boardProperties = new BoardProperties();
+        private readonly EndpointsSetup endpoints = new EndpointsSetup();
+        private readonly IApiClient apiClient;
+        private readonly BoardProperties boardProperties;
         private readonly ListProperties listProperties;
-        private readonly CardProperties cardProperties = new CardProperties();
+        
+        public ListMethods(BoardProperties boardProperties, ListProperties listProperties)
+            : this(boardProperties, listProperties, new ApiMethods())
+        {            
+        }
 
-        public ListMethods(ListProperties listProperties, BoardProperties boardProperties)
+        public ListMethods(BoardProperties boardProperties, ListProperties listProperties, IApiClient apiClient)
         {
-            this.apiClient = new ApiMethods();
-            this.listProperties = listProperties;
-            this.boardProperties = boardProperties;
+            this.listProperties =  listProperties ?? throw new ArgumentNullException(nameof(listProperties));
+            this.boardProperties = boardProperties ?? throw new ArgumentNullException(nameof(boardProperties));
+            //this.cardProperties = cardProperties ?? throw new ArgumentNullException(nameof(cardProperties));
+            this.apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         }
 
         public async Task CreateList()
@@ -30,7 +32,7 @@ namespace TrelloApiTests.Methods
                 name = "Rest Api list",
                 idBoard = boardProperties.Id,
             };
-            var response = await apiClient.PostBodyRequestApiAsync(endpoints.listsEndpoint, listBody).ConfigureAwait(false);
+            var response = await this.apiClient.PostBodyRequestApiAsync(endpoints.listsEndpoint, listBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             listProperties.id = jsonResponse["id"].ToString();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -51,7 +53,7 @@ namespace TrelloApiTests.Methods
                 closed = false,
             };
 
-            var response = await apiClient.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(listProperties.id), listBody).ConfigureAwait(false);
+            var response = await this.apiClient.PutBodyRequestApiAsync(this.endpoints.ListIdEndpoint(listProperties.id), listBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(listBody.closed, jsonResponse["closed"]);
@@ -64,7 +66,7 @@ namespace TrelloApiTests.Methods
             {
                 throw new Exception("Id list doesn't exist");
             }
-            var response = await apiClient.GetRequestApiAsync(endpoints.ListIdEndpoint(listProperties.id)).ConfigureAwait(false);
+            var response = await this.apiClient.GetRequestApiAsync(endpoints.ListIdEndpoint(listProperties.id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -81,7 +83,7 @@ namespace TrelloApiTests.Methods
                     id = listProperties.id,
                     closed = value
                 };
-                var response = await apiClient.PutBodyRequestApiAsync(endpoints.ListIdEndpoint(listProperties.id), listBody).ConfigureAwait(false);
+                var response = await this.apiClient.PutBodyRequestApiAsync(endpoints.ListIdEndpoint(listProperties.id), listBody).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(listBody.closed, (bool)jsonResponse["closed"]);
@@ -102,7 +104,7 @@ namespace TrelloApiTests.Methods
             }
         }
 
-        public async Task GetCardInList()
+        /*public async Task GetCardInList()
         {
             if (string.IsNullOrEmpty(listProperties.id))
             {
@@ -123,7 +125,7 @@ namespace TrelloApiTests.Methods
                 bool location = jsonResponse.Any(l => l["badges"]?["location"].Type == JTokenType.Boolean);
                 Assert.IsTrue(location);
             }
-        }
+        }*/
 
         public async Task ArchiveAllCardsInList()
         {

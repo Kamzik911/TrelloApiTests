@@ -27,6 +27,7 @@ namespace TrelloApiTests.Utils
 
             return line;
         }
+
         public static string trelloApiKey = GetCredentials(0);
         public static string trelloApiToken = GetCredentials(1);
         public static string memberId = GetCredentials(2);

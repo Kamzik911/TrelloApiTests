@@ -1,18 +1,20 @@
-﻿using TrelloApiTests.ObjectsProperties;
-using TrelloApiTests.Utils;
-
-namespace TrelloApiTests.Methods
+﻿namespace TrelloApiTests.Methods
 {
     public class BoardMethods
     {
-        private readonly EndpointsSetup endpoints = new EndpointsSetup();
-        private readonly ApiMethods apiClient;
+        private readonly EndpointsSetup endpoints = new EndpointsSetup();        
+        private readonly IApiClient apiClient;        
         private readonly BoardProperties boardProperties;
 
-        public BoardMethods(BoardProperties boardProperties)
+        public BoardMethods(BoardProperties boardProperties)    
+            : this(boardProperties, new ApiMethods())
         {
-            this.apiClient = new ApiMethods();            
-            this.boardProperties = boardProperties;
+        }
+
+        public BoardMethods(BoardProperties boardProperties, IApiClient apiClient)
+        {
+            this.boardProperties = boardProperties ?? throw new ArgumentNullException(nameof(boardProperties));
+            this.apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
         }
 
         private string randomString = StringGenerator.GenerateString(15);
@@ -25,7 +27,7 @@ namespace TrelloApiTests.Methods
                 desc = this.randomString,
             };
 
-            var response = await apiClient.PostBodyRequestApiAsync(endpoints.boardsEndpoint, boardBody).ConfigureAwait(false);
+            var response = await this.apiClient.PostBodyRequestApiAsync(endpoints.boardsEndpoint, boardBody).ConfigureAwait(false);
             JObject jsonObjects = JObject.Parse(response.Content);
             boardProperties.Id = jsonObjects["id"].ToString();
             boardProperties.IdOrganization = jsonObjects["idOrganization"].ToString();            
@@ -47,7 +49,7 @@ namespace TrelloApiTests.Methods
                 {
                     id = Tokens.calendarKey,
                 };
-                var response = await apiClient.PostBodyRequestApiAsync(endpoints.CalendarEndpoint(boardProperties.Id), calendarKeyBody).ConfigureAwait(false);
+                var response = await this.apiClient.PostBodyRequestApiAsync(endpoints.CalendarEndpoint(boardProperties.Id), calendarKeyBody).ConfigureAwait(false);
                 Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
             }            
         }
@@ -58,7 +60,7 @@ namespace TrelloApiTests.Methods
             {
                 throw new Exception("Created board ID is null or empty.");
             }
-            var response = await apiClient.PostRequestApiAsync(endpoints.EmailEndpoint(boardProperties.Id)).ConfigureAwait(false);
+            var response = await this.apiClient.PostRequestApiAsync(endpoints.EmailEndpoint(boardProperties.Id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             JObject jsonResponse = JObject.Parse(response.Content);
             string emailId = jsonResponse["myPrefs"]["idEmailList"].ToString();            
@@ -73,7 +75,7 @@ namespace TrelloApiTests.Methods
             }
             else
             {
-                var response = await apiClient.GetRequestApiAsync(endpoints.BoardIdEndpoint(boardProperties.Id)).ConfigureAwait(false);
+                var response = await this.apiClient.GetRequestApiAsync(endpoints.BoardIdEndpoint(boardProperties.Id)).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
                 Assert.AreEqual(boardProperties.Id, jsonResponse["id"]);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -82,7 +84,7 @@ namespace TrelloApiTests.Methods
         
         public async Task MarkBoardViewed()
         {
-            var response = await apiClient.PostRequestApiAsync(endpoints.MarkedAsViewedEndpoint(boardProperties.Id)).ConfigureAwait(false);
+            var response = await this.apiClient.PostRequestApiAsync(endpoints.MarkedAsViewedEndpoint(boardProperties.Id)).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(boardProperties.Id, jsonResponse["id"]);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -98,7 +100,7 @@ namespace TrelloApiTests.Methods
             {
                 name = this.randomString,
             };
-            var response = await apiClient.PutBodyRequestApiAsync(endpoints.BoardIdEndpoint(boardProperties.Id), boardBody).ConfigureAwait(false);
+            var response = await this.apiClient.PutBodyRequestApiAsync(endpoints.BoardIdEndpoint(boardProperties.Id), boardBody).ConfigureAwait(false);
             var jsonResponse = JObject.Parse(response.Content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(boardBody.name, jsonResponse["name"]);
@@ -111,7 +113,7 @@ namespace TrelloApiTests.Methods
             {
                 throw new InvalidOperationException("Created board ID is null.");
             }
-            var response = await apiClient.DeleteRequestApiAsync(endpoints.BoardIdEndpoint(boardProperties.Id)).ConfigureAwait(false);
+            var response = await this.apiClient.DeleteRequestApiAsync(endpoints.BoardIdEndpoint(boardProperties.Id)).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             JObject jsonResponse = JObject.Parse(response.Content);
             var idBoardIsNull = jsonResponse["id"] == null;

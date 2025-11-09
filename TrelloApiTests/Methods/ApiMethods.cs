@@ -15,12 +15,24 @@ namespace TrelloApiTests.Methods
 
     public class ApiMethods : Tokens, IApiClient
     {
+        private readonly RestClient restClient;
+
+        public ApiMethods()
+            : this(MainRestApiUrl.Client) 
+        {        
+        }
+        
+        public ApiMethods(RestClient restClient)
+        {
+            this.restClient = restClient ?? throw new ArgumentNullException (nameof(restClient));
+        }
+
         public async Task<RestResponse> GetRequestApiAsync(string endpoint)
         {
             var request = new RestRequest($"{endpoint}", Method.Get);
             request.AddQueryParameter("key", trelloApiKey);
-            request.AddQueryParameter("token", trelloApiToken);
-            var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
+            request.AddQueryParameter("token", trelloApiToken);            
+            var response = await this.restClient.ExecuteAsync(request).ConfigureAwait(false);
             return response;
         }
 
@@ -28,8 +40,8 @@ namespace TrelloApiTests.Methods
         {
             var request = new RestRequest($"{endpoint}", Method.Get);
             request.AddQueryParameter("key", trelloApiKey);
-            request.AddQueryParameter("token", trelloApiToken);
-            var response = await MainRestApiUrl.Client.ExecuteAsync<ODataOptions>(request).ConfigureAwait(false);
+            request.AddQueryParameter("token", trelloApiToken);            
+            var response = await this.restClient.ExecuteAsync<ODataOptions>(request).ConfigureAwait(false);
             return response;
         }
 
@@ -38,7 +50,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoint}", Method.Post);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
+            var response = await this.restClient.ExecuteAsync(request).ConfigureAwait(false);
             return response;
         }
 
@@ -47,7 +59,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoint}", Method.Post).AddBody(body);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            return await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
+            return await this.restClient.ExecuteAsync(request).ConfigureAwait(false);
         }
 
         public async Task<RestResponse> PutBodyRequestApiAsync(string endpoint, object body)
@@ -55,7 +67,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoint}", Method.Put).AddBody(body);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
+            var response = await this.restClient.ExecuteAsync(request).ConfigureAwait(false);
             return response;
         }
 
@@ -64,7 +76,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoint}", Method.Put).AddBody(body);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = await MainRestApiUrl.Client.ExecuteAsync<ODataOptions>(request).ConfigureAwait(false);
+            var response = await this.restClient.ExecuteAsync<ODataOptions>(request).ConfigureAwait(false);
             return response;
         }
 
@@ -73,7 +85,7 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoint}", Method.Delete);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            var response = await MainRestApiUrl.Client.ExecuteAsync(request).ConfigureAwait(false);
+            var response = await this.restClient.ExecuteAsync(request).ConfigureAwait(false);
             return response;
         }
     }
