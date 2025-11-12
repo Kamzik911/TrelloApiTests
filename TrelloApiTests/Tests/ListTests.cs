@@ -11,8 +11,8 @@
 
         public ListTests()
         {
-            this.boardMethods = new BoardMethods(boardProperties);            
-            this.listMethods = new ListMethods(boardProperties, listProperties, cardProperties);
+            this.boardMethods = new BoardMethods(this.boardProperties);            
+            this.listMethods = new ListMethods(this.boardProperties, this.listProperties, this.cardProperties);
         }
 
         [TestMethod]

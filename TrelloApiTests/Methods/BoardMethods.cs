@@ -84,10 +84,17 @@
         
         public async Task MarkBoardViewed()
         {
-            var response = await this.apiClient.PostRequestApiAsync(endpoints.MarkedAsViewedEndpoint(boardProperties.Id)).ConfigureAwait(false);
-            var jsonResponse = JObject.Parse(response.Content);
-            Assert.AreEqual(boardProperties.Id, jsonResponse["id"]);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            if (string.IsNullOrEmpty(boardProperties.Id))
+            {
+                throw new Exception("Created board ID is null or empty.");
+            }
+            else
+            {
+                var response = await this.apiClient.PostRequestApiAsync(endpoints.MarkedAsViewedEndpoint(boardProperties.Id)).ConfigureAwait(false);
+                var jsonResponse = JObject.Parse(response.Content);
+                Assert.AreEqual(this.boardProperties.Id, jsonResponse["id"]);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }                
         }
 
         public async Task UpdateBoard()

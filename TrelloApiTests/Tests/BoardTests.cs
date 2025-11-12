@@ -14,32 +14,32 @@
         [TestMethod]
         public async Task B001CreateBoard_Pass()
         {
-            await boardMethods.CreateBoard().ConfigureAwait(false);
-            await boardMethods.DeleteBoard().ConfigureAwait(false);
+            await this.boardMethods.CreateBoard().ConfigureAwait(false);
+            await this.boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
         [TestMethod]
         public async Task B002GetBoardId()
         {
-            await boardMethods.CreateBoard().ConfigureAwait(false);
-            await boardMethods.GetBoard().ConfigureAwait(false);
-            await boardMethods.DeleteBoard().ConfigureAwait(false);
+            await this.boardMethods.CreateBoard().ConfigureAwait(false);
+            await this.boardMethods.GetBoard().ConfigureAwait(false);
+            await this.boardMethods.DeleteBoard().ConfigureAwait(false);
         }
 
         [TestMethod]
         public async Task B003UpdateBoard_Pass()
         {
-            await boardMethods.CreateBoard().ConfigureAwait(false);
-            await boardMethods.UpdateBoard().ConfigureAwait(false); ;
-            await boardMethods.DeleteBoard().ConfigureAwait(false); ;
+            await this.boardMethods.CreateBoard().ConfigureAwait(false);
+            await this.boardMethods.UpdateBoard().ConfigureAwait(false); ;
+            await this.boardMethods.DeleteBoard().ConfigureAwait(false); ;
         }
 
         //TODO
         public async Task B004MarkBoardAsVieved_Pass()
         {
-            await boardMethods.CreateBoard().ConfigureAwait(false);
-            await boardMethods.MarkBoardViewed().ConfigureAwait(false);
-            await boardMethods.DeleteBoard().ConfigureAwait(false);
+            await this.boardMethods.CreateBoard().ConfigureAwait(false);
+            await this.boardMethods.MarkBoardViewed().ConfigureAwait(false);
+            await this.boardMethods.DeleteBoard().ConfigureAwait(false);
         }        
     }
 }

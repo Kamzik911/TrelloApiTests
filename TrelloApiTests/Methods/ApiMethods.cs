@@ -59,7 +59,8 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoint}", Method.Post).AddBody(body);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);
-            return await this.restClient.ExecuteAsync(request).ConfigureAwait(false);
+            var response = await this.restClient.ExecuteAsync(request).ConfigureAwait(false);
+            return response;
         }
 
         public async Task<RestResponse> PutBodyRequestApiAsync(string endpoint, object body)
