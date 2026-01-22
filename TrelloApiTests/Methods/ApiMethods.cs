@@ -5,6 +5,7 @@ namespace TrelloApiTests.Methods
     public interface IApiClient
     {
         Task<RestResponse> GetRequestApiAsync(string endpoint);
+        Task<RestResponse> GetRequestApiAsyncWrongToken(string endpoint);
         Task<RestResponse> GetOdataRequestApiAsync(string endpoint);
         Task<RestResponse> PostRequestApiAsync(string endpoint);
         Task<RestResponse> PostBodyRequestApiAsync(string endpoint, object body);
@@ -32,6 +33,15 @@ namespace TrelloApiTests.Methods
             var request = new RestRequest($"{endpoint}", Method.Get);
             request.AddQueryParameter("key", trelloApiKey);
             request.AddQueryParameter("token", trelloApiToken);            
+            var response = await this.restClient.ExecuteAsync(request).ConfigureAwait(false);
+            return response;
+        }
+
+        public async Task<RestResponse> GetRequestApiAsyncWrongToken(string endpoint)
+        {
+            var request = new RestRequest($"{endpoint}", Method.Get);
+            request.AddQueryParameter("key", wrongTrelloApiKey);
+            request.AddQueryParameter("token", trelloApiToken);
             var response = await this.restClient.ExecuteAsync(request).ConfigureAwait(false);
             return response;
         }

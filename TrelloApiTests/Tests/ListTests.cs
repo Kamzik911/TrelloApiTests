@@ -13,10 +13,10 @@
         {
             this.boardMethods = new BoardMethods(this.boardProperties);            
             this.listMethods = new ListMethods(this.boardProperties, this.listProperties, this.cardProperties);
-        }
+        }       
 
         [TestMethod]
-        public async Task CreateList_ShouldPass() 
+        public async Task CreateList_ShouldPass()
         {
             await this.boardMethods.CreateBoard().ConfigureAwait(false);
             await this.listMethods.CreateList().ConfigureAwait(false);            

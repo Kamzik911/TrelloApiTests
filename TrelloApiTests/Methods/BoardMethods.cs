@@ -30,7 +30,7 @@
             var response = await this.apiClient.PostBodyRequestApiAsync(endpoints.boardsEndpoint, boardBody).ConfigureAwait(false);
             JObject jsonObjects = JObject.Parse(response.Content);
             boardProperties.Id = jsonObjects["id"].ToString();
-            boardProperties.IdOrganization = jsonObjects["idOrganization"].ToString();            
+            boardProperties.IdOrganization = jsonObjects["idOrganization"].ToString();
             Assert.IsNotNull(boardProperties.Id);
             Assert.IsNotNull(boardProperties.IdOrganization);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -39,6 +39,34 @@
             Assert.AreEqual(boardBody.name, jsonObjects["name"]);
             Assert.AreEqual(JTokenType.String, jsonObjects ["desc"]?.Type);
             Assert.AreEqual(boardBody.desc, jsonObjects["desc"]);
+        }
+
+        public async Task GetBoard()
+        {
+            if (string.IsNullOrEmpty(boardProperties.Id))
+            {
+                throw new Exception("Created board ID is null or empty.");
+            }
+            else
+            {
+                var response = await this.apiClient.GetRequestApiAsync(endpoints.BoardIdEndpoint(boardProperties.Id)).ConfigureAwait(false);
+                var jsonResponse = JObject.Parse(response.Content);
+                Assert.AreEqual(boardProperties.Id, jsonResponse["id"]);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }
+        }
+
+        public async Task GetBoardWithWrongApiKey()
+        {
+            if (string.IsNullOrEmpty(boardProperties.Id))
+            {
+                throw new Exception("Created board ID is null or empty.");
+            }
+            else
+            {
+                var response = await this.apiClient.GetRequestApiAsyncWrongToken(endpoints.BoardIdEndpoint(boardProperties.Id)).ConfigureAwait(false);                                
+                Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            }
         }
 
         public async Task CreateACalendarKeyForABoard()
@@ -65,9 +93,9 @@
             JObject jsonResponse = JObject.Parse(response.Content);
             string emailId = jsonResponse["myPrefs"]["idEmailList"].ToString();            
             Assert.IsNotNull(emailId);
-        }
+        }        
 
-        public async Task GetBoard()
+        /*public async Task GetFieldIdOnBoard()
         {
             if (string.IsNullOrEmpty(boardProperties.Id))
             {
@@ -75,12 +103,10 @@
             }
             else
             {
-                var response = await this.apiClient.GetRequestApiAsync(endpoints.BoardIdEndpoint(boardProperties.Id)).ConfigureAwait(false);
+                var response = await this.apiClient.GetRequestApiAsync(endpoints.FieldOnBoardEndpoint(boardProperties.Id, )).ConfigureAwait(false);
                 var jsonResponse = JObject.Parse(response.Content);
-                Assert.AreEqual(boardProperties.Id, jsonResponse["id"]);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
-        }
+        }*/
         
         public async Task MarkBoardViewed()
         {

@@ -32,6 +32,7 @@ namespace TrelloApiTests.Utils
         public static string trelloApiToken = GetCredentials(1);
         public static string memberId = GetCredentials(2);
         public static string calendarKey = GetCredentials(3);
+        public static string wrongTrelloApiKey = GetCredentials(4);
     }
 }     
 

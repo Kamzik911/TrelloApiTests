@@ -6,11 +6,16 @@
         public const string mainEndpoint = "https://api.trello.com/1";
 
         // Boards endpoints
-        public readonly string boardsEndpoint = "/boards";
-                
+        public readonly string boardsEndpoint = "/boards";        
+        
         public string BoardIdEndpoint(string boardId)
         {
             return $"{boardsEndpoint}/{boardId}";
+        }
+
+        public string FieldOnBoardEndpoint(string boardId, string field)
+        {            
+            return $"{BoardIdEndpoint(boardId)}/{field}";
         }
         // Board membership endpoints
         public string MembershipEndpoint(string boardId)
